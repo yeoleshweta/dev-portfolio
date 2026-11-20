@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
-import {projects} from '../../../content/profile';
+import {projects} from '@/content/profile';
 export const dynamicParams=false;
 export function generateStaticParams(){return projects.map(({slug})=>({slug}));}
 async function projectFor(params){const {slug}=await params;const project=projects.find(p=>p.slug===slug);if(!project)notFound();return project;}
