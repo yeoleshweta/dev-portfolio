@@ -1,21 +1,88 @@
-'use client';
-import Image from 'next/image';
-import { useState } from 'react';
+"use client";
+import { useScrollScene } from "@/hooks/useScrollScene";
+import { SignalSculpture } from "./SignalSculpture";
 
 const chapters = [
-  { label: 'Observe', title: 'Every build starts with a person.', text: 'A background in UX research taught me to look closely at how people use software.', detail: 'Research → understanding', mark: '01' },
-  { label: 'Design', title: 'Give complexity a clear shape.', text: 'I turn that understanding into interfaces, workflows, and choices that make sense.', detail: 'Understanding → interaction', mark: '02' },
-  { label: 'Build', title: 'Make the whole experience work.', text: 'Today, I connect those interfaces to APIs and machine learning models.', detail: 'Interaction → working software', mark: '03' },
+  {
+    label: "Observe",
+    title: "Find the human thread.",
+    text: "Start with the people inside the problem. Research reveals what matters.",
+    form: "01 / The knot — many possibilities",
+  },
+  {
+    label: "Design",
+    title: "Give complexity a shape.",
+    text: "Turn understanding into a clear structure, an interface, a way forward.",
+    form: "02 / The halo — a clear perspective",
+  },
+  {
+    label: "Build",
+    title: "Connect it into a system.",
+    text: "Bring interfaces, APIs, and models together. Keep the person in control.",
+    form: "03 / The coil — ideas in motion",
+  },
 ];
 
 export function StoryCenterpiece() {
-  const [active, setActive] = useState(0);
-  const chapter = chapters[active];
-  return <div className="centerpiece">
-    <div className="orbitArt" aria-hidden="true"><svg viewBox="0 0 1000 570" fill="none"><ellipse cx="500" cy="285" rx="433" ry="179" transform="rotate(-17 500 285)"/><ellipse cx="500" cy="285" rx="355" ry="245" transform="rotate(23 500 285)"/><path d="M70 450C230 30 720 540 940 110"/><circle cx="138" cy="385" r="5"/><circle cx="859" cy="178" r="5"/></svg></div>
-    <div className="portraitShell"><div className="portraitCore"><Image src="/shweta.jpg" alt="Shweta Sharma" width={943} height={1024} priority sizes="(max-width: 767px) 70vw, 340px"/></div><span className="portraitSignature">Shweta Sharma</span></div>
-    <div className="orbitNote noteLeft"><span className="tinyLabel">The starting point</span><p>People.<br/>Always.</p><span className="noteLine"/></div>
-    <div className="storyNote" aria-live="polite" aria-atomic="true"><div key={active} className="storyNoteCore"><span className="tinyLabel">{chapter.mark} / {chapter.detail}</span><h2>{chapter.title}</h2><p>{chapter.text}</p></div></div>
-    <div className="chapterControls" role="group" aria-label="Explore my approach">{chapters.map((item, index) => <button key={item.label} aria-pressed={active === index} onClick={() => setActive(index)}><span>0{index + 1}</span>{item.label}<i aria-hidden="true">↗</i></button>)}</div>
-  </div>;
+  const { root, progress, phase, reduced } = useScrollScene();
+  const chapter = chapters[phase];
+  return (
+    <div
+      ref={root}
+      className="sculptureStory"
+      data-phase={phase}
+      data-reduced={reduced}
+    >
+      <div className="sculptureScene">
+        <div className="sculptureTitle">
+          <p className="eyebrow">A designer’s eye. A developer’s mind.</p>
+          <h1>
+            Human ideas.
+            <br />
+            <em>Beautifully</em>
+            <br />
+            engineered.
+          </h1>
+          <p className="sculptureIntro">
+            I’m Shweta. I connect human understanding
+            <br className="desktopBreak" /> with the systems that bring it to
+            life.
+          </p>
+          <a className="textLink" href="#work">
+            Explore selected work ↗
+          </a>
+        </div>
+        <div className="sculptureObject">
+          <div className="objectHalo" aria-hidden="true" />
+          <SignalSculpture progress={progress} reduced={reduced} />
+          <div className="objectCoordinates" aria-hidden="true">
+            <span>HUMAN × MACHINE</span>
+            <span>FORM / FUNCTION / FEELING</span>
+          </div>
+        </div>
+        <div className="sculptureCaption">
+          <span className="tinyLabel">{chapter.form}</span>
+          <h2>{chapter.title}</h2>
+          <p>{chapter.text}</p>
+        </div>
+        <div className="sculptureLegend">
+          <span className="tinyLabel">Scroll to transform ↓</span>
+          <ol aria-label="Story stages">
+            {chapters.map((item, index) => (
+              <li
+                key={item.label}
+                aria-current={phase === index ? "step" : undefined}
+              >
+                <span>0{index + 1}</span>
+                {item.label}
+              </li>
+            ))}
+          </ol>
+          <div className="sceneMeter" aria-hidden="true">
+            <i />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
