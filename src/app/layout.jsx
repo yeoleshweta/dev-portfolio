@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/Header";
 import "@/styles/globals.css";
+import "@/styles/header.css";
 import "@/styles/continuity.css";
 import "@/styles/portfolio-depth.css";
 import "@/styles/gallery.css";

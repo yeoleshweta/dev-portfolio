@@ -1,0 +1,176 @@
+/* The shared .wrap owns the width. Identity and navigation have separate surfaces. */
+.siteHeader {
+  position: sticky;
+  top: 20px;
+  z-index: var(--layer-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 20px auto 0;
+  pointer-events: none;
+}
+.siteBrand,
+.desktopNav,
+.siteHeader .menuToggle {
+  pointer-events: auto;
+  background: #fcfaf4;
+  box-shadow: 0 8px 30px -16px #512c4326, inset 0 0 0 1px #512c4310;
+}
+.siteBrand {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  gap: 11px;
+  padding: 6px 20px 6px 6px;
+  border-radius: 100px;
+  color: var(--ink);
+}
+.brandSeal {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  padding: 3px;
+  background: #e8dfd6;
+}
+.brandSeal i {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 3px 3px 0;
+  border-radius: inherit;
+  background: var(--wine);
+  color: var(--paper);
+  font: italic 28px/.9 "Iowan Old Style", Baskerville, Georgia, serif;
+  transition: transform .6s var(--ease);
+}
+.siteBrand:hover .brandSeal i { transform: rotate(-9deg); }
+.brandIdentity { display: flex; flex-direction: column; gap: 5px; }
+.brandIdentity strong { font-size: 14px; line-height: 1.1; font-weight: 600; letter-spacing: -.02em; }
+.brandIdentity > span { color: var(--muted); font: 8px/1 ui-monospace, monospace; letter-spacing: .025em; }
+.desktopNav {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: 2px;
+  padding: 6px;
+  border-radius: 100px;
+}
+.desktopNav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 15px;
+  border-radius: 100px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background .4s var(--ease), color .4s var(--ease), transform .4s var(--ease);
+}
+.desktopNav a:hover { background: #eee7dd; color: var(--wine); }
+.desktopNav a:active { transform: scale(.96); }
+.desktopNav .navContact {
+  gap: 17px;
+  padding: 5px 5px 5px 18px;
+  margin-left: 8px;
+  color: var(--paper);
+  background: var(--wine);
+}
+.desktopNav .navContact:hover { background: #63364f; color: var(--paper); }
+.navContact i {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #ffffff15;
+  font-size: 16px;
+  font-style: normal;
+  transition: transform .5s var(--ease);
+}
+.navContact:hover i { transform: translate(2px, -2px); }
+.desktopNav a:focus-visible { outline-offset: 2px; }
+.menuToggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  flex: none;
+  min-height: 48px;
+  padding: 0 17px;
+  border: 0;
+  border-radius: 100px;
+  background: var(--wine);
+  color: var(--paper);
+}
+.siteHeader .menuToggle { background: var(--wine); color: var(--paper); }
+.menuLabel { font-size: 11px; line-height: 1; }
+.menuGlyph { position: relative; display: block; width: 18px; height: 18px; }
+.menuGlyph span {
+  position: absolute;
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  left: 0;
+  top: 5px;
+  transition: transform .6s var(--ease);
+}
+.menuGlyph span + span { top: 12px; }
+.menuToggle.isOpen .menuGlyph span { transform: translateY(3.5px) rotate(45deg); }
+.menuToggle.isOpen .menuGlyph span + span { transform: translateY(-3.5px) rotate(-45deg); }
+.menuOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 26px max(24px, 6vw) 40px;
+  border: 0;
+  background: #f7f4ecf5;
+  backdrop-filter: blur(24px);
+  color: var(--wine);
+}
+.menuOverlay::backdrop { background: #251f2b50; }
+.menuOverlayTop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; }
+.menuSignature { font: italic 44px/1 "Iowan Old Style", Baskerville, Georgia, serif; }
+.menuOverlay .menuToggle { display: inline-flex; }
+.menuOverlay .eyebrow { margin-bottom: 18px; }
+.menuOverlay nav { display: flex; flex-direction: column; }
+.menuOverlay nav a {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 3px 0;
+  font: clamp(36px, 8vw, 62px)/1.4 "Iowan Old Style", Baskerville, Georgia, serif;
+  letter-spacing: -.035em;
+  animation: arrive .8s var(--ease) both;
+  animation-delay: calc(var(--index) * 70ms);
+}
+.menuOverlay small { color: var(--accent); font: 10px ui-monospace, monospace; letter-spacing: 0; }
+@media (max-width: 1000px) and (min-width: 901px) {
+  .desktopNav a { padding-inline: 12px; }
+  .desktopNav .navContact { padding-inline: 16px 5px; }
+}
+@media (max-width: 900px) {
+  .siteHeader { top: 14px; margin-top: 14px; gap: 14px; }
+  .siteBrand { padding: 5px 16px 5px 5px; gap: 9px; }
+  .brandSeal { width: 40px; height: 40px; }
+  .brandSeal i { font-size: 26px; }
+  .desktopNav { display: none; }
+  .siteHeader .menuToggle { display: inline-flex; }
+}
+@media (max-width: 380px) {
+  .siteBrand { padding-right: 12px; }
+  .brandIdentity strong { font-size: 13px; }
+  .brandIdentity > span { font-size: 7px; }
+  .brandSeal { width: 36px; height: 36px; }
+  .menuToggle { min-height: 46px; padding-inline: 14px; gap: 10px; }
+}

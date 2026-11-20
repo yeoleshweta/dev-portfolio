@@ -18,6 +18,7 @@ Open http://localhost:3000. Run `npm run build` to validate all routes and gener
 - `src/components/portfolio/`: portfolio-specific interactive components.
 - `src/content/profile.js`: biography, experience, and project content.
 - `src/styles/globals.css`: responsive styling and visual tokens.
+- `src/styles/header.css`: header identity, desktop navigation, and mobile menu. The header inherits the shared `.wrap` width; keep section stylesheets free of header overrides.
 - `public/`: images and downloadable résumé.
 
 Use the `@/` alias for imports from `src`. Keep content in the content module and keep client components limited to features requiring browser state. Do not commit generated `out/`, `.next/`, dependencies, or environment secrets.

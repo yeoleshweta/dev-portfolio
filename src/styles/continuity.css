@@ -769,11 +769,6 @@
   }
 }
 
-/* Keep the floating nav’s backdrop within its physical silhouette. */
-.top {
-  clip-path: inset(0 round 999px);
-}
-
 /* Project image proportions stay registered to the WebGL camera on resize. */
 .interfaceImage {
   width: var(--frame-width, 70%);

@@ -93,50 +93,6 @@ button:focus-visible {
 .centered {
   text-align: center;
 }
-.top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 18px;
-  z-index: var(--layer-nav);
-  width: min(90%, 820px);
-  padding: 8px 12px 8px 18px;
-  margin: 18px auto 0;
-  border-radius: 999px;
-  background: #f7f4ecee;
-  backdrop-filter: blur(18px);
-  box-shadow:
-    0 12px 50px #512c4308,
-    inset 0 0 0 1px #512c4312;
-}
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  font-weight: 600;
-}
-.brand i {
-  font: italic 28px Georgia;
-  color: var(--wine);
-}
-.desktopNav {
-  display: flex;
-  gap: 6px;
-}
-.desktopNav a {
-  font-size: 12px;
-  padding: 9px 15px;
-  border-radius: 30px;
-}
-.desktopNav a:last-child {
-  background: var(--wine);
-  color: var(--paper);
-}
-.desktopNav a:hover {
-  opacity: 0.7;
-}
 .primary {
   display: inline-flex;
   align-items: center;
@@ -342,74 +298,6 @@ footer {
 footer a {
   margin-left: auto;
 }
-.menuToggle {
-  display: none;
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border: 0;
-  border-radius: 50%;
-  background: var(--wine);
-  color: var(--paper);
-}
-.menuToggle span {
-  position: absolute;
-  width: 18px;
-  height: 1px;
-  background: currentColor;
-  left: 13px;
-  top: 18px;
-  transition: transform 0.6s var(--ease);
-}
-.menuToggle span + span {
-  top: 25px;
-}
-.isOpen span {
-  transform: translateY(3.5px) rotate(45deg);
-}
-.isOpen span + span {
-  transform: translateY(-3.5px) rotate(-45deg);
-}
-.menuOverlay {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  max-width: none;
-  height: 100dvh;
-  max-height: none;
-  margin: 0;
-  padding: 110px 28px;
-  border: 0;
-  background: #f7f4ecf2;
-  backdrop-filter: blur(24px);
-  color: var(--wine);
-}
-.menuOverlay::backdrop {
-  background: #251f2b50;
-}
-.menuOverlay .menuToggle {
-  display: block;
-  position: absolute;
-  right: 24px;
-  top: 24px;
-}
-.menuOverlay nav {
-  display: flex;
-  flex-direction: column;
-}
-.menuOverlay nav a {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  font:
-    clamp(40px, 10vw, 72px) / 1.5 Georgia,
-    serif;
-  animation: arrive 0.8s var(--ease) both;
-  animation-delay: calc(var(--index) * 80ms);
-}
-.menuOverlay small {
-  font-size: 12px;
-}
 @keyframes arrive {
   from {
     opacity: 0;
@@ -480,17 +368,6 @@ footer a {
 @media (max-width: 767px) {
   .wrap {
     width: calc(100% - 32px);
-  }
-  .top {
-    width: calc(100% - 32px);
-    top: 12px;
-    margin-top: 12px;
-  }
-  .desktopNav {
-    display: none;
-  }
-  .menuToggle {
-    display: block;
   }
   .journeySection,
   .aboutStory,

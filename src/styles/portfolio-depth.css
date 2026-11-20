@@ -54,12 +54,6 @@
 .introCoordinates {
   margin-top: 28px;
 }
-.top {
-  width: min(94%, 960px);
-}
-.desktopNav a {
-  padding: 9px 13px;
-}
 .practiceBridge {
   padding: 100px 0 120px;
   display: grid;
@@ -603,10 +597,6 @@
   }
 }
 @media (max-width: 1100px) {
-  .desktopNav a {
-    font-size: 11px;
-    padding: 9px 10px;
-  }
   .heroActions {
     gap: 15px;
   }
@@ -615,9 +605,6 @@
   }
 }
 @media (max-width: 767px) {
-  .top {
-    width: calc(100% - 32px);
-  }
   .heroCredentials {
     font-size: 8px;
     gap: 14px;
