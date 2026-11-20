@@ -1,78 +1,8 @@
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
-// One continuous ribbon, swept along a trefoil. Two morph targets unfold the
-// same topology into a halo and a rising coil; no downloaded 3D assets.
-function ribbonGeometry(mode) {
-  const segments = 360,
-    sides = 12;
-  const curvePoints = [];
-  for (let i = 0; i <= segments; i++) {
-    const t = (i / segments) * Math.PI * 2;
-    if (mode === 0)
-      curvePoints.push(
-        new THREE.Vector3(
-          (1.22 + 0.42 * Math.cos(3 * t)) * Math.cos(2 * t),
-          (1.22 + 0.42 * Math.cos(3 * t)) * Math.sin(2 * t),
-          0.52 * Math.sin(3 * t),
-        ),
-      );
-    else if (mode === 1)
-      curvePoints.push(
-        new THREE.Vector3(
-          1.35 * Math.cos(t),
-          1.35 * Math.sin(t),
-          0.32 * Math.sin(3 * t),
-        ),
-      );
-    else
-      curvePoints.push(
-        new THREE.Vector3(
-          1.1 * Math.cos(t * 2.6),
-          (i / segments - 0.5) * 2.6,
-          1.1 * Math.sin(t * 2.6),
-        ),
-      );
-  }
-  const curve = new THREE.CatmullRomCurve3(curvePoints);
-  const frames = curve.computeFrenetFrames(segments, mode !== 2);
-  const positions = [],
-    indices = [];
-  for (let i = 0; i <= segments; i++) {
-    const center = curvePoints[i],
-      twist = (i / segments) * Math.PI * 2;
-    const normal = frames.normals[i],
-      binormal = frames.binormals[i];
-    for (let j = 0; j <= sides; j++) {
-      const a = (j / sides) * Math.PI * 2;
-      const wide = Math.cos(a) * 0.245,
-        thin = Math.sin(a) * 0.055;
-      const u = wide * Math.cos(twist) - thin * Math.sin(twist),
-        v = wide * Math.sin(twist) + thin * Math.cos(twist);
-      positions.push(
-        center.x + normal.x * u + binormal.x * v,
-        center.y + normal.y * u + binormal.y * v,
-        center.z + normal.z * u + binormal.z * v,
-      );
-      if (i < segments && j < sides) {
-        const n = i * (sides + 1) + j;
-        indices.push(
-          n,
-          n + sides + 1,
-          n + 1,
-          n + 1,
-          n + sides + 1,
-          n + sides + 2,
-        );
-      }
-    }
-  }
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-  geo.setIndex(indices);
-  geo.computeVertexNormals();
-  return geo;
-}
+import { hand, ribbonGeometry } from "./sculptureGeometry.mjs";
+import { lastStoryStage, storyStages, storyWeights } from "./storyStages.mjs";
 
 export function createSculpture(host, getProgress, isReduced) {
   const renderer = new THREE.WebGLRenderer({
@@ -86,23 +16,22 @@ export function createSculpture(host, getProgress, isReduced) {
   renderer.toneMappingExposure = 1.65;
   host.appendChild(renderer.domElement);
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 30);
+  const camera = new THREE.OrthographicCamera(-2.5, 2.5, 2.5, -2.5, 0.1, 30);
   camera.position.set(0, 0, 7.8);
   const environment = new RoomEnvironment();
   const pmrem = new THREE.PMREMGenerator(renderer);
   const env = pmrem.fromScene(environment, 0.035);
   scene.environment = env.texture;
-  const geometry = ribbonGeometry(0),
-    halo = ribbonGeometry(1),
-    coil = ribbonGeometry(2);
-  geometry.morphAttributes.position = [
-    halo.attributes.position,
-    coil.attributes.position,
-  ];
-  geometry.morphAttributes.normal = [
-    halo.attributes.normal,
-    coil.attributes.normal,
-  ];
+  const geometry = ribbonGeometry(0);
+  const targets = storyStages
+    .slice(1)
+    .map((_, index) => ribbonGeometry(index + 1));
+  geometry.morphAttributes.position = targets.map(
+    (target) => target.attributes.position,
+  );
+  geometry.morphAttributes.normal = targets.map(
+    (target) => target.attributes.normal,
+  );
   const material = new THREE.MeshPhysicalMaterial({
     color: 0xb1858c,
     metalness: 1,
@@ -112,10 +41,25 @@ export function createSculpture(host, getProgress, isReduced) {
     side: THREE.DoubleSide,
     envMapIntensity: 1.5,
   });
+  const technicalColor = new THREE.Color(0x5a3048);
   const ribbon = new THREE.Mesh(geometry, material);
   const group = new THREE.Group();
   group.add(ribbon);
   scene.add(group);
+  const nodeGeometry = new THREE.SphereGeometry(0.036, 16, 12);
+  const nodeMaterial = new THREE.MeshStandardMaterial({
+    color: 0x643b4c,
+    metalness: 0.15,
+    roughness: 0.55,
+    transparent: true,
+    opacity: 0,
+  });
+  const nodes = hand.map((point) => {
+    const mesh = new THREE.Mesh(nodeGeometry, nodeMaterial);
+    mesh.position.copy(point);
+    group.add(mesh);
+    return mesh;
+  });
   const core = new THREE.Mesh(
     new THREE.SphereGeometry(0.19, 32, 24),
     new THREE.MeshPhysicalMaterial({
@@ -137,7 +81,18 @@ export function createSculpture(host, getProgress, isReduced) {
     const { width, height } = host.getBoundingClientRect();
     if (!width || !height) return;
     renderer.setSize(width, height);
-    camera.aspect = width / height;
+    const viewWidth = Math.max(5, (width / height) * 4.6);
+    camera.left = -viewWidth / 2;
+    camera.right = viewWidth / 2;
+    camera.top = ((viewWidth / 2) * height) / width;
+    const stage = host.closest(".continuousStage");
+    stage?.style.setProperty("--world-unit", `${width / viewWidth}px`);
+    stage?.style.setProperty("--frame-width", `${(3.5 / viewWidth) * 100}%`);
+    stage?.style.setProperty(
+      "--frame-bottom",
+      `${(width * 1.16) / viewWidth}px`,
+    );
+    camera.bottom = -camera.top;
     camera.updateProjectionMatrix();
     draw(true);
   };
@@ -152,8 +107,8 @@ export function createSculpture(host, getProgress, isReduced) {
     lastPointerY = 99;
   function draw(force = false) {
     if (dead) return;
-    const p = isReduced() ? 0.48 : getProgress();
-    phase = isReduced() ? p : phase + (p - phase) * 0.1;
+    const p = getProgress() * lastStoryStage;
+    phase = isReduced() ? Math.round(p) : p;
     if (
       !force &&
       Math.abs(phase - lastPhase) < 0.00005 &&
@@ -164,23 +119,51 @@ export function createSculpture(host, getProgress, isReduced) {
     lastPhase = phase;
     lastPointerX = pointerX;
     lastPointerY = pointerY;
-    const a = THREE.MathUtils.smoothstep(phase, 0.1, 0.48);
-    const b = THREE.MathUtils.smoothstep(phase, 0.52, 0.95);
-    ribbon.morphTargetInfluences[0] = a * (1 - b);
-    ribbon.morphTargetInfluences[1] = b;
-    group.rotation.x =
-      0.35 + phase * 0.45 + (isReduced() ? 0 : pointerY * 0.14);
-    group.rotation.y =
-      -0.4 + phase * Math.PI * 1.5 + (isReduced() ? 0 : pointerX * 0.2);
-    group.rotation.z = -0.25 + phase * 0.8;
-    core.scale.setScalar(1 + Math.sin(phase * Math.PI) * 0.4);
+    const weights = storyWeights(phase);
+    for (let i = 0; i < targets.length; i++)
+      ribbon.morphTargetInfluences[i] = weights[i + 1];
+    const hero = weights[0],
+      gesture = weights[2],
+      evidence = weights[3],
+      lens = weights[4],
+      forecast = weights[5];
+    group.rotation.set(
+      hero * (0.35 + (isReduced() ? 0 : pointerY * 0.14)),
+      hero * (-0.4 + (isReduced() ? 0 : pointerX * 0.2)),
+      hero * -0.25,
+    );
+    group.position.set(
+      0,
+      gesture * 0.36 + evidence * 1.15 + forecast * 0.25,
+      0,
+    );
+    group.scale.setScalar(1 - gesture * 0.08);
+    core.scale.setScalar(hero + 0.23 * (1 - hero));
+    core.position.set(
+      weights[1] * 1.8 + lens * 1.42 + forecast * 1.8,
+      weights[1] * 1.16 - gesture * 0.9 + forecast * 0.9,
+      0,
+    );
+    nodeMaterial.opacity = gesture;
+    for (const node of nodes) node.visible = gesture > 0.005;
+    // A deeper, less reflective line keeps fine geometry legible on the paper stage.
+    const technical = gesture + evidence + forecast + lens * 0.65;
+    material.color.setRGB(0.69, 0.52, 0.55).lerp(technicalColor, technical);
+    material.metalness = 1 - technical * 0.8;
+    material.roughness = 0.23 + technical * 0.32;
+    material.emissiveIntensity = 0;
+    renderer.toneMappingExposure = 1.65 - technical * 0.5;
+    light.intensity = 4 - technical * 2;
+    fill.intensity = 2 - technical;
     renderer.render(scene, camera);
   }
   function loop() {
     frame = 0;
     if (!visible || dead || document.hidden) return;
     draw();
-    if (!isReduced()) frame = requestAnimationFrame(loop);
+    // Poll progress even with reduced motion; draw() skips identical frames.
+    // This keeps discrete chapter changes visible without a morph animation.
+    frame = requestAnimationFrame(loop);
   }
   const start = () => {
     if (!frame && visible && !document.hidden)
@@ -234,8 +217,9 @@ export function createSculpture(host, getProgress, isReduced) {
     preference.removeEventListener("change", change);
     renderer.domElement.removeEventListener("webglcontextlost", lost);
     geometry.dispose();
-    halo.dispose();
-    coil.dispose();
+    targets.forEach((target) => target.dispose());
+    nodeGeometry.dispose();
+    nodeMaterial.dispose();
     material.dispose();
     core.geometry.dispose();
     core.material.dispose();

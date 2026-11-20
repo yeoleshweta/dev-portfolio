@@ -39,7 +39,7 @@ export function SignalSculpture({ progress, reduced }) {
       className="signalSculpture"
       data-ready={ready}
       role="img"
-      aria-label="A metallic ribbon sculpture transforming from an intricate knot into a halo and a rising coil: complexity becoming a working system."
+      aria-label="One continuous metallic ribbon transforms into a dashboard frame, a hand-landmark network, a conversation waveform, a Bias Checker lens, and a PocketSaver forecast curve as the project story unfolds."
     >
       <div className="sculptureFallback" aria-hidden="true">
         <i />

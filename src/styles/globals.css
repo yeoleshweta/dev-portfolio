@@ -175,117 +175,9 @@ button:active {
   align-items: center;
   gap: 28px;
 }
-.storyHero {
-  padding-top: 38px;
-}
-.heroMeta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 48px;
-}
-.storyHero h1 {
-  font-size: clamp(65px, 7.8vw, 120px);
-  text-align: center;
-  line-height: 0.96;
-  letter-spacing: -0.062em;
-  animation: arrive 1s var(--ease) both;
-}
-.storyHero h1 em {
-  position: relative;
-}
-.heroFoot {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0 35px;
-  border-bottom: 1px solid #512c4318;
-  font-size: 10px;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-.heroFoot a {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.heroFoot i {
-  font-style: normal;
-  font-size: 20px;
-}
-.chapterSection {
-  padding: 120px 0;
-}
-.chapterHeading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.chapterIndex {
-  font: italic 50px Georgia;
-  color: #b8a394;
-}
-.storySplit {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 12%;
-  align-items: end;
-  margin-bottom: 55px;
-}
-.storySplit h2,
 .journeyIntro h2,
 .aboutStory h2 {
   font-size: clamp(46px, 5.3vw, 78px);
-}
-.storySplit p {
-  color: var(--muted);
-  font-size: 15px;
-  margin-top: 16px;
-}
-.storySplit .primary {
-  margin-top: 25px;
-}
-.browserBar {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 10px 12px;
-  font-size: 9px;
-  color: #8e7d80;
-}
-.browserBar span:first-child {
-  letter-spacing: 3px;
-}
-.projectAfter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  margin-top: 24px;
-  font-size: 10px;
-  color: var(--muted);
-}
-.projectAfter h3 {
-  font-size: 27px;
-  color: var(--ink);
-}
-.intelligenceChapter {
-  padding: 120px 0;
-  background: #382431;
-  color: #f5ebdc;
-}
-.intelligenceChapter .eyebrow,
-.intelligenceChapter .tinyLabel {
-  color: #d9a48b;
-}
-.intelligenceChapter h2 em,
-.intelligenceChapter h3 em {
-  color: #d9a48b;
-}
-.intelligenceChapter .storySplit p {
-  color: #c4b5bd;
 }
 .pipeline {
   display: flex;
@@ -295,9 +187,6 @@ button:active {
 }
 .pipeline i {
   font-style: normal;
-}
-.intelligenceChapter .projectAfter {
-  color: #c4b5bd;
 }
 .waveform {
   display: flex;
@@ -581,12 +470,6 @@ footer a {
   max-width: 65ch;
 }
 @media (max-width: 1000px) {
-  .heroMeta {
-    font-size: 8px;
-  }
-  .storySplit {
-    gap: 6%;
-  }
   .waveform {
     gap: 2px;
   }
@@ -609,73 +492,24 @@ footer a {
   .menuToggle {
     display: block;
   }
-  .heroMeta {
-    justify-content: center;
-    margin-bottom: 35px;
-  }
-  .heroMeta span:last-child {
-    display: none;
-  }
-  .storyHero {
-    padding-top: 28px;
-  }
-  .storyHero .eyebrow {
-    font-size: 8px;
-    margin-bottom: 20px;
-  }
-  .storyHero h1 {
-    font-size: clamp(53px, 10.5vw, 80px);
-  }
-  .heroFoot {
-    font-size: 8px;
-    padding: 12px 0 25px;
-  }
-  .heroFoot > span:first-child {
-    display: none;
-  }
-  .chapterSection,
-  .intelligenceChapter,
   .journeySection,
   .aboutStory,
   .storyContact {
     padding-top: 72px;
     padding-bottom: 72px;
   }
-  .chapterIndex {
-    font-size: 35px;
-  }
   .eyebrow {
     font-size: 9px;
   }
-  .storySplit,
   .journeyGrid,
   .aboutStory,
   .caseLayout {
     grid-template-columns: 1fr;
     gap: 25px;
   }
-  .storySplit {
-    margin-bottom: 32px;
-  }
-  .storySplit h2,
   .journeyIntro h2,
   .aboutStory h2 {
     font-size: 48px;
-  }
-  .storySplit p {
-    font-size: 14px;
-  }
-  .browserBar {
-    font-size: 7px;
-  }
-  .projectAfter {
-    flex-wrap: wrap;
-    font-size: 9px;
-    gap: 12px;
-  }
-  .projectAfter h3 {
-    width: 100%;
-    font-size: 28px;
   }
   .waveform {
     gap: 4px;

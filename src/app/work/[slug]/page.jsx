@@ -37,6 +37,21 @@ export default async function CaseStudy({ params }) {
           <p>{p.role}</p>
           <small>Toolkit</small>
           <p>{p.stack.join(" · ")}</p>
+          {p.repository && (
+            <>
+              <small>Source</small>
+              <p>
+                <a
+                  className="textLink"
+                  href={p.repository}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Explore on GitHub ↗
+                </a>
+              </p>
+            </>
+          )}
         </aside>
         <article>
           <Image
@@ -59,6 +74,7 @@ export default async function CaseStudy({ params }) {
           ))}
           <Link className="primary" href={"/work/" + next.slug + "/"}>
             Next project: {next.name}
+            <i aria-hidden="true">↗</i>
           </Link>
         </article>
       </div>

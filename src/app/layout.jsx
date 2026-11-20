@@ -1,6 +1,8 @@
 import { Header } from "@/components/layout/Header";
 import "@/styles/globals.css";
-import "@/styles/story.css";
+import "@/styles/continuity.css";
+import "@/styles/portfolio-depth.css";
+import "@/styles/gallery.css";
 export const metadata = {
   title: {
     default: "Shweta Sharma | Fullstack Dev",

@@ -4,6 +4,7 @@ export const profile = {
   location: "Philadelphia, PA",
   email: "shwetayeolesharma@gmail.com",
   linkedin: "https://www.linkedin.com/in/sharmashweta08",
+  github: "https://github.com/yeoleshweta",
   resume: "/shweta-sharma-resume.pdf",
   interests:
     "I’m looking for fullstack developer roles where I can own a feature from its interface to its API. I’m especially drawn to products where good interaction design makes data or machine learning easier to use.",
@@ -20,6 +21,7 @@ export const projects = [
     summary:
       "A browser prototype that recognizes hand signs and gives the signer control over the text.",
     role: "UX lead and ML engineer",
+    repository: "https://github.com/yeoleshweta/gesturepro",
     context: "Four-person capstone",
     stack: ["Next.js", "FastAPI", "MediaPipe", "TensorFlow"],
     question:
@@ -57,7 +59,7 @@ export const projects = [
     headline: "Making clinical dialogue measurable.",
     summary:
       "A supervised NLP workflow for finding communication behaviors in doctor and patient conversations.",
-    role: "Data analyst co-op",
+    role: "Data scientist co-op",
     context: "American Board of Internal Medicine",
     stack: ["Python", "NLP", "Label Studio"],
     question:
@@ -70,10 +72,10 @@ export const projects = [
 ];
 export const experience = [
   [
-    "2025",
+    "Mar 2025 – Mar 2026",
     "American Board of Internal Medicine",
-    "Data Analyst Co-op, Data Science",
-    "Built clinical NLP pipelines and evaluated language models on SQL generation tasks.",
+    "Data Scientist Co-op · UX & AI Evaluation",
+    "Built clinical NLP annotation and evaluation workflows. Solo-built Bias Checker, connecting a fine-tuned model, Flask API, and Next.js interface.",
   ],
   [
     "2025",
@@ -82,22 +84,22 @@ export const experience = [
     "Supported graduate AI and machine learning coursework through labs, office hours, and assignment guidance.",
   ],
   [
-    "2022 to 2024",
+    "Oct 2022 – Sep 2024",
     "John Deere",
     "Senior Technical Lead, Research",
-    "Established a UX research practice in India and helped six product teams connect behavioral research to product decisions.",
+    "Established the UX research practice in India across 6+ product teams. Designed a self-serve survey platform for 250+ products, reducing setup time by 60%.",
   ],
   [
-    "2021 to 2022",
+    "Apr – Oct 2022",
     "Urbanfit Wellness",
-    "UI/UX Designer",
-    "Designed wellness and retail experiences, including a franchise operations dashboard and the Poshmera mobile app.",
+    "Product Designer",
+    "Built the design system and owned discovery through engineering handoff. A research-led platform redesign delivered a 35% engagement lift.",
   ],
   [
-    "2018 to 2022",
+    "Jan 2018 – Dec 2021",
     "Capita, for Arcadia Group",
     "UX Personalization Designer",
-    "Designed shopping experiences for seven retail brands using customer segments and behavioral signals.",
+    "Designed personalized shopping experiences for seven UK retail brands. Combined behavioral segmentation and A/B testing to deliver an 11% conversion lift.",
   ],
 ];
 export const capabilities = [

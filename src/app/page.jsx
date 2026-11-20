@@ -1,12 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
-import { StoryCenterpiece } from "@/components/portfolio/StoryCenterpiece";
-import {
-  UrbanfitScene,
-  GestureScene,
-  ClinicalScene,
-} from "@/components/portfolio/ProjectScenes";
-import { profile, projects, experience, capabilities } from "@/content/profile";
+import { ContinuousPortfolio } from "@/components/portfolio/ContinuousPortfolio";
+import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
+import { profile, projects, experience } from "@/content/profile";
+import { disciplines, archive } from "@/content/engineering";
 
 function Action({ href, children }) {
   return (
@@ -18,115 +14,111 @@ function Action({ href, children }) {
 }
 
 export default function Home() {
-  const [gesture, urban, clinical] = projects;
   return (
     <main id="main">
-      <section className="storyHero wrap">
-        <div className="heroMeta">
-          <span>Shweta Sharma · Fullstack developer</span>
-          <span>Based in Philadelphia, PA</span>
-        </div>
-        <StoryCenterpiece />
-        <div className="heroFoot">
-          <span>Research / Design / Development</span>
-          <a href="#work">
-            Follow the story <i aria-hidden="true">↓</i>
+      <ContinuousPortfolio projects={projects} />
+      <div className="practiceBridge wrap">
+        <span className="eyebrow">The common thread</span>
+        <p>
+          Understand the person.
+          <br />
+          Design the interaction.
+          <br />
+          <em>Build the whole thing.</em>
+        </p>
+        <a href="#skills" className="bridgeLink">
+          A little more about the practice <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+
+      <section className="archiveSection wrap" aria-labelledby="archive-title">
+        <div className="archiveHeading">
+          <span className="eyebrow">Still curious?</span>
+          <h2 id="archive-title">There’s more on the desk.</h2>
+          <a
+            className="textLink"
+            href={profile.github}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Explore GitHub ↗
           </a>
-          <span>Selected work · 01—03</span>
+        </div>
+        <div className="projectArchive">
+          {archive.map((project, i) => (
+            <details className="archiveItem" key={project.title}>
+              <summary>
+                <span className="archiveNumber">0{i + 1}</span>
+                <span className="archiveName">{project.title}</span>
+                <span className="archiveType">{project.type}</span>
+                <span className="archivePlus" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+              <div className="archiveBody">
+                <p>{project.description}</p>
+                <span>{project.stack}</span>
+                {project.href && (
+                  <a className="textLink" href={project.href}>
+                    Read the case study ↗
+                  </a>
+                )}
+              </div>
+            </details>
+          ))}
         </div>
       </section>
 
-      <section id="work" className="chapterSection wrap">
-        <div className="chapterHeading">
-          <p className="eyebrow">01 / Understanding becomes an interface</p>
-          <span className="chapterIndex" aria-hidden="true">
-            01
-          </span>
-        </div>
-        <div className="storySplit">
-          <h2>
-            First, make the
+      <section
+        className="skillsSection wrap"
+        id="skills"
+        aria-labelledby="skills-title"
+      >
+        <div className="skillsIntro">
+          <p className="eyebrow">03 / Working range</p>
+          <h2 id="skills-title">
+            Across the stack.
             <br />
-            <em>complex feel clear.</em>
+            <em>Close to the person.</em>
           </h2>
-          <div>
-            <p>
-              Design taught me that the same system can mean very different
-              things to different people.
-            </p>
-            <p>
-              At Urbanfit, that meant bringing administrators, warehouse teams,
-              and franchise shops into one shared workspace.
-            </p>
+          <p>
+            Design experience shapes how I build. Technical fluency changes the
+            questions I can ask.
+          </p>
+          <div className="disciplineMark" aria-hidden="true">
+            <span>DESIGN</span>
+            <i />
+            <span>CODE</span>
+            <i />
+            <span>INTELLIGENCE</span>
           </div>
         </div>
-        <UrbanfitScene project={urban} />
-        <div className="projectAfter">
-          <h3>{urban.name}</h3>
-          <span>{urban.stack.join(" / ")}</span>
-          <Link className="textLink" href={`/work/${urban.slug}/`}>
-            Read the case study ↗
-          </Link>
+        <div className="disciplineList">
+          {disciplines.map((discipline, i) => (
+            <article className="discipline" key={discipline.name}>
+              <div className="disciplineTop">
+                <small>0{i + 1}</small>
+                <span>{discipline.note}</span>
+              </div>
+              <h3>{discipline.name}</h3>
+              <p>{discipline.detail}</p>
+              <div className="skillTags">
+                {discipline.tools.map((tool) => (
+                  <span key={tool}>{tool}</span>
+                ))}
+              </div>
+              <a href={discipline.href}>
+                See it in {discipline.proof} <span aria-hidden="true">↗</span>
+              </a>
+            </article>
+          ))}
         </div>
-      </section>
-
-      <section className="intelligenceChapter">
-        <div className="wrap">
-          <p className="eyebrow">02 / The interface becomes intelligent</p>
-          <div className="storySplit">
-            <h2>
-              Then, make room
-              <br />
-              for <em>possibility.</em>
-            </h2>
-            <div>
-              <p>
-                Moving into development and machine learning opened another
-                question: what if software could understand a gesture?
-              </p>
-              <p>
-                GesturePro connects a webcam, a hand-landmark model, and an
-                editable message. The person stays in control.
-              </p>
-            </div>
-          </div>
-          <GestureScene />
-          <div className="projectAfter">
-            <span>{gesture.role}</span>
-            <span>{gesture.stack.join(" / ")}</span>
-            <Link className="textLink" href={`/work/${gesture.slug}/`}>
-              Read the GesturePro case study ↗
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="chapterSection wrap clinicalChapter">
-        <p className="eyebrow">03 / Intelligence needs interpretation</p>
-        <div className="storySplit">
-          <h2>
-            Keep the human
-            <br />
-            <em>in the conversation.</em>
-          </h2>
-          <div>
-            <p>
-              At the American Board of Internal Medicine, I worked with clinical
-              dialogue: turning conversations into annotated data and model
-              predictions into named communication behaviors.
-            </p>
-            <Action href={`/work/${clinical.slug}/`}>
-              Explore the NLP workflow
-            </Action>
-          </div>
-        </div>
-        <ClinicalScene />
       </section>
 
       <section id="experience" className="journeySection">
         <div className="wrap journeyGrid">
           <div className="journeyIntro">
-            <p className="eyebrow">The thread that connects it all</p>
+            <p className="eyebrow">04 / A practice built over time</p>
             <h2>
               Different roles.
               <br />
@@ -136,9 +128,30 @@ export default function Home() {
               How do people use technology—and how can I make that experience
               better?
             </p>
-            <a className="textLink" href={profile.resume}>
+            <a
+              className="textLink"
+              href={profile.resume}
+              target="_blank"
+              rel="noreferrer"
+            >
               View my résumé (PDF) ↗
             </a>
+            <div className="educationShell">
+              <div className="educationCard">
+                <span className="tinyLabel">Drexel University / 2024–2026</span>
+                <h3>
+                  Computer Science.
+                  <br />
+                  <em>AI & Machine Learning.</em>
+                </h3>
+                <div>
+                  <span>Master of Science</span>
+                  <strong>
+                    3.97<small> / 4.0 GPA</small>
+                  </strong>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="timeline">
             {experience.map(([dates, company, role, detail]) => (
@@ -153,63 +166,99 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="about" className="aboutStory wrap">
-        <div className="travelShell">
-          <Image
-            src="/mountains.jpg"
-            alt="Shweta at Grace Hopper Celebration 2025"
-            width={900}
-            height={700}
-            sizes="(max-width: 767px) 90vw, 45vw"
-          />
-          <span>Off screen / Still exploring</span>
-        </div>
-        <div>
-          <p className="eyebrow">The person behind the work</p>
+      <section id="about" className="personalSection wrap">
+        <div className="personalHeading">
+          <p className="eyebrow">05 / Off screen</p>
           <h2>
-            Curiosity doesn’t
+            A little more
             <br />
-            <em>clock out.</em>
+            <em>human context.</em>
           </h2>
           <p>
-            I’m Shweta, a Philadelphia-based developer who came to code through
-            design and studied AI and machine learning at Drexel.
+            The same curiosity.
+            <br />A different kind of exploring.
           </p>
-          <p>
-            Away from the screen, my camera roll runs from motorcycle trips in
-            the mountains to scuba dives. I like seeing what’s beyond the
-            familiar.
-          </p>
-          <div className="toolkit">
-            <span className="tinyLabel">What I build with</span>
-            {capabilities.map(([name, tools]) => (
-              <p key={name}>
-                <strong>{name}</strong>
-                <span>{tools}</span>
-              </p>
-            ))}
+        </div>
+        <div className="personalGrid">
+          <figure className="personalPhotoShell">
+            <div className="personalPhoto">
+              <Image
+                src="/mountains.jpg"
+                alt="Shweta at Grace Hopper Celebration 2025"
+                width={900}
+                height={700}
+                sizes="(max-width: 767px) 90vw, 48vw"
+              />
+              <figcaption>
+                <span>FIELD NOTE / 01</span>
+                <strong>In good company.</strong>
+                <span>Grace Hopper Celebration · 2025</span>
+              </figcaption>
+            </div>
+          </figure>
+          <div className="personalNotes">
+            <span className="tinyLabel">Hello again. I’m Shweta.</span>
+            <h3>
+              I came to code
+              <br />
+              <em>through people.</em>
+            </h3>
+            <p>
+              My path runs through research, product design, and a master’s in
+              AI and machine learning. I like the space where a thoughtful
+              interaction meets a difficult technical problem.
+            </p>
+            <p>
+              Away from the screen, that curiosity looks like motorcycle trips
+              in the mountains and scuba dives. There’s usually something worth
+              seeing beyond the familiar.
+            </p>
+            <div className="offscreenInterests">
+              <span>01 / Mountain roads</span>
+              <span>02 / Below the surface</span>
+              <span>03 / New perspectives</span>
+            </div>
+            <span className="personalSignature">Shweta.</span>
           </div>
         </div>
       </section>
+
+      <PersonalGallery />
+
       <section id="contact" className="storyContact">
         <div className="wrap">
-          <p className="eyebrow centered">The next chapter</p>
+          <div className="contactStatus">
+            <span className="liveDot" /> Open to full-stack opportunities{" "}
+            <span>Philadelphia · Open to relocate</span>
+          </div>
+          <p className="eyebrow centered">07 / The next chapter</p>
           <h2>
-            Let’s build something
+            Thoughtful people.
             <br />
-            <em>for someone.</em>
+            <em>Ambitious things.</em>
           </h2>
           <p>
-            I’m looking for a fullstack role where thoughtful interfaces
-            <br className="desktopBreak" /> meet the systems that make them
-            work.
+            I’m looking for a team that cares how it works
+            <br className="desktopBreak" /> and how it feels to use.
           </p>
           <div className="actions">
-            <Action href={`mailto:${profile.email}`}>
-              Start a conversation
-            </Action>
-            <a className="textLink" href={profile.linkedin}>
+            <Action href={`mailto:${profile.email}`}>Let’s talk</Action>
+            <a
+              className="textLink"
+              href={profile.resume}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View résumé ↗
+            </a>
+          </div>
+          <div className="contactLinks">
+            <a href={`mailto:${profile.email}`}>{profile.email}</a>
+            <a href={profile.linkedin} target="_blank" rel="noreferrer">
               LinkedIn ↗
+            </a>
+            <a href={profile.github} target="_blank" rel="noreferrer">
+              GitHub ↗
             </a>
           </div>
         </div>

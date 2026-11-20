@@ -1,0 +1,1198 @@
+/* One persistent stage. The chapter text scrolls; its visual identity never resets. */
+.continuousPortfolio {
+  --story-stage: 0;
+  --story-progress: 0;
+  --chapter-0: 1;
+  --chapter-1: 0;
+  --chapter-2: 0;
+  --chapter-3: 0;
+  display: grid;
+  grid-template-columns: 42% 58%;
+  position: relative;
+  isolation: isolate;
+  padding-top: 24px;
+}
+.continuousStage {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  position: sticky;
+  top: 100px;
+  height: calc(100svh - 130px);
+  min-height: 500px;
+  max-height: 800px;
+  container-type: inline-size;
+  overflow: hidden;
+}
+.narrativeFlow {
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+  z-index: 1;
+}
+.narrativeChapter {
+  min-height: 110svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 95px 30px 95px 0;
+  scroll-margin-top: 10px;
+}
+.narrativeIntro {
+  min-height: calc(100svh - 100px);
+  padding-top: 60px;
+}
+.narrativeChapter h1 {
+  font-size: clamp(60px, 5.6vw, 86px);
+  line-height: 0.94;
+  letter-spacing: -0.07em;
+  margin: 28px 0;
+}
+.narrativeChapter h2 {
+  font-size: clamp(44px, 4.5vw, 69px);
+  line-height: 1.02;
+  letter-spacing: -0.06em;
+  margin: 22px 0;
+}
+.narrativeChapter h1 em,
+.narrativeChapter h2 em {
+  color: var(--wine);
+}
+.narrativeKicker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font:
+    9px/1.6 ui-monospace,
+    monospace;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.narrativeKicker > span:last-child {
+  color: var(--muted);
+}
+.liveDot {
+  display: inline-block;
+  flex: none;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #a26545;
+}
+.narrativeLead {
+  font-size: 19px;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+  max-width: 33ch;
+  margin-bottom: 16px;
+}
+.narrativeBody {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 42ch;
+}
+.narrativeAction {
+  display: inline-flex;
+  align-self: start;
+  align-items: center;
+  gap: 22px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 28px;
+  padding: 7px 7px 7px 19px;
+  border-radius: 30px;
+  background: var(--wine);
+  color: var(--paper);
+  transition: transform 0.6s var(--ease);
+}
+.narrativeAction > span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  background: #ffffff15;
+  border-radius: 50%;
+  transition: transform 0.6s var(--ease);
+}
+.narrativeAction:hover > span {
+  transform: translate(2px, -2px);
+}
+.narrativeAction:active {
+  transform: scale(0.98);
+}
+.introCoordinates {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  font:
+    7px ui-monospace,
+    monospace;
+  letter-spacing: 0.09em;
+  color: #8c7a81;
+  margin-top: 50px;
+}
+.engineeringDetails {
+  display: grid;
+  gap: 14px;
+  margin: 28px 0 0;
+}
+.engineeringDetails > div {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+}
+.engineeringDetails dt {
+  font:
+    8px/1.6 ui-monospace,
+    monospace;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 3px;
+}
+.engineeringDetails dd {
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+.proofNumbers {
+  display: flex;
+  gap: 38px;
+  margin-top: 28px;
+}
+.proofNumbers > span {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  font-size: 9px;
+  color: var(--muted);
+}
+.proofNumbers strong {
+  font:
+    40px/1 Georgia,
+    serif;
+  letter-spacing: -0.07em;
+  color: var(--wine);
+}
+.narrativeStack {
+  font:
+    8px/1.7 ui-monospace,
+    monospace;
+  color: #827079;
+  margin-top: 19px;
+  max-width: 40ch;
+}
+.frameworkProof {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+.frameworkProof span {
+  font:
+    10px ui-monospace,
+    monospace;
+  padding: 7px 11px;
+  background: #e9e0d5;
+  border-radius: 4px;
+}
+
+.continuousCanvas {
+  position: absolute;
+  inset: 0;
+}
+.signalSculpture {
+  position: absolute;
+  inset: 0;
+  touch-action: pan-y;
+}
+.signalSculpture canvas {
+  width: 100%;
+  height: 100%;
+}
+.stageRuler {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  right: 25px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font:
+    7px ui-monospace,
+    monospace;
+  letter-spacing: 0.1em;
+  color: #937682;
+  z-index: 1;
+}
+.stageCrosshair {
+  position: absolute;
+  font:
+    20px ui-monospace,
+    monospace;
+  color: #b59a92;
+  z-index: 1;
+}
+.crosshairOne {
+  top: 55px;
+  left: 25px;
+}
+.crosshairTwo {
+  bottom: 105px;
+  right: 25px;
+}
+.continuityOrbit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--chapter-0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  font:
+    7px ui-monospace,
+    monospace;
+  color: #937682;
+  letter-spacing: 0.12em;
+}
+.continuityOrbit i {
+  position: absolute;
+  inset: 18% 8%;
+  border: 1px solid #512c4310;
+  border-radius: 50%;
+  transform: rotate(-22deg);
+}
+.stageOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.interfaceOverlay {
+  opacity: var(--chapter-1);
+}
+.interfaceImage {
+  position: absolute;
+  left: 15%;
+  width: 70%;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 3px;
+  border-radius: 10px;
+  background: #fff9;
+  box-shadow: 0 25px 60px #512c4310;
+  overflow: hidden;
+}
+.interfaceImage img {
+  width: 100%;
+  height: auto;
+  border-radius: 7px;
+}
+.interfaceRoles {
+  position: absolute;
+  top: calc(50% + 24cqw + 20px);
+  left: 15%;
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font:
+    7px ui-monospace,
+    monospace;
+  color: var(--wine);
+}
+.interfaceRoles i {
+  flex: 1;
+  height: 1px;
+  background: #512c4320;
+}
+.objectFootnote {
+  position: absolute;
+  bottom: 100px;
+  width: 100%;
+  text-align: center;
+  font-size: 8px;
+  color: var(--muted);
+}
+.landmarkOverlay {
+  opacity: var(--chapter-2);
+}
+.landmarkNotation {
+  position: absolute;
+  left: 30px;
+  top: 95px;
+  font:
+    8px/1.8 ui-monospace,
+    monospace;
+  color: #cfad95;
+  letter-spacing: 0.1em;
+}
+.continuousMessage {
+  position: absolute;
+  left: 24%;
+  bottom: 95px;
+  width: 52%;
+  pointer-events: auto;
+}
+.continuousMessage label {
+  display: block;
+  color: #d4b5a1;
+  font:
+    8px ui-monospace,
+    monospace;
+  margin-bottom: 10px;
+}
+.continuousMessage input {
+  display: block;
+  width: 100%;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 7px;
+  background: #f7eedf;
+  color: var(--wine);
+  font:
+    27px Georgia,
+    serif;
+}
+.continuousMessage input:focus-visible {
+  outline: 2px solid #c19369;
+  outline-offset: 4px;
+}
+.continuousMessage > span {
+  display: block;
+  margin-top: 8px;
+  font-size: 7px;
+  color: #a98f9e;
+}
+.evidenceOverlay {
+  opacity: var(--chapter-3);
+}
+.evidenceReadout {
+  position: absolute;
+  top: 44%;
+  left: 15%;
+  width: 70%;
+  border-radius: 10px;
+  padding: 6px;
+  background: #e3d8ca;
+  box-shadow: 0 20px 50px #512c430a;
+}
+.readoutHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+  font:
+    8px ui-monospace,
+    monospace;
+  color: var(--accent);
+}
+.readoutRow {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 13px 16px;
+  margin-top: 2px;
+  background: #faf7ef;
+  font-size: 11px;
+}
+.readoutRow small {
+  font:
+    8px ui-monospace,
+    monospace;
+  color: #af8b7c;
+}
+.readoutRow code {
+  margin-left: auto;
+  font-size: 8px;
+  color: var(--muted);
+}
+.evidenceReadout > p {
+  font:
+    8px ui-monospace,
+    monospace;
+  color: var(--muted);
+  padding: 15px;
+}
+.continuousStageFooter {
+  position: absolute;
+  left: 25px;
+  right: 25px;
+  bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  font:
+    8px ui-monospace,
+    monospace;
+  color: #9c778a;
+}
+.continuousStageFooter > span:first-child {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.continuousStageFooter > span > i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #bc8a61;
+}
+.continuityProgress {
+  height: 1px;
+  background: #99748030;
+  width: 100%;
+}
+.continuityProgress i {
+  display: block;
+  height: 100%;
+  background: #a47f76;
+  transform-origin: left;
+  transform: scaleX(var(--story-progress));
+}
+.continuityIndex {
+  grid-column: 1/-1;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid #512c4315;
+  padding: 28px 0;
+}
+.continuityIndex a {
+  display: flex;
+  gap: 15px;
+  font:
+    9px ui-monospace,
+    monospace;
+  color: var(--muted);
+}
+.continuityIndex span {
+  color: #ac897e;
+}
+.continuityIndex a[aria-current] {
+  color: var(--wine);
+}
+.storyCoda {
+  padding: 130px 0;
+  text-align: center;
+}
+.storyCoda > p {
+  font:
+    clamp(40px, 5.5vw, 82px) / 1.13 Georgia,
+    serif;
+  letter-spacing: -0.06em;
+  margin: 35px 0;
+}
+.storyCoda em {
+  color: var(--wine);
+}
+.codaNote {
+  font-size: 12px;
+  color: var(--muted);
+}
+.sculptureFallback {
+  position: absolute;
+  inset: 22% 17%;
+  perspective: 800px;
+}
+.sculptureFallback i {
+  position: absolute;
+  inset: 8%;
+  border: 26px solid #99717d;
+  border-radius: 50%;
+  box-shadow:
+    inset 6px 5px 8px #fff1db80,
+    7px 6px 0 #4c2b43;
+  transform: rotateX(35deg) rotateY(45deg);
+}
+.sculptureFallback i:nth-child(2) {
+  transform: rotateX(65deg) rotateY(-45deg);
+}
+.sculptureFallback i:nth-child(3) {
+  transform: rotateY(65deg) rotateX(-45deg);
+}
+.sculptureFallback b {
+  position: absolute;
+  inset: 45%;
+  background: #d59a62;
+  border-radius: 50%;
+}
+.signalSculpture[data-ready="true"] .sculptureFallback {
+  display: none;
+}
+.signalSculpture[data-failed="true"] .sculptureFallback {
+  display: block;
+}
+.signalSculpture[data-failed="true"] canvas {
+  display: none;
+}
+/* With no GPU, the shared stage still resolves into the corresponding UI. */
+.continuousPortfolio:not([data-active-stage="0"]) .sculptureFallback {
+  opacity: 0;
+}
+@media (max-width: 1000px) and (min-width: 768px) {
+  .continuousPortfolio {
+    grid-template-columns: 45% 55%;
+  }
+  .narrativeChapter h1 {
+    font-size: 70px;
+  }
+  .narrativeChapter h2 {
+    font-size: 48px;
+  }
+  .narrativeChapter {
+    padding-right: 20px;
+  }
+  .engineeringDetails > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .proofNumbers {
+    gap: 20px;
+  }
+  .proofNumbers > span {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .readoutRow {
+    padding: 11px;
+    gap: 9px;
+    font-size: 10px;
+  }
+  .continuousMessage {
+    left: 16%;
+    width: 68%;
+  }
+}
+@media (max-width: 767px) {
+  .continuousPortfolio {
+    display: flex;
+    flex-direction: column;
+    padding-top: 8px;
+  }
+  .continuousStage {
+    width: calc(100% + 32px);
+    margin: 0 -16px;
+    top: 78px;
+    height: 38svh;
+    min-height: 260px;
+    max-height: 360px;
+    background: var(--paper);
+    z-index: 2;
+    flex: none;
+  }
+  .narrativeFlow {
+    width: 100%;
+  }
+  .narrativeChapter {
+    min-height: 95svh;
+    justify-content: start;
+    padding: 32px 0 100px;
+    scroll-margin-top: 38svh;
+  }
+  .narrativeIntro {
+    min-height: 85svh;
+    padding-top: 28px;
+  }
+  .narrativeChapter h1 {
+    font-size: clamp(51px, 12vw, 75px);
+    line-height: 0.98;
+    margin: 15px 0 20px;
+  }
+  .narrativeChapter h1 br:nth-of-type(2) {
+    display: none;
+  }
+  .narrativeChapter h1 em::after {
+    content: " ";
+  }
+  .narrativeChapter h2 {
+    font-size: 43px;
+    margin: 18px 0;
+  }
+  .narrativeLead {
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+  .narrativeBody {
+    font-size: 12px;
+    max-width: 45ch;
+  }
+  .narrativeKicker {
+    font-size: 8px;
+    gap: 9px;
+  }
+  .narrativeAction {
+    margin-top: 22px;
+  }
+  .introCoordinates {
+    margin-top: 30px;
+    font-size: 6px;
+    gap: 16px;
+  }
+  .stageRuler {
+    left: 18px;
+    right: 18px;
+    top: 12px;
+    font-size: 6px;
+  }
+  .crosshairOne {
+    top: 30px;
+    left: 18px;
+  }
+  .crosshairTwo {
+    bottom: 50px;
+    right: 18px;
+  }
+  .stageCrosshair {
+    font-size: 14px;
+  }
+  .continuityOrbit {
+    font-size: 6px;
+    padding: 16px;
+  }
+  .continuityOrbit i {
+    inset: 10% 20%;
+  }
+  .continuousStageFooter {
+    left: 18px;
+    right: 18px;
+    bottom: 12px;
+    font-size: 6px;
+    gap: 7px;
+  }
+  .interfaceImage {
+    width: 62%;
+    left: 19%;
+  }
+  .interfaceRoles {
+    top: auto;
+    bottom: 48px;
+    left: 19%;
+    width: 62%;
+    font-size: 5px;
+  }
+  .objectFootnote {
+    display: none;
+  }
+  .landmarkNotation {
+    top: 40px;
+    left: 18px;
+    font-size: 6px;
+  }
+  .continuousMessage {
+    left: auto;
+    right: 16px;
+    bottom: 53px;
+    width: 43%;
+  }
+  .continuousMessage label {
+    font-size: 6px;
+    margin-bottom: 6px;
+  }
+  .continuousMessage input {
+    font-size: 18px;
+    padding: 8px 10px;
+  }
+  .continuousMessage > span {
+    font-size: 5px;
+  }
+  .evidenceReadout {
+    top: 35%;
+    left: 22%;
+    width: 60%;
+    padding: 3px;
+  }
+  .readoutHeader {
+    font-size: 5px;
+    padding: 8px;
+  }
+  .readoutRow {
+    padding: 7px 9px;
+    font-size: 8px;
+    gap: 8px;
+  }
+  .readoutRow small,
+  .readoutRow code {
+    font-size: 5px;
+  }
+  .evidenceReadout > p {
+    font-size: 5px;
+    padding: 7px;
+  }
+  .continuityIndex {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .continuityIndex a {
+    font-size: 8px;
+  }
+  .storyCoda {
+    padding: 65px 0;
+  }
+  .storyCoda > p {
+    font-size: 39px;
+  }
+}
+@media (max-width: 767px) and (max-height: 650px) {
+  .continuousStage {
+    top: 74px;
+    height: 33svh;
+    min-height: 190px;
+  }
+  .stageRuler,
+  .stageCrosshair,
+  .landmarkNotation {
+    display: none;
+  }
+  .narrativeChapter {
+    scroll-margin-top: 33svh;
+  }
+  .continuousMessage > span {
+    display: none;
+  }
+  .evidenceReadout {
+    top: 25%;
+  }
+  .readoutRow {
+    padding: 5px 8px;
+  }
+  .evidenceReadout > p {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .signalSculpture {
+    pointer-events: none;
+  }
+}
+
+/* Keep the floating nav’s backdrop within its physical silhouette. */
+.top {
+  clip-path: inset(0 round 999px);
+}
+
+/* Project image proportions stay registered to the WebGL camera on resize. */
+.interfaceImage {
+  width: var(--frame-width, 70%);
+  left: calc((100% - var(--frame-width, 70%)) / 2);
+}
+.interfaceRoles {
+  top: calc(50% + var(--frame-bottom, 24cqw) + 20px);
+}
+@media (max-width: 767px) {
+  .interfaceRoles {
+    top: auto;
+    bottom: 48px;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .storyCoda > p {
+      animation: coda-resolve 1s var(--ease) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+    .timeline article {
+      animation: career-enter 1s var(--ease) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+  }
+}
+@keyframes coda-resolve {
+  from {
+    transform: scale(0.94) translateY(25px);
+    opacity: 0.5;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes career-enter {
+  from {
+    transform: translateY(25px);
+    opacity: 0.4;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* The story remains on one paper surface from the knot through both new builds. */
+.continuousPortfolio {
+  --chapter-4: 0;
+  --chapter-5: 0;
+}
+.continuousStage {
+  background: var(--paper);
+}
+.landmarkNotation {
+  color: var(--accent);
+}
+.continuousMessage label {
+  color: var(--wine);
+}
+.continuousMessage input {
+  background: #fffdf7;
+  box-shadow:
+    0 0 0 5px #e9dfd1,
+    inset 0 0 0 1px #512c4310;
+}
+.continuousMessage > span {
+  color: var(--muted);
+}
+.continuityIndex {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+.continuityIndex a {
+  gap: 8px;
+  font-size: 8px;
+}
+.storyAnchor {
+  scroll-margin-top: 100px;
+}
+.chapterArchitecture {
+  margin-top: 24px;
+  max-width: 42ch;
+  border-top: 1px solid #512c4320;
+  border-bottom: 1px solid #512c4320;
+}
+.chapterArchitecture summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  font-size: 11px;
+  cursor: pointer;
+  list-style: none;
+}
+.chapterArchitecture summary::-webkit-details-marker {
+  display: none;
+}
+.chapterArchitecture summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.chapterArchitecture summary > span:last-child {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #e9e1d6;
+  transition: transform 0.5s var(--ease);
+}
+.chapterArchitecture[open] summary > span:last-child {
+  transform: rotate(45deg);
+}
+.chapterArchitectureBody {
+  padding: 8px 0 16px;
+  animation: arrive 0.5s var(--ease) both;
+}
+.chapterArchitectureBody > div {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+}
+.chapterArchitectureBody small {
+  font:
+    8px ui-monospace,
+    monospace;
+  color: var(--accent);
+  padding-top: 4px;
+}
+.chapterArchitectureBody strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+}
+.chapterArchitectureBody code {
+  display: block;
+  font-size: 8px;
+  color: var(--accent);
+  margin: 5px 0;
+}
+.chapterArchitectureBody p {
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.serviceProof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 25px;
+}
+.serviceProof code {
+  font-size: 9px;
+  color: var(--wine);
+  padding: 9px 11px;
+  background: #e9e0d5;
+  border-radius: 4px;
+}
+.serviceProof > span {
+  font-size: 10px;
+  color: var(--muted);
+}
+.biasOverlay {
+  opacity: var(--chapter-4);
+}
+.pocketOverlay {
+  opacity: var(--chapter-5);
+}
+.visualMicro {
+  font:
+    8px/1.6 ui-monospace,
+    monospace;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.lensAnnotation {
+  position: absolute;
+  top: 95px;
+  left: 30px;
+  font:
+    8px/1.8 ui-monospace,
+    monospace;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.biasLensContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--world-unit, 100px) * 2.05);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.biasLensContent h3 {
+  font-size: clamp(28px, 5.8cqw, 46px);
+  line-height: 1.1;
+  margin: 16px 0;
+}
+.vignetteLines {
+  display: grid;
+  gap: 7px;
+  width: 76%;
+  margin: 22px auto;
+}
+.vignetteLines i {
+  height: 3px;
+  background: #b8a99550;
+  border-radius: 9px;
+}
+.vignetteLines i:nth-child(2) {
+  background: #a3452d60;
+  width: 75%;
+}
+.vignetteLines i:nth-child(3) {
+  width: 90%;
+}
+.vignetteLines i:nth-child(4) {
+  width: 50%;
+}
+.biasLensTags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font:
+    9px ui-monospace,
+    monospace;
+  color: var(--wine);
+}
+.biasLensTags > span {
+  padding: 8px 10px;
+  border-radius: 99px;
+  background: #e8dfd1;
+}
+.biasLensTags i {
+  font-style: normal;
+  color: var(--accent);
+}
+.biasServiceLabels {
+  position: absolute;
+  left: 22%;
+  width: 56%;
+  top: calc(50% + var(--world-unit, 100px) * 1.65);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font:
+    8px ui-monospace,
+    monospace;
+  color: var(--muted);
+}
+.biasServiceLabels i {
+  flex: 1;
+  height: 1px;
+  background: #512c4320;
+}
+.forecastHeading {
+  position: absolute;
+  top: 18%;
+  left: 15%;
+}
+.forecastHeading h3 {
+  font-size: clamp(34px, 5.4cqw, 58px);
+  line-height: 1.05;
+  margin-top: 16px;
+}
+.forecastPlot {
+  position: absolute;
+  top: calc(50% - var(--world-unit, 100px) * 1.4);
+  left: 50%;
+  width: calc(var(--world-unit, 100px) * 3.6);
+  height: calc(var(--world-unit, 100px) * 1.9);
+  transform: translateX(-50%);
+  z-index: -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.forecastPlot > i {
+  height: 1px;
+  background: #512c4312;
+  width: 100%;
+}
+.forecastSplit {
+  position: absolute;
+  left: 60%;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed #9b756e60;
+}
+.forecastPlot > span {
+  position: absolute;
+  bottom: -23px;
+  font:
+    7px ui-monospace,
+    monospace;
+  color: var(--muted);
+}
+.forecastPlot > span:last-child {
+  left: 65%;
+}
+.forecastServices {
+  position: absolute;
+  top: calc(50% + var(--world-unit, 100px) * 1.1);
+  left: 15%;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.forecastServices > span {
+  padding: 10px 14px;
+  background: #fdfaf4;
+  box-shadow: 0 0 0 4px #e9dfd1;
+  border-radius: 8px;
+  font:
+    9px ui-monospace,
+    monospace;
+  color: var(--wine);
+}
+.forecastServices i {
+  font-size: 9px;
+  font-style: normal;
+  color: var(--accent);
+}
+@media (max-width: 767px) {
+  .continuityIndex {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .chapterArchitecture {
+    width: 100%;
+    max-width: none;
+  }
+  .lensAnnotation {
+    top: 36px;
+    left: 18px;
+    font-size: 5px;
+  }
+  .biasLensContent {
+    width: calc(var(--world-unit, 60px) * 2.05);
+  }
+  .biasLensContent .visualMicro {
+    font-size: 5px;
+  }
+  .biasLensContent h3 {
+    font-size: 24px;
+    margin: 8px 0;
+  }
+  .vignetteLines {
+    gap: 4px;
+    margin: 10px auto;
+  }
+  .vignetteLines i {
+    height: 2px;
+  }
+  .biasLensTags {
+    gap: 6px;
+    font-size: 5px;
+  }
+  .biasLensTags > span {
+    padding: 5px 7px;
+  }
+  .biasServiceLabels {
+    top: auto;
+    bottom: 45px;
+    font-size: 5px;
+  }
+  .forecastHeading {
+    top: 35px;
+    left: 20px;
+  }
+  .forecastHeading .visualMicro {
+    font-size: 5px;
+  }
+  .forecastHeading h3 {
+    font-size: 26px;
+    margin-top: 8px;
+  }
+  .forecastPlot > span {
+    font-size: 5px;
+    bottom: -15px;
+  }
+  .forecastServices {
+    top: auto;
+    bottom: 48px;
+    gap: 8px;
+    left: 12%;
+    width: 76%;
+  }
+  .forecastServices > span {
+    font-size: 6px;
+    padding: 6px 9px;
+    border-radius: 5px;
+  }
+}
+@media (max-width: 767px) and (max-height: 650px) {
+  .biasLensContent h3 {
+    font-size: 18px;
+  }
+  .vignetteLines {
+    display: none;
+  }
+  .biasServiceLabels {
+    display: none;
+  }
+  .forecastHeading {
+    top: 15px;
+  }
+  .forecastHeading h3 {
+    font-size: 20px;
+  }
+  .forecastServices {
+    bottom: 38px;
+  }
+}

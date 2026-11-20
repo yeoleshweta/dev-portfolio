@@ -1,0 +1,787 @@
+/* Depth and evidence: a technical workbench within the editorial portfolio. */
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+.heroActions .narrativeAction {
+  margin: 0;
+}
+.briefTrigger {
+  border: 0;
+  background: none;
+  color: var(--wine);
+  font-size: 11px;
+  padding: 12px 0;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+.briefTrigger span {
+  display: inline-block;
+  margin-left: 7px;
+  transition: transform 0.5s var(--ease);
+}
+.briefTrigger:hover span {
+  transform: translate(2px, -2px);
+}
+.heroCredentials {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  font:
+    9px/1.7 ui-monospace,
+    monospace;
+  margin-top: 28px;
+  color: var(--muted);
+}
+.heroCredentials > span {
+  display: flex;
+  flex-direction: column;
+  padding-right: 16px;
+  border-right: 1px solid #512c4320;
+}
+.heroCredentials strong {
+  font-weight: 400;
+  color: var(--ink);
+}
+.heroCredentials a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.introCoordinates {
+  margin-top: 28px;
+}
+.top {
+  width: min(94%, 960px);
+}
+.desktopNav a {
+  padding: 9px 13px;
+}
+.practiceBridge {
+  padding: 100px 0 120px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+  align-items: start;
+}
+.practiceBridge > p {
+  font:
+    clamp(38px, 5vw, 72px)/1.15 Georgia,
+    serif;
+  letter-spacing: -0.055em;
+}
+.practiceBridge > p em {
+  color: var(--wine);
+}
+.bridgeLink {
+  grid-column: 2;
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  gap: 35px;
+  align-items: center;
+}
+.bridgeLink span {
+  display: grid;
+  place-items: center;
+  background: #e9e0d5;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+}
+.archiveSection {
+  padding: 80px 0 100px;
+}
+.archiveHeading {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  margin-bottom: 35px;
+  gap: 12px;
+}
+.archiveHeading .eyebrow {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.archiveHeading h2 {
+  font-size: 42px;
+}
+.projectArchive {
+  border-top: 1px solid #512c4320;
+}
+.archiveItem {
+  border-bottom: 1px solid #512c4320;
+}
+.archiveItem summary {
+  display: grid;
+  grid-template-columns: 45px 1fr 230px 30px;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  list-style: none;
+  padding: 26px 0;
+}
+.archiveItem summary::-webkit-details-marker {
+  display: none;
+}
+.archiveItem summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.archiveNumber {
+  font:
+    9px ui-monospace,
+    monospace;
+  color: #927969;
+}
+.archiveName {
+  font:
+    27px/1.2 Georgia,
+    serif;
+  letter-spacing: -0.025em;
+}
+.archiveType {
+  font:
+    9px/1.5 ui-monospace,
+    monospace;
+  color: var(--muted);
+}
+.archivePlus {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  background: #e8dfd5;
+  border-radius: 50%;
+  font-size: 17px;
+  transition: transform 0.5s var(--ease);
+}
+.archiveItem[open] .archivePlus {
+  transform: rotate(45deg);
+}
+.archiveBody {
+  padding: 0 45px 28px 61px;
+  animation: panel-arrive 0.5s var(--ease) both;
+}
+.archiveBody p {
+  max-width: 65ch;
+  font-size: 13px;
+  color: var(--muted);
+}
+.archiveBody > span {
+  display: block;
+  font:
+    9px ui-monospace,
+    monospace;
+  color: var(--accent);
+  margin: 18px 0;
+}
+.archiveBody .textLink {
+  font-size: 11px;
+}
+.skillsSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10%;
+  padding: 50px 0 130px;
+}
+.skillsIntro {
+  position: sticky;
+  top: 140px;
+  align-self: start;
+}
+.skillsIntro h2 {
+  font-size: clamp(42px, 4.4vw, 65px);
+  line-height: 1.08;
+}
+.skillsIntro > p:not(.eyebrow) {
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 35ch;
+  margin-top: 25px;
+}
+.disciplineMark {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 45px;
+  color: #987464;
+  font:
+    8px ui-monospace,
+    monospace;
+  letter-spacing: 0.02em;
+}
+.disciplineMark i {
+  height: 1px;
+  width: 35px;
+  background: #bda999;
+}
+.discipline {
+  padding: 30px 0;
+  border-top: 1px solid #512c4320;
+}
+.discipline:first-child {
+  padding-top: 0;
+  border: 0;
+}
+.disciplineTop {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font:
+    9px ui-monospace,
+    monospace;
+  color: var(--muted);
+}
+.disciplineTop small {
+  color: var(--accent);
+}
+.discipline h3 {
+  font-size: 32px;
+  letter-spacing: -0.035em;
+  margin: 18px 0 12px;
+}
+.discipline > p {
+  font-size: 12px;
+  line-height: 1.8;
+  max-width: 50ch;
+  color: var(--muted);
+}
+.skillTags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+.skillTags span {
+  background: #ebe4d9;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font:
+    9px ui-monospace,
+    monospace;
+  color: var(--wine);
+}
+.discipline > a {
+  display: inline-flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 11px;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.discipline > a span {
+  font-size: 14px;
+}
+.educationShell {
+  margin-top: 40px;
+  padding: 6px;
+  background: #dcd1c4;
+  border-radius: 18px;
+  max-width: 410px;
+}
+.educationCard {
+  background: #f4eee3;
+  padding: 25px;
+  border-radius: 13px;
+  box-shadow: inset 0 1px #fff9ef;
+}
+.educationCard .tinyLabel {
+  font-size: 8px;
+}
+.educationCard h3 {
+  font-size: 27px;
+  line-height: 1.15;
+  margin: 18px 0 28px;
+}
+.educationCard > div {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.educationCard > div > span {
+  font:
+    8px ui-monospace,
+    monospace;
+  color: var(--muted);
+}
+.educationCard strong {
+  font:
+    29px Georgia,
+    serif;
+  color: var(--wine);
+}
+.educationCard strong small {
+  font:
+    8px ui-monospace,
+    monospace;
+  color: var(--muted);
+}
+.timeline p {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.personalSection {
+  padding: 120px 0;
+}
+.personalHeading {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 25px;
+  margin-bottom: 50px;
+}
+.personalHeading .eyebrow {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.personalHeading h2 {
+  font-size: clamp(48px, 5.7vw, 80px);
+}
+.personalHeading > p:last-child {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+  padding: 0 0 5px 17%;
+}
+.personalGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 8%;
+  align-items: center;
+}
+.personalPhotoShell {
+  background: #dfd4c6;
+  padding: 7px;
+  border-radius: 20px;
+  transform: rotate(-1.5deg);
+}
+.personalPhoto {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.personalPhoto img {
+  width: 100%;
+  height: 510px;
+  object-fit: cover;
+  object-position: center 40%;
+  transition: transform 1s var(--ease);
+}
+.personalPhoto:hover img {
+  transform: scale(1.025);
+}
+.personalPhoto figcaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 60px 28px 25px;
+  background: linear-gradient(transparent, #201b29e6);
+  color: #f8edde;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.personalPhoto figcaption span {
+  font:
+    8px ui-monospace,
+    monospace;
+  letter-spacing: 0.05em;
+}
+.personalPhoto figcaption strong {
+  font:
+    32px Georgia,
+    serif;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  margin: 8px 0;
+}
+.personalNotes h3 {
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1.1;
+  margin: 25px 0;
+}
+.personalNotes > p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.9;
+  margin-top: 18px;
+  max-width: 44ch;
+}
+.offscreenInterests {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 28px;
+  font:
+    8px ui-monospace,
+    monospace;
+  color: var(--accent);
+}
+.personalSignature {
+  display: block;
+  font:
+    italic 37px Georgia,
+    serif;
+  color: var(--wine);
+  margin-top: 25px;
+}
+.contactStatus {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font:
+    9px/1.7 ui-monospace,
+    monospace;
+  color: #d4bdca;
+  padding-bottom: 60px;
+}
+.contactStatus > span:last-child {
+  margin-left: auto;
+  color: #c2a9b8;
+}
+.contactStatus .liveDot {
+  background: #d9ac8e;
+}
+.contactLinks {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 55px;
+  font:
+    10px ui-monospace,
+    monospace;
+  color: #ddc6d3;
+}
+.briefDialog {
+  padding: 8px;
+  width: min(640px, calc(100% - 32px));
+  max-height: calc(100dvh - 48px);
+  border: 0;
+  border-radius: 25px;
+  background: #e4d8ca;
+  color: var(--ink);
+  box-shadow: 0 35px 120px #24192b25;
+}
+.briefDialog::backdrop {
+  background: #20142170;
+  backdrop-filter: blur(8px);
+}
+.briefDialog[open] {
+  animation: panel-arrive 0.5s var(--ease) both;
+}
+.briefInner {
+  border-radius: 18px;
+  background: var(--paper);
+  padding: 30px 36px;
+}
+.briefTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+.briefTop .eyebrow {
+  font-size: 8px;
+  margin: 0;
+}
+.briefClose {
+  border: 0;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  background: #e9e0d5;
+  color: var(--wine);
+  font-size: 24px;
+  flex: none;
+}
+.briefInner h2 {
+  font-size: 44px;
+  line-height: 1.12;
+  margin: 22px 0 18px;
+}
+.briefIntro {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.briefFacts {
+  margin: 25px 0;
+  padding: 20px 0;
+  border-top: 1px solid #512c4315;
+  border-bottom: 1px solid #512c4315;
+  display: grid;
+  gap: 16px;
+}
+.briefFacts > div {
+  display: grid;
+  grid-template-columns: 95px 1fr;
+  gap: 15px;
+}
+.briefFacts dt {
+  font:
+    8px/1.8 ui-monospace,
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+}
+.briefFacts dd {
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 0;
+}
+.briefProof > .tinyLabel {
+  display: block;
+  font-size: 8px;
+  margin-bottom: 12px;
+}
+.briefProof > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+.briefProof strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--wine);
+  margin-bottom: 3px;
+}
+.briefProof i {
+  font-style: normal;
+  color: var(--accent);
+}
+.briefActions {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+.briefActions .textLink {
+  font-size: 11px;
+}
+@keyframes panel-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .personalPhotoShell {
+      animation: depth-enter 1s var(--ease) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+  }
+}
+@keyframes depth-enter {
+  from {
+    opacity: 0.65;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 1100px) {
+  .desktopNav a {
+    font-size: 11px;
+    padding: 9px 10px;
+  }
+  .heroActions {
+    gap: 15px;
+  }
+  .briefTrigger {
+    font-size: 10px;
+  }
+}
+@media (max-width: 767px) {
+  .top {
+    width: calc(100% - 32px);
+  }
+  .heroCredentials {
+    font-size: 8px;
+    gap: 14px;
+  }
+  .heroActions {
+    gap: 18px;
+  }
+  .practiceBridge {
+    padding: 65px 0 75px;
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .practiceBridge .eyebrow {
+    margin: 0;
+  }
+  .practiceBridge > p {
+    font-size: 38px;
+  }
+  .bridgeLink {
+    grid-column: 1;
+  }
+  .archiveSection {
+    padding: 60px 0 70px;
+  }
+  .archiveHeading {
+    display: block;
+  }
+  .archiveHeading h2 {
+    font-size: 34px;
+    margin: 15px 0 20px;
+  }
+  .archiveItem summary {
+    grid-template-columns: 22px 1fr 25px;
+    gap: 12px;
+    padding: 23px 0;
+  }
+  .archiveName {
+    font-size: 24px;
+  }
+  .archiveType {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 8px;
+  }
+  .archivePlus {
+    grid-column: 3;
+    grid-row: 1/3;
+    width: 25px;
+    height: 25px;
+  }
+  .archiveBody {
+    padding: 0 0 25px 34px;
+  }
+  .archiveBody > span {
+    line-height: 1.8;
+    font-size: 8px;
+  }
+  .skillsSection {
+    grid-template-columns: 1fr;
+    padding: 10px 0 80px;
+    gap: 45px;
+  }
+  .skillsIntro {
+    position: static;
+  }
+  .skillsIntro h2 {
+    font-size: 43px;
+  }
+  .skillsIntro > p:not(.eyebrow) {
+    font-size: 13px;
+  }
+  .disciplineMark {
+    margin-top: 28px;
+    font-size: 7px;
+  }
+  .discipline h3 {
+    font-size: 30px;
+  }
+  .educationShell {
+    margin-bottom: 25px;
+  }
+  .educationCard {
+    padding: 24px;
+  }
+  .personalSection {
+    padding: 75px 0;
+  }
+  .personalHeading {
+    display: block;
+    margin-bottom: 35px;
+  }
+  .personalHeading h2 {
+    font-size: 52px;
+    margin-top: 20px;
+  }
+  .personalHeading > p:last-child {
+    padding: 0;
+    margin-top: 20px;
+    font-size: 13px;
+  }
+  .personalGrid {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+  .personalPhotoShell {
+    transform: none;
+  }
+  .personalPhoto img {
+    height: 390px;
+  }
+  .personalNotes h3 {
+    font-size: 43px;
+  }
+  .contactStatus {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: 40px;
+    font-size: 8px;
+  }
+  .contactStatus > span:last-child {
+    margin: 0;
+    width: 100%;
+  }
+  .contactLinks {
+    gap: 25px;
+    font-size: 9px;
+  }
+  .contactLinks > a:first-child {
+    width: 100%;
+  }
+  .briefDialog {
+    max-height: calc(100dvh - 24px);
+    padding: 5px;
+  }
+  .briefInner {
+    padding: 22px;
+  }
+  .briefInner h2 {
+    font-size: 36px;
+  }
+  .briefFacts > div {
+    grid-template-columns: 75px 1fr;
+    gap: 10px;
+  }
+  .briefActions {
+    gap: 18px;
+  }
+  .briefActions .primary {
+    font-size: 11px;
+  }
+  .briefTop .eyebrow {
+    max-width: 24ch;
+  }
+  .briefProof > a {
+    font-size: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .archiveBody,
+  .briefDialog[open],
+  .personalPhotoShell {
+    animation: none;
+  }
+  .personalPhoto:hover img {
+    transform: none;
+  }
+}
