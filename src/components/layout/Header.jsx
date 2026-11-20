@@ -13,6 +13,16 @@ const links = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(null);
+  useEffect(() => {
+    const map = { intro: null, work: "work", gesturepro: "work", clinical: "work", "bias-checker": "work", pocketsaver: "work", skills: "skills", experience: "experience", about: "about", gallery: "gallery", contact: "contact" };
+    const observer = new IntersectionObserver(entries => {
+      const visible = entries.filter(entry => entry.isIntersecting);
+      if (visible.length) setActive(map[visible[visible.length - 1].target.id]);
+    }, { rootMargin: "-20% 0px -45% 0px" });
+    Object.keys(map).forEach(id => { const section = document.getElementById(id); if (section) observer.observe(section); });
+    return () => observer.disconnect();
+  }, []);
   const dialog = useRef(null);
   const toggle = useRef(null);
   useEffect(() => {
@@ -38,7 +48,7 @@ export function Header() {
         </Link>
         <nav className="desktopNav" aria-label="Main navigation">
           {links.map(([label, id]) => (
-            <Link key={id} href={`/#${id}`} className={id === "contact" ? "navContact" : undefined}>
+            <Link key={id} href={`/#${id}`} aria-current={active === id ? "location" : undefined} className={id === "contact" ? "navContact" : undefined}>
               <span>{label}</span>
               {id === "contact" && <i aria-hidden="true">↗</i>}
             </Link>
@@ -81,6 +91,7 @@ export function Header() {
               style={{ "--index": index }}
               key={id}
               href={`/#${id}`}
+              aria-current={active === id ? "location" : undefined}
               onClick={() => setOpen(false)}
             >
               <small>0{index + 1}</small>

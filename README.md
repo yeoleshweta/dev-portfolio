@@ -16,6 +16,7 @@ Open http://localhost:3000. Run `npm run build` to validate all routes and gener
 - `src/app/`: route entries, layout, and route metadata. Project pages are generated from content.
 - `src/components/layout/`: shared navigation.
 - `src/components/portfolio/`: portfolio-specific interactive components.
+- `src/components/motion/`: shared heading reveal and pointer-response enhancement.
 - `src/content/profile.js`: biography, experience, and project content.
 - `src/styles/globals.css`: responsive styling and visual tokens.
 - `src/styles/header.css`: header identity, desktop navigation, and mobile menu. The header inherits the shared `.wrap` width; keep section stylesheets free of header overrides.
@@ -39,6 +40,15 @@ Before shipping, run the production build and check navigation, scroll sequences
 - `src/styles/continuity.css` owns the continuous layout, stage overlays, technical typography, and responsive choreography.
 
 The GesturePro input is an editable illustration, not a camera or inference service. Existing case-study facts remain the source of all project claims.
+
+## Interactive motion
+
+- `PortfolioMotion.jsx` reveals headings and chapters once through IntersectionObserver. Fine pointers get a small magnetic response on actions and depth on selected surfaces. Touch input retains native scrolling.
+- The opening sculpture supports pointer rotation, a wireframe toggle, and keyboard-accessible rotate/reset controls. Its orientation and material blend back into the project story using the same mesh and renderer.
+- `CapabilityLab.jsx` turns the three disciplines into an explorable physical stack. Tabs support arrow keys, Home, and End; panels reserve a shared height so switching does not shift the page.
+- `SystemNotes.jsx` includes a stoppable architecture walkthrough and individually selectable steps. Reduced-motion users advance manually.
+- `ContactInvitation.jsx` closes with a scroll-linked circular contact action and an email-copy control.
+- `src/styles/motion.css` owns these interactions, line-by-line typography, the practice statement, and career timeline. CSS view timelines enhance supported browsers; all content remains readable without them. No new animation dependency is required.
 
 Run `node --test tests/sculpture-geometry.test.mjs` to verify matching topology across all six forms, normalized transition weights, finite positions/normals, the 21 landmarks, and the frame dimensions used to align the actual project image. Run `npm run build` for route compilation and static export.
 

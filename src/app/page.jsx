@@ -1,31 +1,25 @@
 import Image from "next/image";
 import { ContinuousPortfolio } from "@/components/portfolio/ContinuousPortfolio";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
+import { CapabilityLab } from "@/components/portfolio/CapabilityLab";
+import { ContactInvitation } from "@/components/portfolio/ContactInvitation";
+import { PortfolioMotion } from "@/components/motion/PortfolioMotion";
+import { RevealHeading } from "@/components/motion/RevealHeading";
 import { profile, projects, experience } from "@/content/profile";
 import { disciplines, archive } from "@/content/engineering";
-
-function Action({ href, children }) {
-  return (
-    <a className="primary" href={href}>
-      {children}
-      <i aria-hidden="true">↗</i>
-    </a>
-  );
-}
 
 export default function Home() {
   return (
     <main id="main">
+      <PortfolioMotion />
       <ContinuousPortfolio projects={projects} />
       <div className="practiceBridge wrap">
         <span className="eyebrow">The common thread</span>
-        <p>
-          Understand the person.
-          <br />
-          Design the interaction.
-          <br />
-          <em>Build the whole thing.</em>
-        </p>
+        <div className="bridgeStatement" aria-label="Understand the person. Design the interaction. Build the whole thing.">
+          <span aria-hidden="true"><i>01</i>Understand the person.</span>
+          <span aria-hidden="true"><i>02</i>Design the interaction.</span>
+          <span aria-hidden="true"><i>03</i><em>Build the whole thing.</em></span>
+        </div>
         <a href="#skills" className="bridgeLink">
           A little more about the practice <span aria-hidden="true">↓</span>
         </a>
@@ -34,7 +28,7 @@ export default function Home() {
       <section className="archiveSection wrap" aria-labelledby="archive-title">
         <div className="archiveHeading">
           <span className="eyebrow">Still curious?</span>
-          <h2 id="archive-title">There’s more on the desk.</h2>
+          <RevealHeading id="archive-title" lines={["There’s more on the desk."]} />
           <a
             className="textLink"
             href={profile.github}
@@ -46,7 +40,7 @@ export default function Home() {
         </div>
         <div className="projectArchive">
           {archive.map((project, i) => (
-            <details className="archiveItem" key={project.title}>
+            <details className="archiveItem" key={project.title} data-reveal="rise">
               <summary>
                 <span className="archiveNumber">0{i + 1}</span>
                 <span className="archiveName">{project.title}</span>
@@ -69,61 +63,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        className="skillsSection wrap"
-        id="skills"
-        aria-labelledby="skills-title"
-      >
-        <div className="skillsIntro">
-          <p className="eyebrow">03 / Working range</p>
-          <h2 id="skills-title">
-            Across the stack.
-            <br />
-            <em>Close to the person.</em>
-          </h2>
-          <p>
-            Design experience shapes how I build. Technical fluency changes the
-            questions I can ask.
-          </p>
-          <div className="disciplineMark" aria-hidden="true">
-            <span>DESIGN</span>
-            <i />
-            <span>CODE</span>
-            <i />
-            <span>INTELLIGENCE</span>
-          </div>
-        </div>
-        <div className="disciplineList">
-          {disciplines.map((discipline, i) => (
-            <article className="discipline" key={discipline.name}>
-              <div className="disciplineTop">
-                <small>0{i + 1}</small>
-                <span>{discipline.note}</span>
-              </div>
-              <h3>{discipline.name}</h3>
-              <p>{discipline.detail}</p>
-              <div className="skillTags">
-                {discipline.tools.map((tool) => (
-                  <span key={tool}>{tool}</span>
-                ))}
-              </div>
-              <a href={discipline.href}>
-                See it in {discipline.proof} <span aria-hidden="true">↗</span>
-              </a>
-            </article>
-          ))}
-        </div>
-      </section>
+      <CapabilityLab disciplines={disciplines} />
 
       <section id="experience" className="journeySection">
         <div className="wrap journeyGrid">
           <div className="journeyIntro">
             <p className="eyebrow">04 / A practice built over time</p>
-            <h2>
-              Different roles.
-              <br />
-              <em>One curiosity.</em>
-            </h2>
+            <RevealHeading lines={["Different roles.", "One curiosity."]} italic={1} />
             <p>
               How do people use technology—and how can I make that experience
               better?
@@ -136,7 +82,7 @@ export default function Home() {
             >
               View my résumé (PDF) ↗
             </a>
-            <div className="educationShell">
+            <div className="educationShell" data-depth>
               <div className="educationCard">
                 <span className="tinyLabel">Drexel University / 2024–2026</span>
                 <h3>
@@ -155,7 +101,7 @@ export default function Home() {
           </div>
           <div className="timeline">
             {experience.map(([dates, company, role, detail]) => (
-              <article key={company}>
+              <article key={company} data-reveal="career">
                 <small>{dates}</small>
                 <h3>{company}</h3>
                 <strong>{role}</strong>
@@ -169,18 +115,14 @@ export default function Home() {
       <section id="about" className="personalSection wrap">
         <div className="personalHeading">
           <p className="eyebrow">05 / Off screen</p>
-          <h2>
-            A little more
-            <br />
-            <em>human context.</em>
-          </h2>
+          <RevealHeading lines={["A little more", "human context."]} italic={1} />
           <p>
             The same curiosity.
             <br />A different kind of exploring.
           </p>
         </div>
         <div className="personalGrid">
-          <figure className="personalPhotoShell">
+          <figure className="personalPhotoShell" data-depth>
             <div className="personalPhoto">
               <Image
                 src="/mountains.jpg"
@@ -198,11 +140,7 @@ export default function Home() {
           </figure>
           <div className="personalNotes">
             <span className="tinyLabel">Hello again. I’m Shweta.</span>
-            <h3>
-              I came to code
-              <br />
-              <em>through people.</em>
-            </h3>
+            <RevealHeading as="h3" lines={["I came to code", "through people."]} italic={1} />
             <p>
               My path runs through research, product design, and a master’s in
               AI and machine learning. I like the space where a thoughtful
@@ -225,44 +163,7 @@ export default function Home() {
 
       <PersonalGallery />
 
-      <section id="contact" className="storyContact">
-        <div className="wrap">
-          <div className="contactStatus">
-            <span className="liveDot" /> Open to full-stack opportunities{" "}
-            <span>Philadelphia · Open to relocate</span>
-          </div>
-          <p className="eyebrow centered">07 / The next chapter</p>
-          <h2>
-            Thoughtful people.
-            <br />
-            <em>Ambitious things.</em>
-          </h2>
-          <p>
-            I’m looking for a team that cares how it works
-            <br className="desktopBreak" /> and how it feels to use.
-          </p>
-          <div className="actions">
-            <Action href={`mailto:${profile.email}`}>Let’s talk</Action>
-            <a
-              className="textLink"
-              href={profile.resume}
-              target="_blank"
-              rel="noreferrer"
-            >
-              View résumé ↗
-            </a>
-          </div>
-          <div className="contactLinks">
-            <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            <a href={profile.linkedin} target="_blank" rel="noreferrer">
-              LinkedIn ↗
-            </a>
-            <a href={profile.github} target="_blank" rel="noreferrer">
-              GitHub ↗
-            </a>
-          </div>
-        </div>
-      </section>
+      <ContactInvitation profile={profile} />
     </main>
   );
 }

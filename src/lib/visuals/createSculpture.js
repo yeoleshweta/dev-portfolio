@@ -4,7 +4,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { hand, ribbonGeometry } from "./sculptureGeometry.mjs";
 import { lastStoryStage, storyStages, storyWeights } from "./storyStages.mjs";
 
-export function createSculpture(host, getProgress, isReduced) {
+export function createSculpture(host, getProgress, isReduced, getInteraction = () => ({ x: 0, y: 0, wire: false })) {
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
     antialias: true,
@@ -40,11 +40,16 @@ export function createSculpture(host, getProgress, isReduced) {
     clearcoatRoughness: 0.15,
     side: THREE.DoubleSide,
     envMapIntensity: 1.5,
+    transparent: true,
+    forceSinglePass: true,
   });
   const technicalColor = new THREE.Color(0x5a3048);
   const ribbon = new THREE.Mesh(geometry, material);
   const group = new THREE.Group();
   group.add(ribbon);
+  const wireMaterial = new THREE.MeshBasicMaterial({ color: 0x674153, wireframe: true, transparent: true, opacity: 0, depthWrite: false });
+  const wireMesh = new THREE.Mesh(geometry, wireMaterial);
+  group.add(wireMesh);
   scene.add(group);
   const nodeGeometry = new THREE.SphereGeometry(0.036, 16, 12);
   const nodeMaterial = new THREE.MeshStandardMaterial({
@@ -102,6 +107,9 @@ export function createSculpture(host, getProgress, isReduced) {
     pointerX = 0,
     pointerY = 0,
     phase = 0,
+    hoverX = 0, hoverY = 0,
+    rotationX = 0, rotationY = 0, wireAmount = 0,
+    lastRotationX = 0, lastRotationY = 0, lastWire = 0,
     lastPhase = -1,
     lastPointerX = 99,
     lastPointerY = 99;
@@ -109,27 +117,47 @@ export function createSculpture(host, getProgress, isReduced) {
     if (dead) return;
     const p = getProgress() * lastStoryStage;
     phase = isReduced() ? Math.round(p) : p;
+    const input = getInteraction();
+    const damping = isReduced() ? 1 : .12;
+    hoverX += (pointerX - hoverX) * damping;
+    hoverY += (pointerY - hoverY) * damping;
+    rotationX += (input.x - rotationX) * damping;
+    rotationY += (input.y - rotationY) * damping;
+    const wireTarget = input.wire ? Math.max(0, 1 - phase * 2) : 0;
+    wireAmount += (wireTarget - wireAmount) * damping;
     if (
       !force &&
       Math.abs(phase - lastPhase) < 0.00005 &&
-      pointerX === lastPointerX &&
-      pointerY === lastPointerY
+      Math.abs(hoverX - lastPointerX) < .00005 &&
+      Math.abs(hoverY - lastPointerY) < .00005 &&
+      Math.abs(rotationX - lastRotationX) < .00005 &&
+      Math.abs(rotationY - lastRotationY) < .00005 &&
+      Math.abs(wireAmount - lastWire) < .00005
     )
       return;
     lastPhase = phase;
-    lastPointerX = pointerX;
-    lastPointerY = pointerY;
+    lastPointerX = hoverX;
+    lastPointerY = hoverY;
+    lastRotationX = rotationX;
+    lastRotationY = rotationY;
+    lastWire = wireAmount;
     const weights = storyWeights(phase);
-    for (let i = 0; i < targets.length; i++)
+    for (let i = 0; i < targets.length; i++) {
       ribbon.morphTargetInfluences[i] = weights[i + 1];
+      wireMesh.morphTargetInfluences[i] = weights[i + 1];
+    }
+    wireMaterial.opacity = wireAmount * .7;
+    wireMesh.visible = wireAmount > .001;
+    material.opacity = 1 - wireAmount;
+    ribbon.visible = wireAmount < .999;
     const hero = weights[0],
       gesture = weights[2],
       evidence = weights[3],
       lens = weights[4],
       forecast = weights[5];
     group.rotation.set(
-      hero * (0.35 + (isReduced() ? 0 : pointerY * 0.14)),
-      hero * (-0.4 + (isReduced() ? 0 : pointerX * 0.2)),
+      hero * (0.35 + rotationX + (isReduced() ? 0 : hoverY * 0.14)),
+      hero * (-0.4 + rotationY + (isReduced() ? 0 : hoverX * 0.2)),
       hero * -0.25,
     );
     group.position.set(
@@ -187,6 +215,7 @@ export function createSculpture(host, getProgress, isReduced) {
     pointerY = (event.clientY - rect.top) / rect.height - 0.5;
     start();
   };
+  const leave = () => { pointerX = 0; pointerY = 0; };
   const visibility = () => {
     if (document.hidden) stop();
     else start();
@@ -202,6 +231,7 @@ export function createSculpture(host, getProgress, isReduced) {
     host.dataset.failed = "true";
   };
   host.addEventListener("pointermove", pointer);
+  host.addEventListener("pointerleave", leave);
   document.addEventListener("visibilitychange", visibility);
   preference.addEventListener("change", change);
   renderer.domElement.addEventListener("webglcontextlost", lost);
@@ -213,6 +243,7 @@ export function createSculpture(host, getProgress, isReduced) {
     io.disconnect();
     ro.disconnect();
     host.removeEventListener("pointermove", pointer);
+    host.removeEventListener("pointerleave", leave);
     document.removeEventListener("visibilitychange", visibility);
     preference.removeEventListener("change", change);
     renderer.domElement.removeEventListener("webglcontextlost", lost);
@@ -221,6 +252,7 @@ export function createSculpture(host, getProgress, isReduced) {
     nodeGeometry.dispose();
     nodeMaterial.dispose();
     material.dispose();
+    wireMaterial.dispose();
     core.geometry.dispose();
     core.material.dispose();
     env.dispose();

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useContinuousStory } from "@/hooks/useContinuousStory";
 import { SignalSculpture } from "./SignalSculpture";
 import { HiringBrief } from "./HiringBrief";
+import { RevealHeading } from "@/components/motion/RevealHeading";
 import { profile } from "@/content/profile";
 import { systems } from "@/content/engineering";
 import { SystemNotes } from "./SystemNotes";
@@ -33,7 +34,7 @@ export function ContinuousPortfolio({ projects }) {
           +
         </div>
         <div className="continuousCanvas">
-          <SignalSculpture progress={progress} reduced={reduced} />
+          <SignalSculpture progress={progress} reduced={reduced} active={phase === 0} />
         </div>
         <div className="continuityOrbit" aria-hidden="true">
           <span>HUMAN</span>
@@ -218,13 +219,7 @@ export function ContinuousPortfolio({ projects }) {
             <span className="liveDot" /> Shweta Sharma{" "}
             <span>/ Fullstack developer</span>
           </p>
-          <h1>
-            Human insight.
-            <br />
-            <em>Serious</em>
-            <br />
-            craft.
-          </h1>
+          <RevealHeading as="h1" lines={["Human insight.", "Serious craft."]} italic={1} intro />
           <p className="narrativeLead">
             I turn the complicated parts
             <br />
@@ -235,7 +230,7 @@ export function ContinuousPortfolio({ projects }) {
             Built with a designer’s eye and a developer’s mind.
           </p>
           <div className="heroActions">
-            <a className="narrativeAction" href="#work">
+            <a className="narrativeAction" data-magnetic href="#work">
               Follow the thread <span aria-hidden="true">↓</span>
             </a>
             <HiringBrief />
@@ -261,11 +256,7 @@ export function ContinuousPortfolio({ projects }) {
             <span>01 / Urbanfit</span>
             <span>Product design</span>
           </p>
-          <h2>
-            Give complexity
-            <br />
-            <em>a structure.</em>
-          </h2>
+          <RevealHeading lines={["Give complexity", "a structure."]} italic={1} />
           <p className="narrativeLead">Three roles. One shared language.</p>
           <p className="narrativeBody">
             Administrators, warehouses, and franchise shops need different
@@ -290,7 +281,7 @@ export function ContinuousPortfolio({ projects }) {
               <strong>484</strong>interactions
             </span>
           </div>
-          <Link className="narrativeAction" href={`/work/${urban.slug}/`}>
+          <Link className="narrativeAction" data-magnetic href={`/work/${urban.slug}/`}>
             Inside the project <span aria-hidden="true">↗</span>
           </Link>
           <p className="narrativeStack">
@@ -306,11 +297,7 @@ export function ContinuousPortfolio({ projects }) {
             <span>02 / GesturePro</span>
             <span>Web + applied ML</span>
           </p>
-          <h2>
-            Give a gesture
-            <br />
-            <em>a voice.</em>
-          </h2>
+          <RevealHeading lines={["Give a gesture", "a voice."]} italic={1} />
           <p className="narrativeLead">The prediction is only the beginning.</p>
           <p className="narrativeBody">
             I led UX and built the hand-landmark pipeline and classifier for a
@@ -336,7 +323,7 @@ export function ContinuousPortfolio({ projects }) {
               <strong>6</strong>usability participants
             </span>
           </div>
-          <Link className="narrativeAction" href={`/work/${gesture.slug}/`}>
+          <Link className="narrativeAction" data-magnetic href={`/work/${gesture.slug}/`}>
             Trace the pipeline <span aria-hidden="true">↗</span>
           </Link>
           <p className="narrativeStack">
@@ -353,11 +340,7 @@ export function ContinuousPortfolio({ projects }) {
             <span>03 / Clinical communication</span>
             <span>NLP + evaluation</span>
           </p>
-          <h2>
-            Give intelligence
-            <br />
-            <em>some context.</em>
-          </h2>
+          <RevealHeading lines={["Give intelligence", "some context."]} italic={1} />
           <p className="narrativeLead">
             A result should be something you can question.
           </p>
@@ -381,7 +364,7 @@ export function ContinuousPortfolio({ projects }) {
             <span>Calgary-Cambridge</span>
             <span>NURSE</span>
           </div>
-          <Link className="narrativeAction" href={`/work/${clinical.slug}/`}>
+          <Link className="narrativeAction" data-magnetic href={`/work/${clinical.slug}/`}>
             Examine the workflow <span aria-hidden="true">↗</span>
           </Link>
           <p className="narrativeStack">Python / NLP / Label Studio</p>
@@ -396,11 +379,7 @@ export function ContinuousPortfolio({ projects }) {
             <span>04 / Bias Checker</span>
             <span>Full-stack + healthcare AI</span>
           </p>
-          <h2>
-            Bring the unseen
-            <br />
-            <em>into focus.</em>
-          </h2>
+          <RevealHeading lines={["Bring the unseen", "into focus."]} italic={1} />
           <p className="narrativeLead">A prediction needs an explanation.</p>
           <p className="narrativeBody">
             I solo-built a healthcare bias-detection system, from a fine-tuned
@@ -422,7 +401,7 @@ export function ContinuousPortfolio({ projects }) {
             <span>GPT-4o</span>
           </div>
           <a
-            className="narrativeAction"
+            className="narrativeAction" data-magnetic
             href={bias.repository}
             target="_blank"
             rel="noreferrer"
@@ -443,11 +422,7 @@ export function ContinuousPortfolio({ projects }) {
             <span>05 / PocketSaver</span>
             <span>Web + data + forecasting</span>
           </p>
-          <h2>
-            See the system.
-            <br />
-            <em>Look ahead.</em>
-          </h2>
+          <RevealHeading lines={["See the system.", "Look ahead."]} italic={1} />
           <p className="narrativeLead">Follow a request all the way through.</p>
           <p className="narrativeBody">
             A finance application that connects a web interface, backend API,
@@ -470,7 +445,7 @@ export function ContinuousPortfolio({ projects }) {
             <code>POST /predict</code>
           </div>
           <a
-            className="narrativeAction"
+            className="narrativeAction" data-magnetic
             href={pocket.repository}
             target="_blank"
             rel="noreferrer"
