@@ -1,4 +1,4 @@
-/* Editorial Monograph — Cinematic 3D Opening + Clean Architectural Daylight & Nocturnal Exhibition */
+/* Editorial Monograph — Text-First Cinematic 3D Opening + Clean Architectural Daylight & Nocturnal Exhibition */
 :root {
   --bg: #f6f4ef;
   --bg-subtle: #edeae2;
@@ -230,24 +230,24 @@ a:focus-visible, button:focus-visible {
 .atelierDrawerNav a { display: flex; align-items: baseline; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-size: clamp(32px, 9vw, 52px); }
 .atelierDrawerNav small { font-family: var(--font-mono); font-size: 11px; color: var(--accent); }
 
-/* ACT I — FULL-BLEED CINEMATIC 3D MONOLITH HERO */
+/* ACT I — TEXT-FIRST CINEMATIC HERO WITH SUBTLE 3D BACKGROUND DEPTH */
 .cinemaHero {
   position: relative;
-  min-height: 100svh;
+  min-height: 88svh;
   width: 100%;
   overflow: hidden;
   display: flex;
   background: #050608;
   color: #f6f4ef;
-  padding: 86px 0 36px;
+  padding: 118px 0 40px;
 }
 .cinema3dCanvas {
   position: absolute;
   inset: 0;
   z-index: 0;
-  cursor: grab;
+  pointer-events: none;
+  opacity: 0.72;
 }
-.cinema3dCanvas:active { cursor: grabbing; }
 .cinema3dCanvas canvas {
   width: 100% !important;
   height: 100% !important;
@@ -259,8 +259,8 @@ a:focus-visible, button:focus-visible {
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 44%, transparent 32%, rgb(5 6 8 / 0.68) 100%),
-    linear-gradient(180deg, rgb(5 6 8 / 0.55) 0%, transparent 22%, transparent 62%, rgb(5 6 8 / 0.92) 100%);
+    linear-gradient(90deg, rgb(5 6 8 / 0.92) 0%, rgb(5 6 8 / 0.64) 54%, rgb(5 6 8 / 0.25) 100%),
+    linear-gradient(180deg, rgb(5 6 8 / 0.45) 0%, transparent 20%, transparent 72%, rgb(5 6 8 / 0.94) 100%);
 }
 .cinemaHeroHud {
   position: relative;
@@ -268,52 +268,25 @@ a:focus-visible, button:focus-visible {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 56px;
   flex: 1;
-  pointer-events: none;
 }
-.cinemaHeroHud a,
-.cinemaHeroHud button {
-  pointer-events: auto;
-}
-.cinemaTopRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 12px 0;
-  border-bottom: 1px solid rgb(246 244 239 / 0.14);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  color: rgb(246 244 239 / 0.62);
-}
-.cinemaTelemetry {
-  color: #8aa4ff;
-}
-.cinemaBottomRow {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 36px;
-  flex-wrap: wrap;
-  padding-top: 24px;
-}
-.cinemaIdentity {
-  max-width: 560px;
+.cinemaMainBlock {
+  margin: auto 0;
+  max-width: 820px;
 }
 .cinemaEyebrow {
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.18em;
   color: #8aa4ff;
-  margin-bottom: 14px;
+  margin-bottom: 22px;
 }
 .cinemaTitle {
   font-family: var(--font-sans);
-  font-size: clamp(50px, 6.8vw, 108px);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
+  font-size: clamp(44px, 5.8vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.048em;
   font-weight: 500;
   color: #f6f4ef;
 }
@@ -324,34 +297,48 @@ a:focus-visible, button:focus-visible {
   letter-spacing: -0.02em;
   color: #8aa4ff;
 }
+.cinemaLine {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.cinemaLine > span {
+  display: block;
+  animation: cover-rise 0.9s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 60ms);
+}
+@keyframes cover-rise {
+  from { transform: translateY(104%); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
 .cinemaLead {
-  margin-top: 18px;
-  font-size: 15px;
-  line-height: 1.7;
-  color: rgb(246 244 239 / 0.74);
-  max-width: 44ch;
+  margin-top: 24px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: rgb(246 244 239 / 0.76);
+  max-width: 54ch;
 }
 .cinemaActions {
   display: flex;
   align-items: center;
-  gap: 22px;
-  margin-top: 24px;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 32px;
 }
 .cinemaBtnPrimary {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 22px;
+  padding: 12px 24px;
   border-radius: 99px;
   background: #f6f4ef;
   color: #050608;
   font-size: 13px;
   font-weight: 500;
-  transition: background 0.25s ease, color 0.25s ease, transform 0.3s var(--ease);
+  transition: background 0.25s ease, transform 0.3s var(--ease);
 }
 .cinemaBtnPrimary:hover {
   background: #8aa4ff;
-  color: #050608;
   transform: translateY(-2px);
 }
 .cinemaBtnLink {
@@ -368,51 +355,33 @@ a:focus-visible, button:focus-visible {
   border-color: #8aa4ff;
 }
 
-/* Interactive 3D Camera Angle Dock */
-.cinemaCameraDock {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
+/* Scannable 3-Column Career Proof Strip */
+.cinemaProofStrip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgb(246 244 239 / 0.14);
 }
-.cinemaDockLabel {
+.cinemaProofStrip small {
+  display: block;
   font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.16em;
-  color: rgb(246 244 239 / 0.55);
-}
-.cinemaCameraTabs {
-  display: inline-flex;
-  gap: 6px;
-  padding: 5px;
-  border-radius: 999px;
-  background: rgb(14 15 20 / 0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgb(246 244 239 / 0.16);
-}
-.cinemaCameraTabs button {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 7px;
-  padding: 8px 16px;
-  border-radius: 999px;
-  color: rgb(246 244 239 / 0.65);
-  transition: background 0.28s ease, color 0.28s ease;
-}
-.cinemaCameraTabs button span {
-  font-family: var(--font-mono);
-  font-size: 9px;
   color: #8aa4ff;
+  margin-bottom: 6px;
 }
-.cinemaCameraTabs button strong {
-  font-size: 12px;
+.cinemaProofStrip strong {
+  display: block;
+  font-size: 14px;
   font-weight: 500;
-}
-.cinemaCameraTabs button[aria-selected="true"],
-.cinemaCameraTabs button:hover {
-  background: rgb(246 244 239 / 0.12);
   color: #f6f4ef;
+  margin-bottom: 3px;
+}
+.cinemaProofStrip span {
+  display: block;
+  font-size: 12px;
+  color: rgb(246 244 239 / 0.62);
 }
 
 /* Shared Editorial Typography */
@@ -652,10 +621,9 @@ a:focus-visible, button:focus-visible {
 .studyNext { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 32px; border: 1px solid var(--line); background: var(--bg-subtle); }
 
 @media (max-width: 960px) {
-  .atelierNav, .atelierClock, .cinemaTelemetry { display: none; }
+  .atelierNav, .atelierClock { display: none; }
   .atelierMenuBtn { display: inline-block; }
-  .cinemaCameraDock { align-items: flex-start; }
-  .practiceHeader, .practiceGrid, .craftGrid, .experienceGrid, .offscreenIntro, .studyMeta, .studyGrid {
+  .cinemaProofStrip, .practiceHeader, .practiceGrid, .craftGrid, .experienceGrid, .offscreenIntro, .studyMeta, .studyGrid {
     grid-template-columns: 1fr;
   }
   .practiceCol { border-right: 0; border-bottom: 1px solid var(--line); padding: 28px 0 !important; }
