@@ -4,171 +4,213 @@ import Image from "next/image";
 import Link from "next/link";
 import { profile } from "@/content/profile";
 
-const slides = [
-  {
-    src: "/urbanfit.jpg",
-    alt: "Urbanfit Control Panel multi-role inventory workspace",
-    num: "01",
-    title: "Urbanfit Control Panel",
-    meta: "30 screens · 484 interactions · Design Systems",
-    href: "/work/urbanfit/",
-  },
-  {
-    src: "/gesturepro.jpg",
-    alt: "GesturePro webcam hand-landmark recognition prototype",
-    num: "02",
-    title: "GesturePro",
-    meta: "21 hand landmarks · MediaPipe · TensorFlow · Next.js",
-    href: "/work/gesturepro/",
-  },
-  {
-    src: "/abim.jpg",
-    alt: "Clinical Communication supervised NLP workflow at ABIM",
-    num: "03",
-    title: "Clinical Communication",
-    meta: "Supervised NLP · Calgary-Cambridge & NURSE · ABIM",
-    href: "/work/clinical-communication/",
-  },
+const trailFrames = [
+  { src: "/urbanfit.jpg", label: "Urbanfit · 484 Interactions" },
+  { src: "/gesturepro.jpg", label: "GesturePro · 21 Landmarks" },
+  { src: "/abim.jpg", label: "ABIM · Clinical NLP" },
+  { src: "/mountains.jpg", label: "Grace Hopper · 2025" },
+  { src: "/gallery/color-in-the-city.webp", label: "Philadelphia" },
+  { src: "/gallery/another-perspective.webp", label: "New Perspectives" },
 ];
 
 /**
- * Serene, ultra-clean editorial hero with a scroll-expanding architectural frame.
- * As the user scrolls, the showcase frame smoothly widens and reveals subtle inner parallax.
+ * High-agency daylight hero built for a 2-second hook:
+ * - Monumental 3-line display typography with live expandable inline media portals
+ *   that physically part the headline on hover.
+ * - Restrained cursor-spawned studio proof trail behind the type on desktop.
+ * - Harmonious warm museum-paper transition directly into PracticePillars.
  */
 export function CleanHero() {
-  const frameRef = useRef(null);
-  const imgWrapRef = useRef(null);
-  const [active, setActive] = useState(0);
+  const heroRef = useRef(null);
+  const trailLayerRef = useRef(null);
+  const [hoveredPortal, setHoveredPortal] = useState(null);
 
-  // Auto-advance gentle crossfade every 5.5s (pauses on reduced motion)
+  // Subtle cursor-spawned studio proof trail (desktop, fine pointer, reduced-motion safe)
   useEffect(() => {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => {
-      setActive((prev) => (prev + 1) % slides.length);
-    }, 5500);
-    return () => clearInterval(id);
-  }, []);
+    const hero = heroRef.current;
+    const layer = trailLayerRef.current;
+    if (!hero || !layer) return;
 
-  // Smooth scroll-linked width expansion + inner image parallax
-  useEffect(() => {
+    const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    if (!fine || reduced) return;
 
-    let current = 0;
-    let raf = 0;
+    let lastX = -999;
+    let lastY = -999;
+    let idx = 0;
 
-    const tick = () => {
-      const target = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.65)));
-      current += (target - current) * 0.1;
+    const spawnProof = (x, y, vx) => {
+      const item = trailFrames[idx % trailFrames.length];
+      idx += 1;
 
-      if (frameRef.current) {
-        const scale = 0.94 + current * 0.06;
-        const radius = Math.max(0, 14 - current * 14);
-        frameRef.current.style.transform = `scale(${scale.toFixed(4)})`;
-        frameRef.current.style.borderRadius = `${radius.toFixed(1)}px`;
+      const card = document.createElement("div");
+      card.className = "heroTrailProof";
+      const tilt = Math.max(-9, Math.min(9, vx * 0.12 + (idx % 2 === 0 ? 3 : -3)));
+      card.style.left = `${x}px`;
+      card.style.top = `${y}px`;
+      card.style.setProperty("--tilt", `${tilt.toFixed(1)}deg`);
+
+      const img = document.createElement("img");
+      img.src = item.src;
+      img.alt = "";
+      img.decoding = "async";
+
+      const cap = document.createElement("span");
+      cap.textContent = item.label;
+
+      card.appendChild(img);
+      card.appendChild(cap);
+      layer.appendChild(card);
+
+      // Keep DOM lean
+      while (layer.children.length > 7) {
+        layer.firstChild?.remove();
       }
-      if (imgWrapRef.current) {
-        const y = -current * 24;
-        const imgScale = 1.06 - current * 0.04;
-        imgWrapRef.current.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(${imgScale.toFixed(4)})`;
-      }
 
-      raf = requestAnimationFrame(tick);
+      setTimeout(() => {
+        card.dataset.fading = "true";
+        setTimeout(() => card.remove(), 420);
+      }, 620);
     };
 
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    const onMove = (e) => {
+      if (e.target.closest?.("a, button, .inlinePortal")) return;
+      const rect = hero.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const dist = Math.hypot(x - lastX, y - lastY);
+      if (dist > 125) {
+        const vx = x - lastX;
+        lastX = x;
+        lastY = y;
+        spawnProof(x, y, vx);
+      }
+    };
+
+    hero.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      hero.removeEventListener("pointermove", onMove);
+      layer.innerHTML = "";
+    };
   }, []);
 
-  const currentSlide = slides[active];
-
   return (
-    <section className="cleanHero">
-      <div className="atelierWrap">
-        <div className="cleanHeroTop">
-          <div className="cleanHeroTitleCol">
-            <p className="cleanEyebrow">
-              SHWETA SHARMA — FULLSTACK ENGINEER &amp; APPLIED ML
-            </p>
-            <h1 className="cleanHeroHeadline">
-              <span className="cleanLine" style={{ "--i": 0 }}>
-                <span>Software shaped by</span>
-              </span>
-              <span className="cleanLine" style={{ "--i": 1 }}>
-                <span>
-                  human <em>research, craft,</em> and AI.
-                </span>
-              </span>
-            </h1>
-          </div>
+    <section ref={heroRef} className="hookHero">
+      {/* Studio proof trail layer behind typography */}
+      <div ref={trailLayerRef} className="heroTrailLayer" aria-hidden="true" />
 
-          <div className="cleanHeroSide">
-            <p>
-              Philadelphia-based fullstack developer with six years in UX
-              research &amp; product design and an MS in AI &amp; Machine
-              Learning (3.97 GPA). I own products from interface to API and
-              model evaluation.
-            </p>
-            <div className="cleanHeroActions">
-              <a className="cleanActionPrimary" href="#works">
-                Selected works <span aria-hidden="true">↓</span>
-              </a>
-              <a
-                className="cleanActionLink"
-                href={profile.resume}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Résumé (PDF) ↗
-              </a>
-            </div>
-          </div>
+      <div className="atelierWrap hookHeroInner">
+        <div className="hookTopMeta">
+          <span>FOLIO ’26 — FULLSTACK &amp; APPLIED ML</span>
+          <span className="hookHint">
+            {hoveredPortal ? hoveredPortal : "HOVER PORTALS OR MOVE ACROSS DESK"}
+          </span>
+          <span>PHILADELPHIA, PA</span>
         </div>
 
-        {/* Scroll-expanding architectural showcase frame */}
-        <div ref={frameRef} className="cleanStageFrame">
-          <div ref={imgWrapRef} className="cleanStageMedia">
-            {slides.map((slide, idx) => (
-              <div
-                key={slide.src}
-                className="cleanSlide"
-                data-active={idx === active}
-                aria-hidden={idx !== active}
+        {/* Monumental 3-line kinetic headline with inline interactive portals */}
+        <div className="hookTypeStage">
+          <h1 className="hookHeadline" aria-label="Shweta Sharma builds systems where design meets AI.">
+            <span className="hookRow" style={{ "--i": 0 }}>
+              <span className="hookWord">SHWETA</span>
+              <Link
+                href="#offscreen"
+                className="inlinePortal portalPortrait"
+                data-cursor="STORY"
+                onMouseEnter={() => setHoveredPortal("SHWETA SHARMA · 6+ YRS UX & FULLSTACK")}
+                onMouseLeave={() => setHoveredPortal(null)}
+                aria-label="About Shweta Sharma"
               >
                 <Image
-                  src={slide.src}
-                  alt={slide.alt}
+                  src="/mountains.jpg"
+                  alt="Shweta Sharma"
                   fill
-                  priority={idx === 0}
-                  sizes="(max-width: 960px) 94vw, 90vw"
+                  priority
+                  sizes="240px"
                 />
-              </div>
-            ))}
+              </Link>
+              <span className="hookWord hookSerif">
+                <em>Sharma</em>
+              </span>
+            </span>
+
+            <span className="hookRow" style={{ "--i": 1 }}>
+              <span className="hookWord">BUILDS</span>
+              <Link
+                href="/work/urbanfit/"
+                className="inlinePortal portalWork"
+                data-cursor="OPEN"
+                onMouseEnter={() => setHoveredPortal("URBANFIT · 30 SCREENS, 484 INTERACTIONS")}
+                onMouseLeave={() => setHoveredPortal(null)}
+                aria-label="Inspect Urbanfit Control Panel"
+              >
+                <Image
+                  src="/urbanfit.jpg"
+                  alt="Urbanfit Control Panel"
+                  fill
+                  priority
+                  sizes="280px"
+                />
+              </Link>
+              <span className="hookWord">SYSTEMS</span>
+            </span>
+
+            <span className="hookRow" style={{ "--i": 2 }}>
+              <span className="hookWord hookSerif">
+                <em>where</em>
+              </span>
+              <span className="hookWord">CRAFT</span>
+              <Link
+                href="#works"
+                className="inlinePortal portalSignal"
+                data-cursor="AI"
+                onMouseEnter={() => setHoveredPortal("BIAS CHECKER · ROBERTA + LORA + GPT-4O")}
+                onMouseLeave={() => setHoveredPortal(null)}
+                aria-label="Inspect Applied ML Systems"
+              >
+                <span className="signalBars" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <small>AI / ML</small>
+              </Link>
+              <span className="hookWord hookAccent">
+                <em>meets AI.</em>
+              </span>
+            </span>
+          </h1>
+        </div>
+
+        {/* Clean architectural bottom strip */}
+        <div className="hookBottomBar">
+          <div className="hookStats">
+            <div>
+              <small>ACADEMIC</small>
+              <strong>MS Computer Science (AI &amp; ML) · 3.97 GPA</strong>
+            </div>
+            <div>
+              <small>FOCUS</small>
+              <strong>React / Next.js · Python / FastAPI · Interpretable ML</strong>
+            </div>
           </div>
 
-          <div className="cleanStageBar">
-            <Link href={currentSlide.href} className="cleanStageCaption">
-              <span className="cleanStageNum">{currentSlide.num}</span>
-              <div>
-                <strong>{currentSlide.title}</strong>
-                <span>{currentSlide.meta}</span>
-              </div>
-            </Link>
-
-            <div className="cleanStageDots" role="tablist" aria-label="Featured work preview">
-              {slides.map((s, i) => (
-                <button
-                  key={s.num}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === active}
-                  aria-label={`Show ${s.title}`}
-                  onClick={() => setActive(i)}
-                >
-                  {s.num}
-                </button>
-              ))}
-            </div>
+          <div className="hookActions">
+            <a className="hookBtnPrimary" href="#works" data-cursor="WORKS">
+              Selected Works <span>06</span>
+            </a>
+            <a
+              className="hookBtnGhost"
+              href={profile.resume}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Résumé ↗
+            </a>
           </div>
         </div>
       </div>
