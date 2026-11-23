@@ -7,6 +7,7 @@ import "@/styles/portfolio-depth.css";
 import "@/styles/gallery.css";
 import "@/styles/motion.css";
 import "@/styles/carbon.css";
+import "@/styles/project-archive.css";
 export const metadata = {
   title: {
     default: "Shweta Sharma | Fullstack Dev",

@@ -45,7 +45,7 @@ The GesturePro input is an editable illustration, not a camera or inference serv
 ## Interactive motion
 
 - `PortfolioMotion.jsx` reveals headings and chapters once through IntersectionObserver. Fine pointers get a small magnetic response on actions and depth on selected surfaces. Touch input retains native scrolling.
-- The opening sculpture supports pointer rotation, a wireframe toggle, and keyboard-accessible rotate/reset controls. Its orientation and material blend back into the project story using the same mesh and renderer.
+- The opening sculpture supports pointer rotation. Its orientation and material blend back into the project story using the same mesh and renderer.
 - `CapabilityLab.jsx` turns the three disciplines into an explorable physical stack. Tabs support arrow keys, Home, and End; panels reserve a shared height so switching does not shift the page.
 - `SystemNotes.jsx` includes a stoppable architecture walkthrough and individually selectable steps. Reduced-motion users advance manually.
 - `ContactInvitation.jsx` closes with a scroll-linked circular contact action and an email-copy control.

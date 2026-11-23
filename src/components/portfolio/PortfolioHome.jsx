@@ -7,6 +7,7 @@ import { PortfolioMotion } from "@/components/motion/PortfolioMotion";
 import { RevealHeading } from "@/components/motion/RevealHeading";
 import { profile, projects, experience } from "@/content/profile";
 import { disciplines, archive } from "@/content/engineering";
+import { ProjectArchive } from "@/components/portfolio/ProjectArchive";
 
 export default function Home() {
   return (
@@ -38,29 +39,7 @@ export default function Home() {
             Explore GitHub ↗
           </a>
         </div>
-        <div className="projectArchive">
-          {archive.map((project, i) => (
-            <details className="archiveItem" key={project.title} data-reveal="rise">
-              <summary>
-                <span className="archiveNumber">0{i + 1}</span>
-                <span className="archiveName">{project.title}</span>
-                <span className="archiveType">{project.type}</span>
-                <span className="archivePlus" aria-hidden="true">
-                  +
-                </span>
-              </summary>
-              <div className="archiveBody">
-                <p>{project.description}</p>
-                <span>{project.stack}</span>
-                {project.href && (
-                  <a className="textLink" href={project.href}>
-                    Read the case study ↗
-                  </a>
-                )}
-              </div>
-            </details>
-          ))}
-        </div>
+        <ProjectArchive projects={archive} />
       </section>
 
       <CapabilityLab disciplines={disciplines} />

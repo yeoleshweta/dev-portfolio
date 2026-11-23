@@ -7,7 +7,6 @@ export function SignalSculpture({ progress, reduced, active }) {
   const interaction = useRef({ x: 0, y: 0, wire: false });
   const drag = useRef(null);
   const [ready, setReady] = useState(false);
-  const [wire, setWire] = useState(false);
   useEffect(() => { preference.current = reduced; }, [reduced]);
   useEffect(() => {
     let cancelled = false, dispose;
@@ -39,23 +38,14 @@ export function SignalSculpture({ progress, reduced, active }) {
     delete event.currentTarget.dataset.dragging;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   }
-  function toggleWire() { interaction.current.wire = !wire; setWire(!wire); }
-  function reset() { interaction.current = { x: 0, y: 0, wire: false }; setWire(false); }
   return (
     <>
       <div ref={host} className="signalSculpture" data-ready={ready} data-interactive={active && ready}
         onPointerDown={start} onPointerMove={move} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end}
-        role="img" aria-label="Interactive 3D ribbon. Drag to rotate, or use the view controls. The same ribbon transforms into each project visual as you scroll.">
+        role="img" aria-label="A 3D ribbon transforms into each project visual as you scroll.">
         <div className="sculptureFallback" aria-hidden="true"><i/><i/><i/><b/></div>
       </div>
-      {active && ready && <div className="sculptureTools">
-        <span>DRAG TO EXPLORE</span>
-        <div role="group" aria-label="3D form controls">
-          <button aria-pressed={wire} onClick={toggleWire}><i aria-hidden="true">◇</i>Wireframe</button>
-          <button aria-label="Rotate the 3D form" onClick={() => { interaction.current.y = interaction.current.y >= 1.5 ? -1.5 : interaction.current.y + .5; }}>↶</button>
-          <button aria-label="Reset the 3D form" onClick={reset}>↺</button>
-        </div>
-      </div>}
+
     </>
   );
 }
