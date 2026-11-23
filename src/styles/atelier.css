@@ -1,4 +1,4 @@
-/* Editorial Monograph — High-Agency Architectural Design System */
+/* Editorial Monograph — High-Agency Spatial & Architectural System */
 :root {
   --bg: #f3efe7;
   --bg-subtle: #e9e4d8;
@@ -17,16 +17,16 @@
   --ease-dramatic: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-/* Smooth nocturnal shift while traversing Selected Works */
+/* Smooth nocturnal shift in Hero & Selected Works */
 html[data-theme="nocturnal"] {
-  --bg: #10100f;
-  --bg-subtle: #181816;
+  --bg: #0d0d0c;
+  --bg-subtle: #161614;
   --ink: #f3efe7;
   --ink-muted: #9a958b;
   --line: rgb(243 239 231 / 0.14);
   --line-strong: rgb(243 239 231 / 0.32);
   --accent: #8aa4ff;
-  --accent-ink: #10100f;
+  --accent-ink: #0d0d0c;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -73,9 +73,12 @@ a:focus-visible, button:focus-visible {
 }
 .skip:focus { transform: translateY(16px); }
 
+/* Bulletproof centered container — never clips left/right edges */
 .atelierWrap {
-  width: min(91%, 1380px);
+  width: 100%;
+  max-width: 1440px;
   margin-inline: auto;
+  padding-inline: clamp(20px, 4.5vw, 64px);
 }
 
 /* Subtle paper grain */
@@ -101,7 +104,7 @@ a:focus-visible, button:focus-visible {
   position: absolute;
   left: 0; right: 0;
   height: 50.5%;
-  background: #141311;
+  background: #0d0d0c;
   transition: transform 0.7s var(--ease-dramatic);
 }
 .curtainTop { top: 0; border-bottom: 1px solid rgb(243 239 231 / 0.12); }
@@ -112,7 +115,9 @@ a:focus-visible, button:focus-visible {
 .curtainContent {
   position: relative;
   z-index: 2;
-  width: min(91%, 1380px);
+  width: 100%;
+  max-width: 1440px;
+  padding-inline: clamp(20px, 4.5vw, 64px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -178,20 +183,22 @@ a:focus-visible, button:focus-visible {
   color: var(--bg);
 }
 
-/* Architectural Header (Full-width hairline bar, zero floating pill) */
+/* Architectural Header */
 .atelierHeader {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 80;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   transition: background-color 0.65s var(--ease), border-color 0.65s var(--ease);
 }
 .atelierHeaderInner {
-  width: min(91%, 1380px);
+  width: 100%;
+  max-width: 1440px;
   margin-inline: auto;
+  padding-inline: clamp(20px, 4.5vw, 64px);
   height: 68px;
   display: flex;
   align-items: center;
@@ -273,133 +280,152 @@ a:focus-visible, button:focus-visible {
 }
 .atelierDrawerNav small { font-family: var(--font-mono); font-size: 11px; color: var(--accent); }
 
-/* ACT I — COVER */
-.coverSection {
+/* ACT I — FULL-BLEED 3D SPATIAL EXHIBITION HERO */
+.spatialHero {
+  position: relative;
   min-height: 100svh;
-  padding: 88px 0 28px;
+  width: 100%;
+  overflow: hidden;
   display: flex;
+  background: #0d0d0c;
+  color: #f3efe7;
+  padding: 86px 0 32px;
 }
-.coverGrid {
-  width: min(91%, 1380px);
-  margin-inline: auto;
+.spatialHeroCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.spatialHeroCanvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+.spatialHeroVignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 48%, rgb(13 13 12 / 0.25) 0%, rgb(13 13 12 / 0.72) 78%),
+    linear-gradient(180deg, rgb(13 13 12 / 0.55) 0%, transparent 25%, transparent 72%, rgb(13 13 12 / 0.88) 100%);
+}
+.spatialHeroInner {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
 }
-.coverTopRow {
+.spatialTopStrip {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+  padding: 12px 0;
+  border-bottom: 1px solid rgb(243 239 231 / 0.14);
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.16em;
-  color: var(--ink-muted);
+  color: rgb(243 239 231 / 0.65);
 }
-.coverStage {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+.spatialCenterpiece {
+  margin: auto 0;
+  padding: 40px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  min-height: 62svh;
-  gap: 24px;
 }
-.coverTypography {
-  grid-column: 1;
-  grid-row: 1;
-  position: relative;
-  z-index: 2;
+.spatialEyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: #8aa4ff;
+  margin-bottom: 18px;
 }
-.coverSculptureSlot {
-  grid-column: 2;
-  grid-row: 1;
-  position: relative;
-  height: min(62svh, 580px);
-  width: 100%;
-}
-.monolithStage {
-  position: absolute;
-  inset: -6% -10%;
-  cursor: grab;
-}
-.monolithStage[data-dragging="true"] { cursor: grabbing; }
-.monolithStage canvas { width: 100% !important; height: 100% !important; }
-
-.coverName {
+.spatialTitle {
   font-family: var(--font-sans);
-  font-size: clamp(64px, 10.5vw, 156px);
-  line-height: 0.88;
-  letter-spacing: -0.055em;
+  font-size: clamp(58px, 11vw, 168px);
+  line-height: 0.86;
+  letter-spacing: -0.05em;
   font-weight: 500;
+  color: #f3efe7;
+  text-shadow: 0 18px 60px rgb(0 0 0 / 0.55);
 }
-.coverNameItalic em {
+.spatialSerif em {
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -0.025em;
-  color: var(--accent);
+  letter-spacing: -0.02em;
+  color: #f3efe7;
 }
-.coverNameLine {
+.spatialLine {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.08em;
+  padding: 0.04em 0.08em 0.08em;
 }
-.coverNameLine > span {
+.spatialLine > span {
   display: block;
-  animation: cover-rise 1s var(--ease) both;
+  animation: cover-rise 1.05s var(--ease) both;
   animation-delay: calc(var(--i, 0) * 140ms + 120ms);
 }
 @keyframes cover-rise {
   from { transform: translateY(108%); opacity: 0; }
   to { transform: none; opacity: 1; }
 }
-.coverDeck {
-  margin-top: 32px;
-  max-width: 42ch;
-  font-size: 16px;
+.spatialSub {
+  margin-top: 28px;
+  max-width: 48ch;
+  font-size: 15px;
   line-height: 1.7;
-  color: var(--ink-muted);
+  color: rgb(243 239 231 / 0.78);
 }
-.coverFootGrid {
+.spatialBottomBar {
   display: grid;
   grid-template-columns: 1fr 1.2fr auto;
   align-items: end;
-  gap: 28px;
-  padding-top: 22px;
-  border-top: 1px solid var(--line);
+  gap: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgb(243 239 231 / 0.14);
 }
-.coverFootGrid small {
+.spatialMetaCol small {
   display: block;
   font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.16em;
-  color: var(--ink-muted);
-  margin-bottom: 6px;
+  color: #8aa4ff;
+  margin-bottom: 4px;
 }
-.coverFootGrid p { font-size: 13px; }
-.coverScrollCue a {
+.spatialMetaCol span {
+  font-size: 13px;
+  color: rgb(243 239 231 / 0.85);
+}
+.spatialScrollLink {
   display: inline-flex;
   align-items: center;
   gap: 12px;
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.16em;
-  color: var(--ink);
+  color: #f3efe7;
 }
-.coverScrollCue i {
-  display: grid; place-items: center;
-  width: 34px; height: 34px;
+.spatialScrollLink i {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  border: 1px solid var(--line-strong);
+  border: 1px solid rgb(243 239 231 / 0.35);
   font-style: normal;
   transition: transform 0.35s var(--ease), background 0.3s ease, color 0.3s ease;
 }
-.coverScrollCue a:hover i {
+.spatialScrollLink:hover i {
   transform: translateY(3px);
-  background: var(--ink);
-  color: var(--bg);
+  background: #f3efe7;
+  color: #0d0d0c;
 }
 
 /* Shared Editorial Typography */
@@ -431,31 +457,200 @@ a:focus-visible, button:focus-visible {
   max-width: 40ch;
 }
 
-/* ACT II — KINETIC THESIS SCRUB */
-.thesisChapter {
-  min-height: 155svh;
-  position: relative;
+/* ACT II — SPLIT-SHUTTER VISUAL DOSSIER */
+.apertureSection {
+  padding: 120px 0 130px;
   border-top: 1px solid var(--line);
 }
-.thesisSticky {
+.apertureTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 42px;
+}
+.apertureTop .chapterMarker { margin-bottom: 0; }
+.apertureCounter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.aperturePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.aperturePill[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+.apertureGrid {
+  display: grid;
+  grid-template-columns: 1.08fr 1fr;
+  gap: 52px;
+  align-items: start;
+}
+.apertureStage {
   position: sticky;
-  top: 0;
-  min-height: 100svh;
-  width: min(86%, 1120px);
-  margin-inline: auto;
+  top: 100px;
+}
+.apertureFrame {
+  position: relative;
+  border: 1px solid var(--line);
+  background: var(--bg-subtle);
+  overflow: hidden;
+  animation: shutter-wipe 0.65s var(--ease) both;
+}
+@keyframes shutter-wipe {
+  from { clip-path: inset(100% 0 0 0); opacity: 0.4; }
+  to { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+.apertureFrame img {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  object-position: center 35%;
+}
+.apertureCaptionBar {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+}
+
+/* Interactive Pipeline Specimen inside Act II Chapter 03 */
+.aperturePipeline {
+  min-height: 520px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 90px 0;
+  justify-content: space-between;
+  background: #141413;
+  color: #f3efe7;
 }
-.thesisStatement {
+.pipeHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: #8aa4ff;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgb(243 239 231 / 0.14);
+}
+.pipeNodes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+.pipeNode {
+  text-align: left;
+  padding: 18px;
+  border: 1px solid rgb(243 239 231 / 0.16);
+  background: rgb(243 239 231 / 0.03);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.pipeNode[data-active="true"],
+.pipeNode:hover {
+  border-color: #8aa4ff;
+  background: rgb(138 164 255 / 0.12);
+}
+.pipeNode small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #8aa4ff;
+  margin-bottom: 8px;
+}
+.pipeNode strong { display: block; font-size: 17px; font-weight: 500; margin-bottom: 4px; }
+.pipeNode span { font-family: var(--font-mono); font-size: 10px; color: #9a958b; }
+.pipeReadout {
+  padding-top: 18px;
+  border-top: 1px solid rgb(243 239 231 / 0.14);
+  animation: fade-up 0.35s var(--ease) both;
+}
+.pipeReadout small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #8aa4ff;
+  margin-bottom: 8px;
+}
+.pipeReadout p { font-size: 14px; line-height: 1.65; color: rgb(243 239 231 / 0.85); }
+
+.apertureChapters {
+  border-top: 1px solid var(--line);
+}
+.apertureRow {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.35s ease;
+}
+.apertureRow[data-active="true"],
+.apertureRow:hover { opacity: 1; }
+.apertureRowHead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  margin-bottom: 12px;
+}
+.apertureRowNum { color: var(--accent); }
+.apertureRowLabel { color: var(--ink-muted); }
+.apertureRow h3 {
   font-family: var(--font-serif);
-  font-size: clamp(30px, 4.4vw, 62px);
-  line-height: 1.24;
-  letter-spacing: -0.02em;
+  font-size: clamp(24px, 2.5vw, 34px);
+  font-weight: 400;
+  line-height: 1.18;
 }
-.thesisStatement span {
-  transition: opacity 0.12s linear;
+.apertureRowExpand {
+  margin-top: 14px;
+}
+.apertureRowExpand p {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink-muted);
+  max-width: 48ch;
+}
+.apertureStat {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.apertureStat strong {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--accent);
+}
+.apertureStat span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-muted);
 }
 
 /* ACT III — NOCTURNAL HORIZONTAL EXHIBITION */
@@ -475,8 +670,6 @@ a:focus-visible, button:focus-visible {
   overflow: hidden;
 }
 .exhibitionTopBar {
-  width: min(91%, 1380px);
-  margin-inline: auto;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -510,7 +703,7 @@ a:focus-visible, button:focus-visible {
 .exhibitionViewport {
   width: 100%;
   overflow: visible;
-  padding-left: max(4.5%, calc((100vw - 1380px) / 2));
+  padding-left: clamp(20px, 4.5vw, 64px);
 }
 .exhibitionRail {
   display: flex;
@@ -611,8 +804,6 @@ a:focus-visible, button:focus-visible {
 .exhibitionPlate:hover .plateOpenBtn { color: var(--accent); border-color: var(--accent); }
 
 .exhibitionScrubBar {
-  width: min(91%, 1380px);
-  margin-inline: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -938,7 +1129,6 @@ a:focus-visible, button:focus-visible {
   padding: 26px 0;
   border-bottom: 1px solid var(--line);
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 .ledgerHead {
   display: grid;
@@ -1151,16 +1341,15 @@ a:focus-visible, button:focus-visible {
 @media (max-width: 960px) {
   .atelierNav, .atelierClock { display: none; }
   .atelierMenuBtn { display: inline-block; }
-  .coverStage { grid-template-columns: 1fr; }
-  .coverSculptureSlot { grid-column: 1; grid-row: 2; height: 340px; }
-  .coverFootGrid, .craftGrid, .experienceGrid, .offscreenIntro, .studyMeta, .studyGrid {
+  .spatialBottomBar, .apertureGrid, .craftGrid, .experienceGrid, .offscreenIntro, .studyMeta, .studyGrid {
     grid-template-columns: 1fr;
   }
+  .apertureStage, .experienceLeft { position: static; }
+  .apertureFrame img { height: 340px; }
   .sectionIntroRow { flex-direction: column; align-items: flex-start; }
-  .experienceLeft { position: static; }
   .exhibitionWrap { height: auto; padding: 90px 0; }
   .exhibitionSticky { position: static; height: auto; padding: 0; gap: 36px; }
-  .exhibitionViewport { overflow-x: auto; padding-left: 4.5%; padding-right: 4.5%; }
+  .exhibitionViewport { overflow-x: auto; padding-inline: 20px; }
   .exhibitionPlate { width: 82vw; }
   .exhibitionScrubBar { display: none; }
   .ledgerHead { grid-template-columns: 1fr; gap: 4px; }
@@ -1171,7 +1360,7 @@ a:focus-visible, button:focus-visible {
 }
 
 @media (max-width: 600px) {
-  .contactSheetGrid, .specimenLayers { grid-template-columns: 1fr; }
+  .contactSheetGrid, .specimenLayers, .pipeNodes { grid-template-columns: 1fr; }
   .sheetNodeRow { grid-template-columns: 1fr; gap: 6px; }
   .cursorDot, .cursorRing { display: none !important; }
 }

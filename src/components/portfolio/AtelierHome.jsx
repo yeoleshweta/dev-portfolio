@@ -2,14 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { SculpturalMonolith } from "@/components/motion/SculpturalMonolith";
+import { SpatialHeroCanvas } from "@/components/motion/SpatialHeroCanvas";
+import { StoryAperture } from "@/components/portfolio/StoryAperture";
 import { profile, projects, experience } from "@/content/profile";
 import { systems, archive } from "@/content/engineering";
 import { gallery } from "@/content/gallery";
-
-const thesisText =
-  "I came to engineering through people. Six years of UX research and product design, paired with a master’s in AI and machine learning — building software where the interface and the model speak the same language.";
-const thesisWords = thesisText.split(" ");
 
 const exhibitionPlates = [
   {
@@ -170,10 +167,9 @@ const roleMetrics = {
 };
 
 export function AtelierHome() {
-  const thesisRef = useRef(null);
+  const heroRef = useRef(null);
   const worksWrapRef = useRef(null);
   const worksRailRef = useRef(null);
-  const [thesisProgress, setThesisProgress] = useState(0);
   const [workProgress, setWorkProgress] = useState(0);
   const [activePlate, setActivePlate] = useState(0);
   const [selectedWork, setSelectedWork] = useState(null);
@@ -185,35 +181,29 @@ export function AtelierHome() {
   const workDialogRef = useRef(null);
   const lightboxRef = useRef(null);
 
-  // Scroll-driven choreography: Thesis word scrub + Nocturnal theme transition + Horizontal exhibition rail
+  // Scroll-driven Nocturnal theme shift (Hero + Exhibition) & horizontal exhibition rail
   useEffect(() => {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isDesktop = () => window.innerWidth >= 960;
 
-    let targetThesis = reduced ? 1 : 0;
-    let currentThesis = targetThesis;
     let targetWork = 0;
     let currentWork = 0;
     let raf = 0;
 
-    const computeTargets = () => {
-      // 1. Thesis scrub
-      if (thesisRef.current && !reduced) {
-        const rect = thesisRef.current.getBoundingClientRect();
-        const total = Math.max(1, rect.height - window.innerHeight * 0.65);
-        const passed = window.innerHeight * 0.45 - rect.top;
-        targetThesis = Math.min(1, Math.max(0, passed / total));
+    const tick = () => {
+      let nocturnal = false;
+      if (heroRef.current) {
+        const hRect = heroRef.current.getBoundingClientRect();
+        if (hRect.bottom > window.innerHeight * 0.45) nocturnal = true;
       }
-
-      // 2. Nocturnal theme shift & horizontal exhibition rail
       if (worksWrapRef.current) {
         const rect = worksWrapRef.current.getBoundingClientRect();
-        const inNocturnal =
+        if (
           rect.top < window.innerHeight * 0.42 &&
-          rect.bottom > window.innerHeight * 0.35;
-        document.documentElement.dataset.theme = inNocturnal
-          ? "nocturnal"
-          : "daylight";
+          rect.bottom > window.innerHeight * 0.35
+        ) {
+          nocturnal = true;
+        }
 
         if (isDesktop() && !reduced) {
           const scrollable = Math.max(1, rect.height - window.innerHeight);
@@ -222,15 +212,12 @@ export function AtelierHome() {
           targetWork = 0;
         }
       }
-    };
 
-    const tick = () => {
-      computeTargets();
+      document.documentElement.dataset.theme = nocturnal
+        ? "nocturnal"
+        : "daylight";
 
-      currentThesis += (targetThesis - currentThesis) * 0.12;
       currentWork += (targetWork - currentWork) * 0.1;
-
-      setThesisProgress(currentThesis);
 
       if (worksRailRef.current && isDesktop() && !reduced) {
         const maxShift = Math.max(
@@ -282,7 +269,6 @@ export function AtelierHome() {
     return () => obs.disconnect();
   }, []);
 
-  // Native dialogs for Monograph Drawer & Lightbox
   useEffect(() => {
     const d = workDialogRef.current;
     if (!d) return;
@@ -319,87 +305,60 @@ export function AtelierHome() {
 
   return (
     <main id="main">
-      {/* ACT I — MONOGRAPH COVER */}
-      <section className="coverSection">
-        <div className="coverGrid">
-          <div className="coverTopRow">
-            <span>MONOGRAPH / 01</span>
+      {/* ACT I — FULL-BLEED 3D SPATIAL EXHIBITION HERO */}
+      <section ref={heroRef} className="spatialHero">
+        <SpatialHeroCanvas />
+        <div className="spatialHeroVignette" aria-hidden="true" />
+
+        <div className="atelierWrap spatialHeroInner">
+          <div className="spatialTopStrip">
+            <span>ARCHIVE / 2026</span>
             <span>FULLSTACK ENGINEERING × APPLIED ML</span>
             <span>PHILADELPHIA, PA</span>
           </div>
 
-          <div className="coverStage">
-            <div className="coverSculptureSlot">
-              <SculpturalMonolith />
-            </div>
-
-            <div className="coverTypography">
-              <h1 className="coverName">
-                <span className="coverNameLine" style={{ "--i": 0 }}>
-                  <span>Shweta</span>
+          <div className="spatialCenterpiece">
+            <p className="spatialEyebrow">DESIGNER’S EYE · ENGINEER’S ARCHITECTURE</p>
+            <h1 className="spatialTitle">
+              <span className="spatialLine" style={{ "--i": 0 }}>
+                <span>SHWETA</span>
+              </span>
+              <span className="spatialLine spatialSerif" style={{ "--i": 1 }}>
+                <span>
+                  <em>Sharma</em>
                 </span>
-                <span className="coverNameLine coverNameItalic" style={{ "--i": 1 }}>
-                  <span>
-                    <em>Sharma</em>
-                  </span>
-                </span>
-              </h1>
-              <p className="coverDeck">
-                Designing and engineering human-centered web systems, APIs, and
-                applied machine learning tools from first sketch to deployment.
-              </p>
-            </div>
+              </span>
+            </h1>
+            <p className="spatialSub">
+              Owning software from human research and interface craft to APIs,
+              data pipelines, and interpretable machine learning.
+            </p>
           </div>
 
-          <div className="coverFootGrid">
-            <div>
-              <small>PRACTICE</small>
-              <p>Interface → API → Model Evaluation</p>
-            </div>
-            <div>
+          <div className="spatialBottomBar">
+            <div className="spatialMetaCol">
               <small>EDUCATION</small>
-              <p>MS Computer Science (AI &amp; ML), Drexel · 3.97 GPA</p>
+              <span>MS Computer Science (AI &amp; ML) · Drexel · 3.97 GPA</span>
             </div>
-            <div className="coverScrollCue">
-              <a href="#thesis">
-                <span>ENTER THE MONOGRAPH</span>
-                <i>↓</i>
-              </a>
+            <div className="spatialMetaCol">
+              <small>FEATURED IN ORBIT</small>
+              <span>Bias Checker · GesturePro · Urbanfit · PocketSaver · ABIM</span>
             </div>
+            <a className="spatialScrollLink" href="#story" data-cursor="ENTER">
+              <span>SCROLL TO ENTER</span>
+              <i aria-hidden="true">↓</i>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* ACT II — KINETIC THESIS SCRUB */}
-      <section id="thesis" ref={thesisRef} className="thesisChapter">
-        <div className="thesisSticky">
-          <span className="chapterMarker">01 / THE THESIS</span>
-          <p className="thesisStatement" aria-label={thesisText}>
-            {thesisWords.map((word, idx) => {
-              const start = idx / thesisWords.length;
-              const end = (idx + 2.5) / thesisWords.length;
-              const lit = Math.min(
-                1,
-                Math.max(0.14, (thesisProgress - start) / (end - start))
-              );
-              return (
-                <span
-                  key={`${word}-${idx}`}
-                  style={{ opacity: lit.toFixed(3) }}
-                  aria-hidden="true"
-                >
-                  {word}{" "}
-                </span>
-              );
-            })}
-          </p>
-        </div>
-      </section>
+      {/* ACT II — SPLIT-SHUTTER VISUAL DOSSIER (REPLACES FADE TEXT) */}
+      <StoryAperture />
 
       {/* ACT III — NOCTURNAL HORIZONTAL EXHIBITION */}
       <section id="works" ref={worksWrapRef} className="exhibitionWrap">
         <div className="exhibitionSticky">
-          <div className="exhibitionTopBar">
+          <div className="atelierWrap exhibitionTopBar">
             <div>
               <span className="chapterMarker">02 / SELECTED WORKS</span>
               <h2 className="exhibitionTitle">
@@ -473,7 +432,7 @@ export function AtelierHome() {
             </div>
           </div>
 
-          <div className="exhibitionScrubBar">
+          <div className="atelierWrap exhibitionScrubBar">
             <span>SCROLL TO TRAVERSE EXHIBITION · CLICK ANY PLATE FOR ARCHITECTURE</span>
             <div className="scrubTrack">
               <i style={{ transform: `scaleX(${Math.max(0.06, workProgress)})` }} />
@@ -559,7 +518,7 @@ export function AtelierHome() {
         )}
       </dialog>
 
-      {/* ACT IV — CRAFT & DISCIPLINES (SWISS EDITORIAL INDEX) */}
+      {/* ACT IV — CRAFT & DISCIPLINES */}
       <section id="craft" className="craftSection atelierWrap">
         <div className="sectionIntroRow" data-reveal>
           <div>
