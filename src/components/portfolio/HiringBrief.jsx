@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/content/profile";
 
-export function HiringBrief() {
+export function HiringBrief({ triggerClassName = "briefTrigger" }) {
   const [open, setOpen] = useState(false);
   const dialog = useRef(null);
   const trigger = useRef(null);
@@ -23,9 +23,10 @@ export function HiringBrief() {
     <>
       <button
         ref={trigger}
-        className="briefTrigger"
+        className={triggerClassName}
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
+        data-cursor="BRIEF"
       >
         The 30-second brief <span aria-hidden="true">↗</span>
       </button>
@@ -81,7 +82,7 @@ export function HiringBrief() {
           </dl>
           <div className="briefProof">
             <span className="tinyLabel">Three places to start</span>
-            <a href="#bias-checker" onClick={() => setOpen(false)}>
+            <a href="#works" onClick={() => setOpen(false)}>
               <span>
                 <strong>Bias Checker</strong>Model → Flask API → Next.js
                 interface

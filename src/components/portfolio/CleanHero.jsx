@@ -1,5 +1,6 @@
 "use client";
 import { Cinematic3DHero } from "@/components/motion/Cinematic3DHero";
+import { HiringBrief } from "@/components/portfolio/HiringBrief";
 import { profile } from "@/content/profile";
 
 /**
@@ -41,9 +42,7 @@ export function CleanHero() {
           </p>
 
           <div className="cinemaActions">
-            <a className="cinemaBtnPrimary" href="#works" data-cursor="WORKS">
-              Selected works <span aria-hidden="true">↓</span>
-            </a>
+            <HiringBrief triggerClassName="cinemaBtnPrimary" />
             <a
               className="cinemaBtnLink"
               href={profile.resume}
