@@ -747,6 +747,88 @@ a:focus-visible, button:focus-visible {
 .specimenProof small { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; color: var(--accent); }
 .specimenProof p { font-size: 13px; margin-top: 4px; }
 
+/* SKILLS & TOOLKIT MATRIX */
+.skillsSection { padding: 36px 0 110px; border-top: 1px solid var(--line); }
+.skillsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  padding-top: 72px;
+  margin-bottom: 48px;
+}
+.skillsHeading {
+  font-family: var(--font-sans);
+  font-size: clamp(32px, 4vw, 54px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+.skillsHeading em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.skillCol {
+  padding: 26px 24px 28px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--line);
+  transition: border-color 0.3s ease;
+}
+.skillCol:hover {
+  border-color: var(--accent);
+}
+.skillColTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.skillColTop span { color: var(--accent); }
+.skillColTop small { color: var(--ink-muted); font-size: 9px; }
+.skillCol h3 {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.skillTagList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.skillTagList li {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.3;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.skillTagList li:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* ACT V — CAREER LEDGER */
 .experienceSection { padding: 90px 0 130px; border-top: 1px solid var(--line); }
 .experienceGrid { display: grid; grid-template-columns: 0.85fr 1.25fr; gap: 64px; }
@@ -866,10 +948,15 @@ a:focus-visible, button:focus-visible {
 .studyCard p { font-size: 14px; color: var(--ink-muted); line-height: 1.7; }
 .studyNext { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 32px; border: 1px solid var(--line); background: var(--bg-subtle); }
 
+@media (max-width: 1120px) {
+  .skillsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 960px) {
   .atelierNav, .atelierClock { display: none; }
   .atelierMenuBtn { display: inline-block; }
-  .cinemaProofStrip, .practiceHeader, .practiceGrid, .craftGrid, .experienceGrid, .offscreenIntro, .studyMeta, .studyGrid {
+  .skillsHeader { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .cinemaProofStrip, .practiceHeader, .practiceGrid, .craftGrid, .skillsGrid, .experienceGrid, .offscreenIntro, .studyMeta, .studyGrid {
     grid-template-columns: 1fr;
   }
   .practiceCol { border-right: 0; border-bottom: 1px solid var(--line); padding: 28px 0 !important; }

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CleanHero } from "@/components/portfolio/CleanHero";
 import { PracticePillars } from "@/components/portfolio/PracticePillars";
+import { SkillsMatrix } from "@/components/portfolio/SkillsMatrix";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
 import { profile, projects, experience } from "@/content/profile";
 import { systems, archive } from "@/content/engineering";
@@ -539,6 +540,9 @@ export function AtelierHome() {
           </div>
         </div>
       </section>
+
+      {/* SKILLS & TOOLKIT MATRIX */}
+      <SkillsMatrix />
 
       {/* ACT V — CAREER LEDGER */}
       <section id="experience" className="experienceSection atelierWrap">
