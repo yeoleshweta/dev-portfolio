@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 /**
  * Orb-free Atmospheric 3D Architectural Horizon Background.
  * Renders a subtle, receding 3D perspective topographic mesh with fine hairline
- * grid contours and soft volumetric royal burgundy/champagne light sweeping across the
+ * grid contours and soft volumetric deep oxblood/champagne light sweeping across the
  * right side of the canvas. Reacts smoothly to pointer parallax and scroll.
  */
 export function Cinematic3DHero() {
@@ -67,7 +67,7 @@ export function Cinematic3DHero() {
 
       // Crisp architectural hairline grid layered cleanly above the terrain
       const wireMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color("#a62644"),
+        color: new THREE.Color("#8c1d35"),
         wireframe: true,
         transparent: true,
         opacity: 0.24,
@@ -91,7 +91,7 @@ export function Cinematic3DHero() {
         }
         const geo = new THREE.BufferGeometry().setFromPoints(pts);
         const mat = new THREE.LineBasicMaterial({
-          color: r % 2 === 0 ? "#c94060" : "#e3d6c0",
+          color: r % 2 === 0 ? "#c95b68" : "#e3d6c0",
           transparent: true,
           opacity: 0.34 - r * 0.042,
         });
@@ -103,7 +103,7 @@ export function Cinematic3DHero() {
       }
 
       // 3. Soft Cinematic Directional & Point Light Pools (sweeping across the 3D ridges)
-      const burgundyLight = new THREE.PointLight("#8f1533", 14, 24, 1.5);
+      const burgundyLight = new THREE.PointLight("#781227", 14, 24, 1.5);
       burgundyLight.position.set(4.5, 1.8, -2.0);
       scene.add(burgundyLight);
 
@@ -111,7 +111,7 @@ export function Cinematic3DHero() {
       champagneLight.position.set(-2.5, 2.2, 1.0);
       scene.add(champagneLight);
 
-      const rimLight = new THREE.DirectionalLight("#c43e5d", 1.1);
+      const rimLight = new THREE.DirectionalLight("#b84a5a", 1.1);
       rimLight.position.set(5, 6, -6);
       scene.add(rimLight);
 
