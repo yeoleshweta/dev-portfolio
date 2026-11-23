@@ -191,8 +191,15 @@ export function AtelierHome() {
 
     const tick = () => {
       const heroEl = document.getElementById("hero");
+      const bandEl = document.getElementById("darkBand");
       const overHero = heroEl ? heroEl.getBoundingClientRect().bottom > 68 : false;
-      const nextTheme = overHero ? "nocturnal" : "daylight";
+      const overBand = bandEl
+        ? (() => {
+            const r = bandEl.getBoundingClientRect();
+            return r.top <= 68 && r.bottom > 68;
+          })()
+        : false;
+      const nextTheme = overHero || overBand ? "nocturnal" : "daylight";
       if (document.documentElement.dataset.theme !== nextTheme) {
         document.documentElement.dataset.theme = nextTheme;
       }
@@ -460,6 +467,8 @@ export function AtelierHome() {
         )}
       </dialog>
 
+      {/* NOCTURNAL DEEP MERLOT BAND — CRAFT & TRAJECTORY */}
+      <div id="darkBand" className="nocturnalBand">
       {/* ACT IV — CRAFT & DISCIPLINES */}
       <section id="craft" className="craftSection atelierWrap">
         <div className="sectionIntroRow" data-reveal>
@@ -599,6 +608,7 @@ export function AtelierHome() {
           </div>
         </div>
       </section>
+      </div>
 
       {/* ACT VI — BEYOND THE SCREEN */}
       <section id="offscreen" className="offscreenSection atelierWrap">

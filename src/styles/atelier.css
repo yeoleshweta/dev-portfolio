@@ -51,6 +51,20 @@ html {
   color: var(--ink);
 }
 
+.nocturnalBand {
+  --bg: #160b0f;
+  --bg-subtle: #221218;
+  --ink: #f6f4ef;
+  --ink-muted: #b29fa5;
+  --line: rgb(246 244 239 / 0.14);
+  --line-strong: rgb(246 244 239 / 0.32);
+  --accent: #c95b68;
+  --accent-ink: #160b0f;
+  width: 100%;
+  background: var(--bg);
+  color: var(--ink);
+}
+
 body {
   margin: 0;
   background: transparent;
