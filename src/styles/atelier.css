@@ -230,66 +230,14 @@ a:focus-visible, button:focus-visible {
 .atelierDrawerNav a { display: flex; align-items: baseline; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-size: clamp(32px, 9vw, 52px); }
 .atelierDrawerNav small { font-family: var(--font-mono); font-size: 11px; color: var(--accent); }
 
-/* ACT I — 2-SECOND HOOK DAYLIGHT HERO (INLINE PORTALS + STUDIO PROOF TRAIL) */
+/* ACT I — CALM, SINGULAR-APERTURE DAYLIGHT HERO */
 .hookHero {
   position: relative;
   min-height: 100svh;
   display: flex;
   padding: 86px 0 32px;
-  overflow: hidden;
   border-bottom: 1px solid var(--line);
 }
-.heroTrailLayer {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
-}
-.heroTrailProof {
-  position: absolute;
-  width: 172px;
-  padding: 6px 6px 10px;
-  background: #ffffff;
-  border: 1px solid rgb(17 17 16 / 0.12);
-  box-shadow: 0 18px 42px rgb(17 17 16 / 0.12);
-  transform: translate(-50%, -50%) rotate(var(--tilt, 0deg)) scale(1);
-  animation: proof-bloom 0.42s var(--ease) both;
-  transition: opacity 0.42s var(--ease), transform 0.42s var(--ease);
-}
-.heroTrailProof[data-fading="true"] {
-  opacity: 0;
-  transform: translate(-50%, -44%) rotate(var(--tilt, 0deg)) scale(0.92);
-}
-@keyframes proof-bloom {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(var(--tilt, 0deg)) scale(0.76);
-  }
-  to {
-    opacity: 0.92;
-    transform: translate(-50%, -50%) rotate(var(--tilt, 0deg)) scale(1);
-  }
-}
-.heroTrailProof img {
-  width: 100%;
-  height: 106px;
-  object-fit: cover;
-  display: block;
-}
-.heroTrailProof span {
-  display: block;
-  margin-top: 7px;
-  font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .hookHeroInner {
   position: relative;
   z-index: 2;
@@ -311,36 +259,36 @@ a:focus-visible, button:focus-visible {
   letter-spacing: 0.16em;
   color: var(--ink-muted);
 }
-.hookHint {
-  color: var(--accent);
-}
-
 .hookTypeStage {
   margin: auto 0;
-  padding: 28px 0;
+  padding: 32px 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .hookHeadline {
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1.5vw, 22px);
+  gap: clamp(8px, 1.3vw, 18px);
   font-weight: 500;
+  width: 100%;
 }
 .hookRow {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: nowrap;
-  gap: clamp(12px, 2vw, 30px);
-  animation: cover-rise 0.95s var(--ease) both;
-  animation-delay: calc(var(--i, 0) * 130ms + 80ms);
+  gap: clamp(14px, 2.2vw, 32px);
+  animation: cover-rise 0.9s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 60ms);
 }
 @keyframes cover-rise {
-  from { transform: translateY(38px); opacity: 0; }
+  from { transform: translateY(30px); opacity: 0; }
   to { transform: none; opacity: 1; }
 }
 .hookWord {
   font-family: var(--font-sans);
-  font-size: clamp(44px, 7.6vw, 122px);
+  font-size: clamp(46px, 7.8vw, 126px);
   line-height: 0.92;
   letter-spacing: -0.052em;
   font-weight: 500;
@@ -360,78 +308,92 @@ a:focus-visible, button:focus-visible {
   color: var(--accent);
 }
 
-/* Live Expandable Inline Media Portals */
-.inlinePortal {
+/* Singular Living Focal Aperture */
+.singularAperture {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: clamp(42px, 6.2vw, 94px);
-  width: clamp(86px, 11.5vw, 176px);
+  display: inline-block;
+  height: clamp(48px, 6.8vw, 104px);
+  width: clamp(128px, 17vw, 260px);
   border-radius: 999px;
   overflow: hidden;
   border: 1px solid var(--line-strong);
   background: var(--bg-subtle);
   flex-shrink: 0;
-  transition: width 0.55s var(--ease), border-color 0.35s ease, transform 0.45s var(--ease);
-  animation: portal-open 1s var(--ease) both;
-  animation-delay: 260ms;
+  transition: width 0.6s var(--ease), border-color 0.35s ease;
 }
-@keyframes portal-open {
-  from { width: 0; opacity: 0; }
-  to { opacity: 1; }
-}
-.inlinePortal:hover {
-  width: clamp(130px, 18vw, 270px);
+.singularAperture:hover {
+  width: clamp(160px, 22vw, 330px);
   border-color: var(--accent);
-  transform: scale(1.03);
 }
-.inlinePortal img {
+.apertureLayer {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(100% 0 0 0);
+  opacity: 0;
+  transition: clip-path 0.65s var(--ease), opacity 0.55s var(--ease);
+}
+.apertureLayer[data-active="true"] {
+  clip-path: inset(0 0 0 0);
+  opacity: 1;
+}
+.apertureLayer img {
   object-fit: cover;
   object-position: center 35%;
-  transition: transform 0.7s var(--ease);
+  transition: transform 0.8s var(--ease);
 }
-.inlinePortal:hover img {
-  transform: scale(1.08);
+.singularAperture:hover .apertureLayer[data-active="true"] img {
+  transform: scale(1.06);
 }
 
-/* Live AI Signal Portal */
-.portalSignal {
-  background: #111110;
-  color: #f6f4ef;
-  border-color: #111110;
-  gap: 10px;
-  padding: 0 18px;
+/* Quiet Interactive Lens Dock */
+.heroLensDock {
+  margin-top: clamp(28px, 3.6vw, 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
 }
-.portalSignal small {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  color: #8aa4ff;
-  white-space: nowrap;
-}
-.signalBars {
+.heroLensTabs {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  height: 28px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-subtle);
 }
-.signalBars i {
-  width: 2.5px;
-  border-radius: 99px;
-  background: #f6f4ef;
-  animation: signal-wave 1.3s ease-in-out infinite;
+.heroLensTab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  color: var(--ink-muted);
+  transition: background 0.3s ease, color 0.3s ease;
 }
-.signalBars i:nth-child(1) { height: 10px; animation-delay: 0s; }
-.signalBars i:nth-child(2) { height: 22px; animation-delay: 0.15s; background: #8aa4ff; }
-.signalBars i:nth-child(3) { height: 16px; animation-delay: 0.3s; }
-.signalBars i:nth-child(4) { height: 26px; animation-delay: 0.45s; background: #8aa4ff; }
-.signalBars i:nth-child(5) { height: 14px; animation-delay: 0.6s; }
-.signalBars i:nth-child(6) { height: 20px; animation-delay: 0.75s; background: #8aa4ff; }
-.signalBars i:nth-child(7) { height: 10px; animation-delay: 0.9s; }
-@keyframes signal-wave {
-  0%, 100% { transform: scaleY(0.45); opacity: 0.65; }
-  50% { transform: scaleY(1); opacity: 1; }
+.heroLensTab span {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent);
+}
+.heroLensTab strong {
+  font-size: 12px;
+  font-weight: 500;
+}
+.heroLensTab[aria-selected="true"],
+.heroLensTab:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+.heroLensCaption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+  text-align: center;
+  animation: fade-up 0.35s var(--ease) both;
 }
 
 .hookBottomBar {
@@ -737,11 +699,11 @@ a:focus-visible, button:focus-visible {
 .studyNext { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 32px; border: 1px solid var(--line); background: var(--bg-subtle); }
 
 @media (max-width: 960px) {
-  .atelierNav, .atelierClock, .hookHint { display: none; }
+  .atelierNav, .atelierClock { display: none; }
   .atelierMenuBtn { display: inline-block; }
   .hookRow { flex-wrap: wrap; justify-content: flex-start; gap: 10px; }
   .hookWord { font-size: clamp(38px, 10vw, 64px); }
-  .inlinePortal { height: 42px; width: 84px; }
+  .singularAperture { height: 44px; width: 108px; }
   .practiceHeader, .practiceGrid, .craftGrid, .experienceGrid, .offscreenIntro, .studyMeta, .studyGrid {
     grid-template-columns: 1fr;
   }
@@ -764,12 +726,12 @@ a:focus-visible, button:focus-visible {
 @media (max-width: 600px) {
   .contactSheetGrid, .specimenLayers { grid-template-columns: 1fr; }
   .sheetNodeRow { grid-template-columns: 1fr; gap: 6px; }
-  .cursorDot, .cursorRing, .heroTrailLayer { display: none !important; }
+  .cursorDot, .cursorRing { display: none !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   [data-reveal] { opacity: 1 !important; transform: none !important; }
-  .curtainOverlay, .cursorDot, .cursorRing, .heroTrailLayer { display: none !important; }
+  .curtainOverlay, .cursorDot, .cursorRing { display: none !important; }
 }
