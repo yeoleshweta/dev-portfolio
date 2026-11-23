@@ -36,7 +36,19 @@ html {
   scroll-padding-top: 84px;
   background: var(--bg);
   color: var(--ink);
-  transition: background-color 0.65s var(--ease), color 0.65s var(--ease);
+}
+
+.editorialCanvas {
+  --bg: #f6f4ef;
+  --bg-subtle: #edeae2;
+  --ink: #111110;
+  --ink-muted: #66635c;
+  --line: rgb(17 17 16 / 0.11);
+  --line-strong: rgb(17 17 16 / 0.28);
+  --accent: #5c0e1e;
+  --accent-ink: #f6f4ef;
+  background: var(--bg);
+  color: var(--ink);
 }
 
 body {
@@ -471,8 +483,8 @@ a:focus-visible, button:focus-visible {
 .plateBlueprint {
   height: 100%; padding: 28px; display: flex; flex-direction: column; justify-content: space-between;
   background:
-    linear-gradient(to right, rgb(246 244 239 / 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(246 244 239 / 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgb(17 17 16 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(17 17 16 / 0.05) 1px, transparent 1px);
   background-size: 36px 36px;
 }
 .plateBlueprint small { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; color: var(--accent); }

@@ -181,7 +181,7 @@ export function AtelierHome() {
   const workDialogRef = useRef(null);
   const lightboxRef = useRef(null);
 
-  // Nocturnal theme shift during Selected Works + Horizontal Exhibition rail
+  // Header theme sync (nocturnal over Hero only) + Horizontal Exhibition rail
   useEffect(() => {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isDesktop = () => window.innerWidth >= 960;
@@ -191,20 +191,15 @@ export function AtelierHome() {
     let raf = 0;
 
     const tick = () => {
-      let nocturnal = false;
       const heroEl = document.getElementById("hero");
-      if (heroEl) {
-        const hRect = heroEl.getBoundingClientRect();
-        if (hRect.bottom > window.innerHeight * 0.45) nocturnal = true;
+      const overHero = heroEl ? heroEl.getBoundingClientRect().bottom > 68 : false;
+      const nextTheme = overHero ? "nocturnal" : "daylight";
+      if (document.documentElement.dataset.theme !== nextTheme) {
+        document.documentElement.dataset.theme = nextTheme;
       }
+
       if (worksWrapRef.current) {
         const rect = worksWrapRef.current.getBoundingClientRect();
-        if (
-          rect.top < window.innerHeight * 0.42 &&
-          rect.bottom > window.innerHeight * 0.35
-        ) {
-          nocturnal = true;
-        }
         if (isDesktop() && !reduced) {
           const scrollable = Math.max(1, rect.height - window.innerHeight);
           targetWork = Math.min(1, Math.max(0, -rect.top / scrollable));
@@ -212,10 +207,6 @@ export function AtelierHome() {
           targetWork = 0;
         }
       }
-
-      document.documentElement.dataset.theme = nocturnal
-        ? "nocturnal"
-        : "daylight";
 
       currentWork += (targetWork - currentWork) * 0.1;
 
@@ -305,9 +296,11 @@ export function AtelierHome() {
 
   return (
     <main id="main">
-      {/* ACT I — CLEAN ARCHITECTURAL HERO & SCROLL-EXPANDING SHOWREEL */}
+      {/* ACT I — CINEMATIC 3D HERO (DEEP MERLOT) */}
       <CleanHero />
 
+      {/* CONTINUOUS DAYLIGHT EDITORIAL MONOGRAPH (ZERO MID-SCROLL THEME FLASHING) */}
+      <div className="editorialCanvas">
       {/* ACT II — SWISS 3-PILLAR PRACTICE OVERVIEW */}
       <PracticePillars />
 
@@ -759,6 +752,7 @@ export function AtelierHome() {
           </footer>
         </div>
       </section>
+      </div>
     </main>
   );
 }
