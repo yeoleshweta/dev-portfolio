@@ -1,4 +1,4 @@
-/* Editorial Monograph — Ultra-Clean Architectural Daylight & Nocturnal Exhibition */
+/* Editorial Monograph — Cinematic 3D Opening + Clean Architectural Daylight & Nocturnal Exhibition */
 :root {
   --bg: #f6f4ef;
   --bg-subtle: #edeae2;
@@ -17,16 +17,16 @@
   --ease-dramatic: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-/* Smooth nocturnal shift ONLY during Selected Works */
+/* Smooth nocturnal shift in Cinematic 3D Hero & Selected Works */
 html[data-theme="nocturnal"] {
-  --bg: #0e0e0d;
-  --bg-subtle: #161614;
+  --bg: #050608;
+  --bg-subtle: #111318;
   --ink: #f6f4ef;
-  --ink-muted: #9a968c;
+  --ink-muted: #9a9ca4;
   --line: rgb(246 244 239 / 0.14);
   --line-strong: rgb(246 244 239 / 0.32);
   --accent: #8aa4ff;
-  --accent-ink: #0e0e0d;
+  --accent-ink: #050608;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -103,7 +103,7 @@ a:focus-visible, button:focus-visible {
   position: absolute;
   left: 0; right: 0;
   height: 50.5%;
-  background: #111110;
+  background: #050608;
   transition: transform 0.7s var(--ease-dramatic);
 }
 .curtainTop { top: 0; border-bottom: 1px solid rgb(246 244 239 / 0.12); }
@@ -188,7 +188,7 @@ a:focus-visible, button:focus-visible {
   top: 0; left: 0; right: 0;
   z-index: 80;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   transition: background-color 0.65s var(--ease), border-color 0.65s var(--ease);
@@ -230,202 +230,189 @@ a:focus-visible, button:focus-visible {
 .atelierDrawerNav a { display: flex; align-items: baseline; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-size: clamp(32px, 9vw, 52px); }
 .atelierDrawerNav small { font-family: var(--font-mono); font-size: 11px; color: var(--accent); }
 
-/* ACT I — EDITORIAL MAGAZINE-COVER 54/46 FULL-BLEED SPLIT HERO */
-.splitCoverHero {
-  display: grid;
-  grid-template-columns: 1.15fr 0.95fr;
+/* ACT I — FULL-BLEED CINEMATIC 3D MONOLITH HERO */
+.cinemaHero {
+  position: relative;
   min-height: 100svh;
-  padding-top: 68px;
-  border-bottom: 1px solid var(--line);
-  background: var(--bg);
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  background: #050608;
+  color: #f6f4ef;
+  padding: 86px 0 36px;
 }
-.splitCoverLeft {
+.cinema3dCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  cursor: grab;
+}
+.cinema3dCanvas:active { cursor: grabbing; }
+.cinema3dCanvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+.cinemaVignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 44%, transparent 32%, rgb(5 6 8 / 0.68) 100%),
+    linear-gradient(180deg, rgb(5 6 8 / 0.55) 0%, transparent 22%, transparent 62%, rgb(5 6 8 / 0.92) 100%);
+}
+.cinemaHeroHud {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(36px, 5vw, 68px) clamp(24px, 4.5vw, 68px) clamp(28px, 3.5vw, 44px);
-  border-right: 1px solid var(--line);
+  flex: 1;
+  pointer-events: none;
 }
-.splitCoverLead {
-  margin: auto 0;
-  padding: 12px 0 36px;
+.cinemaHeroHud a,
+.cinemaHeroHud button {
+  pointer-events: auto;
 }
-.splitCoverEyebrow {
+.cinemaTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  border-bottom: 1px solid rgb(246 244 239 / 0.14);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: rgb(246 244 239 / 0.62);
+}
+.cinemaTelemetry {
+  color: #8aa4ff;
+}
+.cinemaBottomRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 36px;
+  flex-wrap: wrap;
+  padding-top: 24px;
+}
+.cinemaIdentity {
+  max-width: 560px;
+}
+.cinemaEyebrow {
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.18em;
-  color: var(--ink-muted);
-  margin-bottom: 24px;
+  color: #8aa4ff;
+  margin-bottom: 14px;
 }
-.splitCoverHeadline {
+.cinemaTitle {
   font-family: var(--font-sans);
-  font-size: clamp(42px, 4.9vw, 76px);
-  line-height: 0.98;
-  letter-spacing: -0.048em;
+  font-size: clamp(50px, 6.8vw, 108px);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
   font-weight: 500;
+  color: #f6f4ef;
 }
-.splitCoverHeadline em {
+.cinemaTitle em {
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.02em;
-  color: var(--accent);
+  color: #8aa4ff;
 }
-.splitCoverLine {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.08em;
-}
-.splitCoverLine > span {
-  display: block;
-  animation: cover-rise 0.9s var(--ease) both;
-  animation-delay: calc(var(--i, 0) * 110ms + 60ms);
-}
-@keyframes cover-rise {
-  from { transform: translateY(104%); opacity: 0; }
-  to { transform: none; opacity: 1; }
-}
-.splitCoverBio {
-  margin-top: 26px;
-  max-width: 44ch;
+.cinemaLead {
+  margin-top: 18px;
   font-size: 15px;
-  line-height: 1.75;
-  color: var(--ink-muted);
+  line-height: 1.7;
+  color: rgb(246 244 239 / 0.74);
+  max-width: 44ch;
 }
-.splitCoverActions {
+.cinemaActions {
   display: flex;
   align-items: center;
-  gap: 24px;
-  margin-top: 30px;
+  gap: 22px;
+  margin-top: 24px;
 }
-.splitBtnPrimary {
+.cinemaBtnPrimary {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   padding: 12px 22px;
   border-radius: 99px;
-  background: var(--ink);
-  color: var(--bg);
+  background: #f6f4ef;
+  color: #050608;
   font-size: 13px;
   font-weight: 500;
-  transition: background 0.25s ease, transform 0.3s var(--ease);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.3s var(--ease);
 }
-.splitBtnPrimary:hover {
-  background: var(--accent);
-  transform: translateY(-1px);
+.cinemaBtnPrimary:hover {
+  background: #8aa4ff;
+  color: #050608;
+  transform: translateY(-2px);
 }
-.splitBtnLink {
+.cinemaBtnLink {
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
+  color: #f6f4ef;
   padding-bottom: 3px;
-  border-bottom: 1px solid var(--line-strong);
+  border-bottom: 1px solid rgb(246 244 239 / 0.38);
   transition: color 0.25s ease, border-color 0.25s ease;
 }
-.splitBtnLink:hover {
-  color: var(--accent);
-  border-color: var(--accent);
+.cinemaBtnLink:hover {
+  color: #8aa4ff;
+  border-color: #8aa4ff;
 }
 
-/* Interactive Index along bottom of left column */
-.splitCoverIndex {
-  padding-top: 20px;
-  border-top: 1px solid var(--line);
+/* Interactive 3D Camera Angle Dock */
+.cinemaCameraDock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
 }
-.splitIndexLabel {
-  display: block;
+.cinemaDockLabel {
   font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.16em;
-  color: var(--ink-muted);
-  margin-bottom: 12px;
+  color: rgb(246 244 239 / 0.55);
 }
-.splitIndexRow {
-  display: grid;
-  grid-template-columns: 28px auto 1fr 18px;
+.cinemaCameraTabs {
+  display: inline-flex;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 999px;
+  background: rgb(14 15 20 / 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgb(246 244 239 / 0.16);
+}
+.cinemaCameraTabs button {
+  display: inline-flex;
   align-items: baseline;
-  gap: 14px;
-  padding: 11px 0;
-  border-top: 1px solid var(--line);
-  transition: padding-left 0.3s var(--ease), color 0.25s ease;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  color: rgb(246 244 239 / 0.65);
+  transition: background 0.28s ease, color 0.28s ease;
 }
-.splitIndexRow:hover,
-.splitIndexRow[data-active="true"] {
-  padding-left: 8px;
-  color: var(--accent);
-}
-.splitIndexNum {
+.cinemaCameraTabs button span {
   font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--accent);
+  font-size: 9px;
+  color: #8aa4ff;
 }
-.splitIndexTitle {
-  font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-.splitIndexSub {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--ink-muted);
-  text-align: right;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.splitIndexArrow {
+.cinemaCameraTabs button strong {
   font-size: 12px;
-  opacity: 0.5;
-  transition: transform 0.3s var(--ease), opacity 0.25s ease;
+  font-weight: 500;
 }
-.splitIndexRow:hover .splitIndexArrow,
-.splitIndexRow[data-active="true"] .splitIndexArrow {
-  opacity: 1;
-  transform: translate(2px, -2px);
-}
-
-/* RIGHT HALF — FULL-BLEED EDITORIAL PORTRAIT / PROJECT CANVAS */
-.splitCoverRight {
-  position: relative;
-  overflow: hidden;
-  background: #1a1816;
-  min-height: calc(100svh - 68px);
-}
-.splitCoverMedia {
-  position: absolute;
-  inset: 0;
-  will-change: transform;
-}
-.splitMediaLayer {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transform: scale(1.04);
-  transition: opacity 0.65s var(--ease), transform 0.85s var(--ease);
-}
-.splitMediaLayer[data-active="true"] {
-  opacity: 1;
-  transform: scale(1);
-}
-.splitMediaLayer img {
-  object-fit: cover;
-}
-.splitCoverCaption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  padding: 36px 28px 20px;
-  background: linear-gradient(transparent, rgb(17 17 16 / 0.72));
+.cinemaCameraTabs button[aria-selected="true"],
+.cinemaCameraTabs button:hover {
+  background: rgb(246 244 239 / 0.12);
   color: #f6f4ef;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
 }
 
 /* Shared Editorial Typography */
@@ -665,13 +652,9 @@ a:focus-visible, button:focus-visible {
 .studyNext { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 32px; border: 1px solid var(--line); background: var(--bg-subtle); }
 
 @media (max-width: 960px) {
-  .atelierNav, .atelierClock { display: none; }
+  .atelierNav, .atelierClock, .cinemaTelemetry { display: none; }
   .atelierMenuBtn { display: inline-block; }
-  .splitCoverHero { grid-template-columns: 1fr; min-height: auto; }
-  .splitCoverLeft { border-right: 0; border-bottom: 1px solid var(--line); }
-  .splitCoverRight { min-height: 460px; }
-  .splitIndexSub { display: none; }
-  .splitIndexRow { grid-template-columns: 28px 1fr 18px; }
+  .cinemaCameraDock { align-items: flex-start; }
   .practiceHeader, .practiceGrid, .craftGrid, .experienceGrid, .offscreenIntro, .studyMeta, .studyGrid {
     grid-template-columns: 1fr;
   }

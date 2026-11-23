@@ -192,6 +192,11 @@ export function AtelierHome() {
 
     const tick = () => {
       let nocturnal = false;
+      const heroEl = document.getElementById("hero");
+      if (heroEl) {
+        const hRect = heroEl.getBoundingClientRect();
+        if (hRect.bottom > window.innerHeight * 0.45) nocturnal = true;
+      }
       if (worksWrapRef.current) {
         const rect = worksWrapRef.current.getBoundingClientRect();
         if (
