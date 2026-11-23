@@ -14,7 +14,7 @@ export const metadata = {
 
 export default function Layout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="nocturnal">
       <body>
         <a className="skip" href="#main">
           Skip to content

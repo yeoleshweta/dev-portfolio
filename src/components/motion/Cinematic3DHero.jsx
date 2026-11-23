@@ -67,10 +67,10 @@ export function Cinematic3DHero() {
 
       // Crisp architectural hairline grid layered cleanly above the terrain
       const wireMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color("#5a7ee6"),
+        color: new THREE.Color("#6b8eff"),
         wireframe: true,
         transparent: true,
-        opacity: 0.15,
+        opacity: 0.24,
       });
       const wireMesh = new THREE.Mesh(terrainGeo, wireMat);
       wireMesh.position.copy(terrainMesh.position);
@@ -91,9 +91,9 @@ export function Cinematic3DHero() {
         }
         const geo = new THREE.BufferGeometry().setFromPoints(pts);
         const mat = new THREE.LineBasicMaterial({
-          color: r % 2 === 0 ? "#7da0ff" : "#d8ccb8",
+          color: r % 2 === 0 ? "#8aa4ff" : "#e3d6c0",
           transparent: true,
-          opacity: 0.24 - r * 0.032,
+          opacity: 0.34 - r * 0.042,
         });
         const line = new THREE.Line(geo, mat);
         line.position.y = -0.75 + r * 0.14;
