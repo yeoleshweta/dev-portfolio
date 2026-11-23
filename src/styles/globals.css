@@ -181,7 +181,9 @@ button:active {
 .timeline article:before {
   content: "";
   position: absolute;
-  left: -35px;
+  /* Center the 15px marker on the timeline's 2px animated rule. */
+  left: -30px;
+  transform: translateX(-50%);
   top: 9px;
   width: 9px;
   height: 9px;

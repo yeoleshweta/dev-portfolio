@@ -4,7 +4,6 @@ import { useEffect, useId, useRef, useState } from "react";
 
 const links = [
   ["Work", "work"],
-  ["Skills", "skills"],
   ["Experience", "experience"],
   ["About", "about"],
   ["Gallery", "gallery"],
@@ -16,7 +15,7 @@ export function Header({ base = "/" }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(null);
   useEffect(() => {
-    const map = { intro: null, work: "work", gesturepro: "work", clinical: "work", "bias-checker": "work", pocketsaver: "work", skills: "skills", experience: "experience", about: "about", gallery: "gallery", contact: "contact" };
+    const map = { intro: null, work: "work", gesturepro: "work", clinical: "work", "bias-checker": "work", pocketsaver: "work", experience: "experience", about: "about", gallery: "gallery", contact: "contact" };
     const observer = new IntersectionObserver(entries => {
       const visible = entries.filter(entry => entry.isIntersecting);
       if (visible.length) setActive(map[visible[visible.length - 1].target.id]);

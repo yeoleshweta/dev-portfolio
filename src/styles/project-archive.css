@@ -79,3 +79,34 @@
 .archiveProcess li>span { font:9px ui-monospace,monospace; color:var(--accent); }.archiveProcess strong { font-size:13px; }.archiveProcess p { color:var(--muted); font-size:11px; line-height:1.7; margin-top:8px; }
 .archiveStack { display:flex; align-items:start; gap:35px; }.archiveStack>span { padding-top:9px; flex:none; }.archiveStack>div { display:flex; flex-wrap:wrap; gap:7px; }.archiveStack>div>span { padding:9px 12px; background:var(--surface-muted); color:var(--ink); font:9px ui-monospace,monospace; border-radius:4px; }
 @media(max-width:700px){ .archiveSectionHead { align-items:start; flex-direction:column; gap:12px; }.archiveHighlightGrid { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:8px; }.archiveHighlight { flex:0 0 78%; scroll-snap-align:start; min-height:190px; }.archiveProcess ol { grid-template-columns:1fr; gap:18px; }.archiveStack { flex-direction:column; gap:16px; }.archiveStack>span { padding:0; } }
+
+/* Modal scroll choreography. Static styles remain the fallback. */
+.archiveHighlights { view-timeline-name:--archive-highlights; view-timeline-axis:block; }
+.archiveProcess { view-timeline-name:--archive-process; view-timeline-axis:block; }
+.archiveHighlight { transition:border-color .5s var(--ease),background .5s var(--ease); }
+.archiveHighlight:hover { border-color:var(--accent-edge); background:#343e30; }
+.archiveHighlightGlyph { transition:transform .65s var(--ease),opacity .65s var(--ease); }
+.archiveHighlight:hover .archiveHighlightGlyph { transform:rotate(20deg) scale(1.12); opacity:1; }
+.archiveProcess ol { position:relative; }
+.archiveProcess ol::before { content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--accent); transform-origin:left; pointer-events:none; }
+.archiveProcess li>span { position:relative; display:grid; place-items:center; flex:none; width:28px; height:28px; border:1px solid var(--accent-edge); border-radius:50%; transition:background .45s var(--ease),color .45s var(--ease); }
+.archiveProcess li:hover>span { background:var(--accent); color:var(--paper); }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion:no-preference) {
+    .archiveHighlight { animation:archive-highlight-approach 1s var(--ease) both; animation-timeline:--archive-highlights; animation-range:entry 5% cover 42%; }
+    .archiveHighlight:nth-child(2) { animation-range:entry 12% cover 48%; }
+    .archiveHighlight:nth-child(3) { animation-range:entry 19% cover 54%; }
+    .archiveHighlightGlyph { animation:archive-glyph-turn 1s var(--ease) both; animation-timeline:--archive-highlights; animation-range:entry 10% cover 55%; }
+    .archiveProcess ol::before { animation:archive-process-thread 1s var(--ease) both; animation-timeline:--archive-process; animation-range:entry 15% cover 58%; }
+    .archiveProcess li { animation:archive-step-arrive 1s var(--ease) both; animation-timeline:--archive-process; animation-range:entry 5% cover 38%; }
+    .archiveProcess li:nth-child(2) { animation-range:entry 14% cover 48%; }
+    .archiveProcess li:nth-child(3) { animation-range:entry 23% cover 58%; }
+  }
+}
+@keyframes archive-highlight-approach { from { opacity:.4; transform:translateY(34px) scale(.96); } to { opacity:1; transform:none; } }
+@keyframes archive-glyph-turn { from { rotate:-35deg; scale:.7; } to { rotate:0deg; scale:1; } }
+@keyframes archive-process-thread { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+@keyframes archive-step-arrive { from { opacity:.4; transform:translateY(22px); } to { opacity:1; transform:none; } }
+@media(max-width:700px){ .archiveProcess ol::before { left:13px; right:auto; top:0; bottom:0; width:1px; height:auto; transform-origin:top; background:var(--accent-edge); }.archiveProcess li { position:relative; background:var(--paper); }.archiveProcess li>span { background:var(--paper); } @supports (animation-timeline:view()) { @media(prefers-reduced-motion:no-preference) { .archiveProcess ol::before { animation-name:archive-process-thread-vertical; } } } }
+@keyframes archive-process-thread-vertical { from { transform:scaleY(0); } to { transform:scaleY(1); } }
+@media(prefers-reduced-motion:reduce){ .archiveHighlight,.archiveHighlightGlyph,.archiveProcess li>span { transition:none; } .archiveHighlight:hover .archiveHighlightGlyph { transform:none; } }

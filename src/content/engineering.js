@@ -142,42 +142,6 @@ export const systems = [
   },
 ];
 
-export const disciplines = [
-  {
-    name: "Interface engineering",
-    note: "The part people touch.",
-    tools: ["React", "Next.js", "JavaScript", "HTML / CSS", "Tailwind"],
-    proof: "GesturePro",
-    href: "/work/gesturepro/",
-    detail:
-      "Browser experiences for real-time input, readable results, and editable predictions.",
-  },
-  {
-    name: "Models & services",
-    note: "The systems behind the screen.",
-    tools: ["Python", "FastAPI", "Flask", "TensorFlow", "PostgreSQL", "NLP"],
-    proof: "Bias Checker source",
-    href: "https://github.com/yeoleshweta/Bias-Checker-Healthcare",
-    detail:
-      "Prediction APIs, annotated reference data, model evaluation, and full-stack AI workflows.",
-  },
-  {
-    name: "Research & product judgment",
-    note: "The reason to build it.",
-    tools: [
-      "Figma",
-      "Design systems",
-      "Usability testing",
-      "A/B testing",
-      "Label Studio",
-    ],
-    proof: "Urbanfit case study",
-    href: "/work/urbanfit/",
-    detail:
-      "Research-led decisions, shared interaction patterns, and prototypes that teams can build from.",
-  },
-];
-
 export const archive = [
   {
     title: "CentralPerk",

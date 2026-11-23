@@ -1,12 +1,11 @@
 import Image from "next/image";
 import { ContinuousPortfolio } from "@/components/portfolio/ContinuousPortfolio";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
-import { CapabilityLab } from "@/components/portfolio/CapabilityLab";
 import { ContactInvitation } from "@/components/portfolio/ContactInvitation";
 import { PortfolioMotion } from "@/components/motion/PortfolioMotion";
 import { RevealHeading } from "@/components/motion/RevealHeading";
 import { profile, projects, experience } from "@/content/profile";
-import { disciplines, archive } from "@/content/engineering";
+import { archive } from "@/content/engineering";
 import { ProjectArchive } from "@/components/portfolio/ProjectArchive";
 
 export default function Home() {
@@ -21,8 +20,8 @@ export default function Home() {
           <span aria-hidden="true"><i>02</i>Design the interaction.</span>
           <span aria-hidden="true"><i>03</i><em>Build the whole thing.</em></span>
         </div>
-        <a href="#skills" className="bridgeLink">
-          A little more about the practice <span aria-hidden="true">↓</span>
+        <a href="#experience" className="bridgeLink">
+          Explore the experience <span aria-hidden="true">↓</span>
         </a>
       </div>
 
@@ -41,8 +40,6 @@ export default function Home() {
         </div>
         <ProjectArchive projects={archive} />
       </section>
-
-      <CapabilityLab disciplines={disciplines} />
 
       <section id="experience" className="journeySection">
         <div className="wrap journeyGrid">
