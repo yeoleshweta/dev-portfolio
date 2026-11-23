@@ -1,168 +1,194 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { profile } from "@/content/profile";
 
-const lenses = [
+const plates = [
   {
-    id: "interfaces",
+    id: "portrait",
+    num: "00",
+    title: "Shweta Sharma",
+    subtitle: "Fullstack Engineer · Applied ML",
+    src: "/shweta.jpg",
+    alt: "Portrait of Shweta Sharma",
+    position: "50% 22%",
+    captionLeft: "PORTRAIT / SHWETA SHARMA",
+    captionRight: "MS AI & ML · 3.97 GPA",
+    href: "#story",
+  },
+  {
+    id: "urbanfit",
     num: "01",
-    label: "Interfaces",
+    title: "Urbanfit Control Panel",
+    subtitle: "30 screens · 484 interactions",
     src: "/urbanfit.jpg",
-    alt: "Urbanfit Control Panel multi-role workspace",
-    caption: "Urbanfit Control Panel — 30 screens, 484 interactions across 3 roles",
+    alt: "Urbanfit Control Panel multi-role inventory workspace",
+    position: "50% 50%",
+    captionLeft: "CASE STUDY / 01",
+    captionRight: "PRODUCT DESIGN · SYSTEMS",
     href: "/work/urbanfit/",
   },
   {
-    id: "ml",
+    id: "gesturepro",
     num: "02",
-    label: "Applied ML",
-    src: "/abim.jpg",
-    alt: "ABIM Clinical Communication NLP evaluation",
-    caption: "ABIM & Bias Checker — RoBERTa + LoRA, GPT-4o & clinical NLP frameworks",
-    href: "/work/clinical-communication/",
-  },
-  {
-    id: "fullstack",
-    num: "03",
-    label: "Fullstack",
+    title: "GesturePro",
+    subtitle: "21 hand landmarks · Next.js + FastAPI",
     src: "/gesturepro.jpg",
-    alt: "GesturePro webcam hand-landmark system",
-    caption: "GesturePro & PocketSaver — Next.js, FastAPI, Node.js, PostgreSQL & Docker",
+    alt: "GesturePro webcam hand-landmark recognition prototype",
+    position: "50% 50%",
+    captionLeft: "CASE STUDY / 02",
+    captionRight: "COMPUTER VISION · INTERACTION",
     href: "/work/gesturepro/",
   },
   {
-    id: "research",
-    num: "04",
-    label: "Research",
-    src: "/mountains.jpg",
-    alt: "Shweta Sharma at Grace Hopper Celebration 2025",
-    caption: "John Deere & Capita — −60% survey setup across 250+ products, +11% conversion",
-    href: "#experience",
+    id: "clinical",
+    num: "03",
+    title: "Clinical Communication",
+    subtitle: "ABIM · Supervised NLP frameworks",
+    src: "/abim.jpg",
+    alt: "Clinical Communication supervised NLP workflow at ABIM",
+    position: "50% 50%",
+    captionLeft: "CASE STUDY / 03",
+    captionRight: "HEALTHCARE · APPLIED ML",
+    href: "/work/clinical-communication/",
   },
 ];
 
 /**
- * Serene, high-agency daylight hero with ONE singular living aperture.
- * Zero distracting background trails or looping animations — motion happens
- * only with intentional interaction via the 4 discipline lenses.
+ * Magazine-cover 54/46 editorial split hero.
+ * Left: clean Swiss typography + interactive work index.
+ * Right: full-bleed portrait that smoothly wipes into each project plate on hover,
+ * with subtle scroll parallax. Zero distracting idle animations.
  */
 export function CleanHero() {
   const [active, setActive] = useState(0);
-  const current = lenses[active];
+  const mediaWrapRef = useRef(null);
+  const current = plates[active];
+
+  useEffect(() => {
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        if (!mediaWrapRef.current) return;
+        const p = Math.min(1, Math.max(0, window.scrollY / window.innerHeight));
+        mediaWrapRef.current.style.transform = `translate3d(0, ${(p * 36).toFixed(1)}px, 0) scale(${(1 + p * 0.04).toFixed(4)})`;
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
 
   return (
-    <section className="hookHero">
-      <div className="atelierWrap hookHeroInner">
-        <div className="hookTopMeta">
-          <span>FOLIO ’26 — FULLSTACK &amp; APPLIED ML</span>
-          <span>PHILADELPHIA, PA · MS AI &amp; ML (3.97 GPA)</span>
-        </div>
+    <section className="splitCoverHero">
+      {/* LEFT HALF — WARM MUSEUM PAPER EDITORIAL TYPOGRAPHY & INDEX */}
+      <div className="splitCoverLeft">
+        <div className="splitCoverLead">
+          <p className="splitCoverEyebrow">
+            SHWETA SHARMA — PHILADELPHIA, PA
+          </p>
 
-        {/* Monumental 3-line editorial composition with ONE singular focal aperture */}
-        <div className="hookTypeStage">
-          <h1
-            className="hookHeadline"
-            aria-label="Shweta Sharma builds systems where craft meets AI."
-          >
-            <span className="hookRow" style={{ "--i": 0 }}>
-              <span className="hookWord">SHWETA</span>
-              <span className="hookWord hookSerif">
-                <em>Sharma</em>
-              </span>
+          <h1 className="splitCoverHeadline">
+            <span className="splitCoverLine" style={{ "--i": 0 }}>
+              <span>Fullstack engineer</span>
             </span>
-
-            <span className="hookRow" style={{ "--i": 1 }}>
-              <span className="hookWord">BUILDS</span>
-              <Link
-                href={current.href}
-                className="singularAperture"
-                data-cursor="OPEN"
-                aria-label={`Inspect ${current.label}: ${current.caption}`}
-              >
-                {lenses.map((lens, idx) => (
-                  <span
-                    key={lens.id}
-                    className="apertureLayer"
-                    data-active={idx === active}
-                    aria-hidden={idx !== active}
-                  >
-                    <Image
-                      src={lens.src}
-                      alt={lens.alt}
-                      fill
-                      priority={idx === 0}
-                      sizes="(max-width: 960px) 180px, 340px"
-                    />
-                  </span>
-                ))}
-              </Link>
-              <span className="hookWord">SYSTEMS</span>
+            <span className="splitCoverLine" style={{ "--i": 1 }}>
+              <span>with a researcher’s</span>
             </span>
-
-            <span className="hookRow" style={{ "--i": 2 }}>
-              <span className="hookWord hookSerif">
-                <em>where</em>
-              </span>
-              <span className="hookWord">CRAFT</span>
-              <span className="hookWord hookAccent">
-                <em>meets AI.</em>
+            <span className="splitCoverLine" style={{ "--i": 2 }}>
+              <span>
+                <em>eye for craft.</em>
               </span>
             </span>
           </h1>
 
-          {/* Quiet interactive lens selector that drives the singular aperture */}
-          <div className="heroLensDock">
-            <div className="heroLensTabs" role="tablist" aria-label="Preview discipline in aperture">
-              {lenses.map((lens, idx) => (
-                <button
-                  key={lens.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={active === idx}
-                  className="heroLensTab"
-                  onMouseEnter={() => setActive(idx)}
-                  onFocus={() => setActive(idx)}
-                  onClick={() => setActive(idx)}
-                >
-                  <span>{lens.num}</span>
-                  <strong>{lens.label}</strong>
-                </button>
-              ))}
-            </div>
-            <p className="heroLensCaption" key={current.id}>
-              {current.caption}
-            </p>
-          </div>
-        </div>
+          <p className="splitCoverBio">
+            Six years in UX research &amp; product design, an MS in AI &amp;
+            Machine Learning (3.97 GPA), and end-to-end systems from React to
+            RoBERTa.
+          </p>
 
-        {/* Clean architectural bottom strip */}
-        <div className="hookBottomBar">
-          <div className="hookStats">
-            <div>
-              <small>EXPERIENCE</small>
-              <strong>6+ yrs across ABIM, John Deere, Urbanfit &amp; Capita</strong>
-            </div>
-            <div>
-              <small>STACK</small>
-              <strong>React · Next.js · Python · FastAPI · PyTorch / TensorFlow</strong>
-            </div>
-          </div>
-
-          <div className="hookActions">
-            <a className="hookBtnPrimary" href="#works" data-cursor="WORKS">
-              Selected Works <span>06</span>
+          <div className="splitCoverActions">
+            <a className="splitBtnPrimary" href="#works" data-cursor="WORKS">
+              Selected works <span aria-hidden="true">↓</span>
             </a>
             <a
-              className="hookBtnGhost"
+              className="splitBtnLink"
               href={profile.resume}
               target="_blank"
               rel="noreferrer"
             >
-              Résumé ↗
+              Résumé (PDF) ↗
             </a>
           </div>
+        </div>
+
+        {/* Quiet Interactive Plate Index */}
+        <div
+          className="splitCoverIndex"
+          onMouseLeave={() => setActive(0)}
+          aria-label="Preview featured work"
+        >
+          <span className="splitIndexLabel">HOVER TO PREVIEW · CLICK TO OPEN</span>
+          {plates.slice(1).map((plate, i) => {
+            const idx = i + 1;
+            const isSelected = active === idx;
+            return (
+              <Link
+                key={plate.id}
+                href={plate.href}
+                className="splitIndexRow"
+                data-active={isSelected}
+                onMouseEnter={() => setActive(idx)}
+                onFocus={() => setActive(idx)}
+                data-cursor="OPEN"
+              >
+                <span className="splitIndexNum">{plate.num}</span>
+                <strong className="splitIndexTitle">{plate.title}</strong>
+                <span className="splitIndexSub">{plate.subtitle}</span>
+                <span className="splitIndexArrow" aria-hidden="true">
+                  ↗
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* RIGHT HALF — FULL-BLEED EDITORIAL PORTRAIT / PROJECT PLATE */}
+      <div className="splitCoverRight">
+        <div ref={mediaWrapRef} className="splitCoverMedia">
+          {plates.map((plate, idx) => (
+            <div
+              key={plate.id}
+              className="splitMediaLayer"
+              data-active={idx === active}
+              aria-hidden={idx !== active}
+            >
+              <Image
+                src={plate.src}
+                alt={plate.alt}
+                fill
+                priority={idx === 0}
+                sizes="(max-width: 960px) 100vw, 48vw"
+                style={{ objectPosition: plate.position }}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="splitCoverCaption">
+          <span>{current.captionLeft}</span>
+          <span>{current.captionRight}</span>
         </div>
       </div>
     </section>
