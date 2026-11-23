@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 /**
  * Orb-free Atmospheric 3D Architectural Horizon Background.
  * Renders a subtle, receding 3D perspective topographic mesh with fine hairline
- * grid contours and soft volumetric cobalt/champagne light sweeping across the
+ * grid contours and soft volumetric royal burgundy/champagne light sweeping across the
  * right side of the canvas. Reacts smoothly to pointer parallax and scroll.
  */
 export function Cinematic3DHero() {
@@ -67,7 +67,7 @@ export function Cinematic3DHero() {
 
       // Crisp architectural hairline grid layered cleanly above the terrain
       const wireMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color("#6b8eff"),
+        color: new THREE.Color("#a62644"),
         wireframe: true,
         transparent: true,
         opacity: 0.24,
@@ -91,7 +91,7 @@ export function Cinematic3DHero() {
         }
         const geo = new THREE.BufferGeometry().setFromPoints(pts);
         const mat = new THREE.LineBasicMaterial({
-          color: r % 2 === 0 ? "#8aa4ff" : "#e3d6c0",
+          color: r % 2 === 0 ? "#c94060" : "#e3d6c0",
           transparent: true,
           opacity: 0.34 - r * 0.042,
         });
@@ -103,15 +103,15 @@ export function Cinematic3DHero() {
       }
 
       // 3. Soft Cinematic Directional & Point Light Pools (sweeping across the 3D ridges)
-      const cobaltLight = new THREE.PointLight("#3d6bff", 14, 24, 1.5);
-      cobaltLight.position.set(4.5, 1.8, -2.0);
-      scene.add(cobaltLight);
+      const burgundyLight = new THREE.PointLight("#8f1533", 14, 24, 1.5);
+      burgundyLight.position.set(4.5, 1.8, -2.0);
+      scene.add(burgundyLight);
 
       const champagneLight = new THREE.PointLight("#f0ddc0", 7, 22, 1.6);
       champagneLight.position.set(-2.5, 2.2, 1.0);
       scene.add(champagneLight);
 
-      const rimLight = new THREE.DirectionalLight("#7fa2ff", 1.1);
+      const rimLight = new THREE.DirectionalLight("#c43e5d", 1.1);
       rimLight.position.set(5, 6, -6);
       scene.add(rimLight);
 
@@ -186,8 +186,8 @@ export function Cinematic3DHero() {
         });
 
         // Subtle pointer-reactive light sweep & camera glide
-        cobaltLight.position.x = 4.2 + mx * 2.2;
-        cobaltLight.position.z = -2.2 + my * 1.4;
+        burgundyLight.position.x = 4.2 + mx * 2.2;
+        burgundyLight.position.z = -2.2 + my * 1.4;
 
         camera.position.x += (mx * 0.45 - camera.position.x) * 0.04;
         camera.position.y += (2.35 - my * 0.25 - scrollP * 0.65 - camera.position.y) * 0.04;
