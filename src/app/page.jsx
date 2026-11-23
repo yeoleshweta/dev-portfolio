@@ -1,5 +1,5 @@
-import { RedesignHome } from "@/components/portfolio/RedesignHome";
+import { AtelierHome } from "@/components/portfolio/AtelierHome";
 
 export default function Home() {
-  return <RedesignHome />;
+  return <AtelierHome />;
 }

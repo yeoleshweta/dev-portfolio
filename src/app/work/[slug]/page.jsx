@@ -26,21 +26,21 @@ export default async function CaseStudy({ params }) {
   const next = projects[(projects.indexOf(p) + 1) % projects.length];
 
   return (
-    <main className="wrap studyPage" id="main">
-      <Link className="btnGhost" href="/#work">
-        ← Back to selected work
+    <main className="atelierWrap studyPage" id="main">
+      <Link className="atelierBtnOutline" href="/#works">
+        ← Back to Selected Works
       </Link>
 
       <header className="studyHeader">
-        <p className="sectionEyebrow">
-          {p.field} / {p.context}
-        </p>
+        <span className="chapterMarker">
+          {p.field.toUpperCase()} / {p.context.toUpperCase()}
+        </span>
         <h1>{p.name}</h1>
         <p className="studyDeck">{p.headline}</p>
 
         <div className="studyMeta">
           <div>
-            <small>MY ROLE</small>
+            <small>ROLE</small>
             <p>{p.role}</p>
           </div>
           <div>
@@ -52,13 +52,13 @@ export default async function CaseStudy({ params }) {
             {p.repository ? (
               <p>
                 <a
-                  className="btnGhost"
-                  style={{ padding: "6px 14px", fontSize: "12px" }}
+                  className="atelierLink"
+                  style={{ marginTop: 0 }}
                   href={p.repository}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Explore on GitHub ↗
+                  Explore source on GitHub ↗
                 </a>
               </p>
             ) : (
@@ -74,7 +74,7 @@ export default async function CaseStudy({ params }) {
           alt={p.alt}
           width={1200}
           height={720}
-          sizes="(max-width: 760px) 94vw, 85vw"
+          sizes="(max-width: 760px) 94vw, 86vw"
         />
       </div>
 
@@ -94,12 +94,14 @@ export default async function CaseStudy({ params }) {
 
       <div className="studyNext">
         <div>
-          <small className="sectionEyebrow" style={{ marginBottom: "6px" }}>
+          <span className="chapterMarker" style={{ marginBottom: "6px" }}>
             NEXT CASE STUDY
-          </small>
-          <strong style={{ fontSize: "clamp(24px, 3vw, 36px)" }}>{next.name}</strong>
+          </span>
+          <strong style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 500 }}>
+            {next.name}
+          </strong>
         </div>
-        <Link className="btnPrimary" href={`/work/${next.slug}/`}>
+        <Link className="atelierBtnPrimary" href={`/work/${next.slug}/`}>
           Open {next.name} ↗
         </Link>
       </div>

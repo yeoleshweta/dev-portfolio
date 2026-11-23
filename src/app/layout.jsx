@@ -1,15 +1,15 @@
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import { AtelierHeader } from "@/components/layout/AtelierHeader";
 import { CurtainIntro } from "@/components/motion/CurtainIntro";
 import { CustomCursor } from "@/components/motion/CustomCursor";
-import "@/styles/redesign.css";
+import "@/styles/atelier.css";
 
 export const metadata = {
   title: {
-    default: "Shweta Sharma | Fullstack Dev & Applied ML",
-    template: "%s | Shweta Sharma",
+    default: "Shweta Sharma — Fullstack Engineer & Applied ML",
+    template: "%s — Shweta Sharma",
   },
   description:
-    "Projects, experience, skillsets, and contact details for Shweta Sharma, a Philadelphia-based fullstack developer working across web applications, UX, and applied machine learning.",
+    "Editorial monograph and portfolio of Shweta Sharma, a Philadelphia-based fullstack developer working across human-centered interfaces, APIs, and applied machine learning.",
 };
 
 export default function Layout({ children }) {
@@ -22,7 +22,7 @@ export default function Layout({ children }) {
         <div className="grainOverlay" aria-hidden="true" />
         <CurtainIntro />
         <CustomCursor />
-        <SiteHeader />
+        <AtelierHeader />
         {children}
       </body>
     </html>
