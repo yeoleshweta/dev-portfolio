@@ -1,29 +1,54 @@
 import Image from "next/image";
 import { ContinuousPortfolio } from "@/components/portfolio/ContinuousPortfolio";
+import { SkillsetsMatrix } from "@/components/portfolio/SkillsetsMatrix";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
 import { ContactInvitation } from "@/components/portfolio/ContactInvitation";
 import { PortfolioMotion } from "@/components/motion/PortfolioMotion";
 import { RevealHeading } from "@/components/motion/RevealHeading";
+import { VelocityMarquee } from "@/components/motion/VelocityMarquee";
 import { profile, projects, experience } from "@/content/profile";
 import { archive } from "@/content/engineering";
 import { ProjectArchive } from "@/components/portfolio/ProjectArchive";
+
+const impactByCompany = {
+  "American Board of Internal Medicine": "Solo-built Bias Checker AI",
+  "Drexel University": "Graduate AI & ML",
+  "John Deere": "−60% setup time · 250+ products",
+  "Urbanfit Wellness": "+35% engagement lift",
+  "Capita, for Arcadia Group": "+11% conversion lift · 7 brands",
+};
 
 export default function Home() {
   return (
     <main id="main">
       <PortfolioMotion />
       <ContinuousPortfolio projects={projects} />
+
+      <VelocityMarquee />
+
       <div className="practiceBridge wrap">
         <span className="eyebrow">The common thread</span>
-        <div className="bridgeStatement" aria-label="Understand the person. Design the interaction. Build the whole thing.">
-          <span aria-hidden="true"><i>01</i>Understand the person.</span>
-          <span aria-hidden="true"><i>02</i>Design the interaction.</span>
-          <span aria-hidden="true"><i>03</i><em>Build the whole thing.</em></span>
+        <div
+          className="bridgeStatement"
+          aria-label="Understand the person. Design the interaction. Build the whole thing."
+        >
+          <span aria-hidden="true">
+            <i>01</i>Understand the person.
+          </span>
+          <span aria-hidden="true">
+            <i>02</i>Design the interaction.
+          </span>
+          <span aria-hidden="true">
+            <i>03</i>
+            <em>Build the whole thing.</em>
+          </span>
         </div>
-        <a href="#experience" className="bridgeLink">
-          Explore the experience <span aria-hidden="true">↓</span>
+        <a href="#skills" className="bridgeLink">
+          Explore the craft <span aria-hidden="true">↓</span>
         </a>
       </div>
+
+      <SkillsetsMatrix />
 
       <section className="archiveSection wrap" aria-labelledby="archive-title">
         <div className="archiveHeading">
@@ -64,7 +89,7 @@ export default function Home() {
                 <h3>
                   Computer Science.
                   <br />
-                  <em>AI & Machine Learning.</em>
+                  <em>AI &amp; Machine Learning.</em>
                 </h3>
                 <div>
                   <span>Master of Science</span>
@@ -78,7 +103,12 @@ export default function Home() {
           <div className="timeline">
             {experience.map(([dates, company, role, detail]) => (
               <article key={company} data-reveal="career">
-                <small>{dates}</small>
+                <div className="timelineMetaRow">
+                  <small>{dates}</small>
+                  {impactByCompany[company] && (
+                    <span className="impactBadge">{impactByCompany[company]}</span>
+                  )}
+                </div>
                 <h3>{company}</h3>
                 <strong>{role}</strong>
                 <p>{detail}</p>

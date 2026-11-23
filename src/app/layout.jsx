@@ -1,4 +1,6 @@
 import { Header } from "@/components/layout/Header";
+import { CurtainIntro } from "@/components/motion/CurtainIntro";
+import { CustomCursor } from "@/components/motion/CustomCursor";
 import "@/styles/palette.css";
 import "@/styles/globals.css";
 import "@/styles/header.css";
@@ -8,6 +10,8 @@ import "@/styles/gallery.css";
 import "@/styles/motion.css";
 import "@/styles/carbon.css";
 import "@/styles/project-archive.css";
+import "@/styles/award.css";
+
 export const metadata = {
   title: {
     default: "Shweta Sharma | Fullstack Dev",
@@ -16,6 +20,7 @@ export const metadata = {
   description:
     "Projects, experience, and contact details for Shweta Sharma, a Philadelphia-based fullstack developer working across web applications, UX, and applied machine learning.",
 };
+
 export default function Layout({ children }) {
   return (
     <html lang="en">
@@ -24,13 +29,15 @@ export default function Layout({ children }) {
           Skip to content
         </a>
         <div className="carbonPreview">
-        <Header />
-        {children}
-        <footer className="wrap">
-          <span>Shweta Sharma</span>
-          <span>Fullstack Dev</span>
-          <a href="#main">Back to top ↑</a>
-        </footer>
+          <CurtainIntro />
+          <CustomCursor />
+          <Header />
+          {children}
+          <footer className="wrap">
+            <span>Shweta Sharma</span>
+            <span>Fullstack Dev · Applied ML</span>
+            <a href="#main">Back to top ↑</a>
+          </footer>
         </div>
       </body>
     </html>

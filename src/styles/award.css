@@ -1,0 +1,685 @@
+/* High-agency editorial typography, motion choreography, and interactive skillsets. */
+
+.carbonPreview {
+  --font-sans: var(--font-jakarta, "Avenir Next", Avenir, system-ui, sans-serif);
+  --font-serif: var(--font-instrument, "Iowan Old Style", Baskerville, Georgia, serif);
+  --font-mono: var(--font-jetbrains, ui-monospace, SFMono-Regular, monospace);
+  font-family: var(--font-sans);
+  position: relative;
+}
+
+/* Subtle organic film grain overlay for tactile depth without visual noise */
+.carbonPreview::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 90;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Editorial Display + Italic Serif Contrast */
+.carbonPreview h1,
+.carbonPreview h2,
+.carbonPreview h3,
+.carbonPreview .bridgeStatement,
+.carbonPreview .galleryCaption strong,
+.carbonPreview .invitationActions > a {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+
+.carbonPreview h1 em,
+.carbonPreview h2 em,
+.carbonPreview h3 em,
+.carbonPreview .bridgeStatement em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.carbonPreview .invitationComposition h2 em {
+  color: #34402b;
+}
+
+.carbonPreview .eyebrow,
+.carbonPreview .tinyLabel,
+.carbonPreview .narrativeKicker,
+.carbonPreview .narrativeStack,
+.carbonPreview .stageRuler,
+.carbonPreview .continuityIndex a,
+.carbonPreview .heroCredentials,
+.carbonPreview .introCoordinates,
+.carbonPreview .brandClock {
+  font-family: var(--font-mono);
+}
+
+.brandClock {
+  font-style: normal;
+  font-size: 0.88em;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+/* Top 1px live scroll-progress hairline */
+.scrollHairline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 50;
+  pointer-events: none;
+  background: rgb(var(--ink-rgb) / 0.06);
+}
+.scrollHairline > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+/* Editorial Curtain Preloader */
+.curtainOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  pointer-events: all;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.curtainTop,
+.curtainBottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%;
+  background: #131712;
+  transition: transform 0.62s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.curtainTop {
+  top: 0;
+}
+.curtainBottom {
+  bottom: 0;
+}
+.curtainOverlay[data-phase="exit"] {
+  pointer-events: none;
+}
+.curtainOverlay[data-phase="exit"] .curtainTop {
+  transform: translateY(-100%);
+}
+.curtainOverlay[data-phase="exit"] .curtainBottom {
+  transform: translateY(100%);
+}
+.curtainContent {
+  position: relative;
+  z-index: 2;
+  width: min(88%, 1280px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  color: #f0f1e8;
+  transition: opacity 0.35s var(--ease), transform 0.45s var(--ease);
+}
+.curtainOverlay[data-phase="exit"] .curtainContent {
+  opacity: 0;
+  transform: scale(0.97);
+}
+.curtainBrand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.curtainSeal {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #d1e28a;
+  color: #131712;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 26px;
+}
+.curtainBrand strong {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+}
+.curtainBrand span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: #aab5a3;
+  margin-top: 3px;
+}
+.curtainCounter {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--font-mono);
+}
+.curtainCounter span {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 500;
+  color: #d1e28a;
+  letter-spacing: -0.04em;
+}
+.curtainCounter small {
+  font-size: 11px;
+  color: #aab5a3;
+}
+
+/* Magnetic Custom Cursor (fine pointers only) */
+.cursorDot,
+.cursorRing {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 100;
+  will-change: transform;
+}
+.cursorDot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+.cursorDot[data-mode="label"] {
+  opacity: 0;
+}
+.cursorRing {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 50%;
+  border: 1px solid rgb(209 226 138 / 0.45);
+  display: grid;
+  place-items: center;
+  transition:
+    width 0.3s var(--ease),
+    height 0.3s var(--ease),
+    margin 0.3s var(--ease),
+    background 0.3s var(--ease),
+    border-color 0.3s var(--ease);
+}
+.cursorRing[data-mode="pointer"] {
+  width: 48px;
+  height: 48px;
+  margin: -24px 0 0 -24px;
+  border-color: var(--accent);
+  background: rgb(209 226 138 / 0.08);
+}
+.cursorRing[data-mode="label"] {
+  width: 68px;
+  height: 68px;
+  margin: -34px 0 0 -34px;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #131712;
+}
+.cursorRing span {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #131712;
+}
+
+/* Architectural stage grid subtlety */
+.continuousStage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgb(240 241 232 / 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(240 241 232 / 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(circle at 50% 50%, black 35%, transparent 82%);
+}
+
+/* Kinetic Velocity Marquee */
+.velocityMarquee {
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 20px 0;
+  background: var(--inverse);
+  user-select: none;
+}
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.marqueeTrack span {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  padding-right: 28px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--on-inverse-muted);
+  white-space: nowrap;
+}
+.marqueeTrack i {
+  font-style: normal;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+/* Interactive Skillsets & Craft Matrix */
+.skillsetsSection {
+  padding: 110px 0 100px;
+}
+.skillsetsHeader {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: end;
+  gap: 40px;
+  margin-bottom: 56px;
+}
+.skillsetsHeader h2 {
+  font-size: clamp(42px, 4.8vw, 68px);
+  line-height: 1.02;
+}
+.skillsetsLead {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.85;
+  max-width: 44ch;
+  justify-self: end;
+}
+.skillsetsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 36px;
+  align-items: stretch;
+}
+.disciplineList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+.disciplineTab {
+  display: grid;
+  grid-template-columns: 42px 1fr 24px;
+  align-items: center;
+  gap: 16px;
+  padding: 26px 18px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.35s var(--ease), background 0.35s var(--ease), padding 0.35s var(--ease);
+}
+.disciplineTab::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s var(--ease);
+}
+.disciplineTab[data-active="true"],
+.disciplineTab:hover {
+  color: var(--ink);
+  background: rgb(240 241 232 / 0.03);
+  padding-left: 24px;
+}
+.disciplineTab[data-active="true"]::before {
+  transform: scaleY(1);
+}
+.disciplineIdx {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+}
+.disciplineName {
+  font-family: var(--font-sans);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+.disciplineArrow {
+  font-size: 16px;
+  opacity: 0.35;
+  transition: transform 0.35s var(--ease), opacity 0.35s var(--ease);
+}
+.disciplineTab[data-active="true"] .disciplineArrow,
+.disciplineTab:hover .disciplineArrow {
+  opacity: 1;
+  color: var(--accent);
+  transform: translateX(4px);
+}
+
+.disciplineStage {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.25);
+}
+.disciplineStage::after {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(209 226 138 / 0.12), transparent 70%);
+  pointer-events: none;
+}
+.disciplineStageInner {
+  animation: stage-fade 0.4s var(--ease) both;
+}
+@keyframes stage-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.stageTopMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 22px;
+}
+.disciplineHeadline {
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.08;
+  margin-bottom: 16px;
+}
+.disciplineSummary {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 52ch;
+}
+.architectureStack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 28px 0 24px;
+}
+.archLayer {
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  animation: layer-rise 0.45s var(--ease) both;
+  animation-delay: calc(var(--layer-i) * 70ms);
+}
+@keyframes layer-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.archLayer span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.archLayer strong {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.disciplineTools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.disciplineTools span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 6px 11px;
+  border-radius: 99px;
+  background: var(--inverse);
+  border: 1px solid var(--line);
+  color: var(--secondary);
+}
+.disciplineProof {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.disciplineProof small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.disciplineProof strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.disciplineProof span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.disciplineProof .narrativeAction {
+  margin-top: 0;
+  flex: none;
+}
+
+/* Experience Impact Badges */
+.timelineMetaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.impactBadge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-edge);
+  color: var(--accent);
+}
+.timeline article {
+  transition: transform 0.6s var(--ease), opacity 0.6s var(--ease), border-color 0.4s var(--ease);
+}
+
+/* Case Study Page Editorial Polish */
+.caseStudyHero {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 48px !important;
+  margin-bottom: 48px;
+}
+.caseMetaGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.caseMetaGrid small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.caseMetaGrid p {
+  font-size: 14px;
+  color: var(--ink);
+}
+.caseBody {
+  display: grid;
+  gap: 56px;
+}
+.caseMediaFrame {
+  padding: 10px;
+  border-radius: 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.35);
+}
+.caseMediaFrame .caseImage {
+  border-radius: 14px;
+  padding: 0;
+  background: transparent;
+}
+.caseSections {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.caseChapter {
+  padding: 28px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.caseChapter span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.caseChapter h2 {
+  font-size: 26px !important;
+  margin-bottom: 14px !important;
+}
+.caseChapter p {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.caseNextBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 36px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.caseNextBar small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.caseNextBar strong {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+@media (max-width: 960px) {
+  .skillsetsHeader,
+  .skillsetsGrid,
+  .caseSections,
+  .caseMetaGrid {
+    grid-template-columns: 1fr;
+  }
+  .skillsetsLead {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 767px) {
+  .skillsetsSection {
+    padding: 72px 0;
+  }
+  .disciplineStage {
+    padding: 24px;
+  }
+  .architectureStack {
+    grid-template-columns: 1fr;
+  }
+  .disciplineProof {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .caseNextBar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+  }
+  .cursorDot,
+  .cursorRing {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .curtainOverlay,
+  .cursorDot,
+  .cursorRing {
+    display: none !important;
+  }
+  .disciplineStageInner,
+  .archLayer {
+    animation: none !important;
+  }
+}
