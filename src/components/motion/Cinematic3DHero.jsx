@@ -2,10 +2,10 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Subtle, atmospheric Cinematic 3D Background.
- * Positions the studio-lit glass-prism & titanium ring architecture deep in the
- * right-hand background with soft fog and gentle pointer/scroll parallax so
- * foreground typography remains the unmistakable focal point.
+ * Orb-free Atmospheric 3D Architectural Horizon Background.
+ * Renders a subtle, receding 3D perspective topographic mesh with fine hairline
+ * grid contours and soft volumetric cobalt/champagne light sweeping across the
+ * right side of the canvas. Reacts smoothly to pointer parallax and scroll.
  */
 export function Cinematic3DHero() {
   const hostRef = useRef(null);
@@ -18,10 +18,7 @@ export function Cinematic3DHero() {
     let disposed = false;
     let teardown = () => {};
 
-    Promise.all([
-      import("three"),
-      import("three/examples/jsm/environments/RoomEnvironment.js"),
-    ]).then(([THREE, { RoomEnvironment }]) => {
+    import("three").then((THREE) => {
       if (disposed || !hostRef.current) return;
 
       const width = container.clientWidth || window.innerWidth;
@@ -29,10 +26,11 @@ export function Cinematic3DHero() {
 
       const scene = new THREE.Scene();
       scene.background = new THREE.Color("#050608");
-      scene.fog = new THREE.FogExp2("#050608", 0.088);
+      scene.fog = new THREE.FogExp2("#050608", 0.085);
 
-      const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-      camera.position.set(0, 0.35, 7.8);
+      const camera = new THREE.PerspectiveCamera(44, width / height, 0.1, 100);
+      camera.position.set(0, 2.35, 7.6);
+      camera.lookAt(0.6, -0.4, -3.0);
 
       const renderer = new THREE.WebGLRenderer({
         antialias: true,
@@ -41,118 +39,81 @@ export function Cinematic3DHero() {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
       renderer.setSize(width, height);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.05;
+      renderer.toneMappingExposure = 1.1;
       container.appendChild(renderer.domElement);
 
-      const pmrem = new THREE.PMREMGenerator(renderer);
-      const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-      scene.environment = envTex;
+      const disposables = [];
 
-      const keyLight = new THREE.DirectionalLight("#fff0da", 2.0);
-      keyLight.position.set(6, 7, 5);
-      scene.add(keyLight);
+      // 1. Undulating 3D Architectural Topographic Surface (Solid dark matte + crisp hairline wireframe)
+      const segX = 64;
+      const segY = 44;
+      const terrainGeo = new THREE.PlaneGeometry(34, 24, segX, segY);
+      terrainGeo.rotateX(-Math.PI / 2);
 
-      const rimLight = new THREE.DirectionalLight("#3b6bff", 2.8);
-      rimLight.position.set(-5, 2, -4);
-      scene.add(rimLight);
+      const posAttr = terrainGeo.attributes.position;
+      const basePositions = new Float32Array(posAttr.array.length);
+      basePositions.set(posAttr.array);
 
-      const accentLight = new THREE.PointLight("#5a86ff", 4.2, 14, 1.8);
-      accentLight.position.set(2.4, 0.2, -1.5);
-      scene.add(accentLight);
-
-      const disposables = [envTex];
-
-      // Offset deep into the right background so foreground copy stays crystal clear
-      const monolith = new THREE.Group();
-      monolith.position.set(2.35, 0.1, -1.6);
-      monolith.scale.setScalar(0.84);
-      scene.add(monolith);
-
-      const coreGeo = new THREE.IcosahedronGeometry(1.05, 1);
-      const coreMat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color("#b8ccff"),
-        metalness: 0.1,
-        roughness: 0.1,
-        transmission: 0.88,
-        thickness: 2.0,
-        ior: 1.5,
-        iridescence: 0.65,
-        clearcoat: 1.0,
-        envMapIntensity: 1.2,
+      // Subtle shaded obsidian terrain
+      const solidMat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color("#090b10"),
+        metalness: 0.72,
+        roughness: 0.42,
+        flatShading: false,
       });
-      const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-      monolith.add(coreMesh);
-      disposables.push(coreGeo, coreMat);
+      const terrainMesh = new THREE.Mesh(terrainGeo, solidMat);
+      terrainMesh.position.set(1.2, -1.55, -2.5);
+      scene.add(terrainMesh);
 
-      const cageGeo = new THREE.EdgesGeometry(coreGeo);
-      const cageMat = new THREE.LineBasicMaterial({
-        color: "#8aa4ff",
+      // Crisp architectural hairline grid layered cleanly above the terrain
+      const wireMat = new THREE.MeshBasicMaterial({
+        color: new THREE.Color("#5a7ee6"),
+        wireframe: true,
         transparent: true,
-        opacity: 0.22,
+        opacity: 0.15,
       });
-      const cage = new THREE.LineSegments(cageGeo, cageMat);
-      cage.scale.setScalar(1.02);
-      monolith.add(cage);
-      disposables.push(cageGeo, cageMat);
+      const wireMesh = new THREE.Mesh(terrainGeo, wireMat);
+      wireMesh.position.copy(terrainMesh.position);
+      wireMesh.position.y += 0.015;
+      scene.add(wireMesh);
 
-      const titaniumMat = new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#181b22"),
-        metalness: 0.92,
-        roughness: 0.2,
-      });
-      const cobaltRingMat = new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#2448c4"),
-        emissive: new THREE.Color("#16318f"),
-        emissiveIntensity: 0.4,
-        metalness: 0.85,
-        roughness: 0.25,
-      });
-      disposables.push(titaniumMat, cobaltRingMat);
+      disposables.push(terrainGeo, solidMat, wireMat);
 
-      const ring1Geo = new THREE.TorusGeometry(1.75, 0.036, 28, 150);
-      const ring1 = new THREE.Mesh(ring1Geo, titaniumMat);
-      ring1.rotation.set(Math.PI * 0.36, Math.PI * 0.12, 0);
-      monolith.add(ring1);
-
-      const ring2Geo = new THREE.TorusGeometry(2.35, 0.014, 20, 180);
-      const ring2 = new THREE.Mesh(ring2Geo, cobaltRingMat);
-      ring2.rotation.set(-Math.PI * 0.3, Math.PI * 0.2, 0);
-      monolith.add(ring2);
-
-      disposables.push(ring1Geo, ring2Geo);
-
-      // Subtle atmospheric depth particles
-      const nodeCount = 90;
-      const nodePositions = new Float32Array(nodeCount * 3);
-      for (let i = 0; i < nodeCount; i++) {
-        nodePositions[i * 3] = (Math.random() - 0.35) * 14;
-        nodePositions[i * 3 + 1] = (Math.random() - 0.5) * 7;
-        nodePositions[i * 3 + 2] = -Math.random() * 7;
+      // 2. Flowing Volumetric Light Ribbons (soft sweeping architectural lines along the horizon)
+      const ribbonCount = 5;
+      const ribbons = [];
+      for (let r = 0; r < ribbonCount; r++) {
+        const pts = [];
+        const steps = 80;
+        for (let i = 0; i <= steps; i++) {
+          const x = (i / steps - 0.35) * 24;
+          pts.push(new THREE.Vector3(x, 0, -4.5 - r * 1.4));
+        }
+        const geo = new THREE.BufferGeometry().setFromPoints(pts);
+        const mat = new THREE.LineBasicMaterial({
+          color: r % 2 === 0 ? "#7da0ff" : "#d8ccb8",
+          transparent: true,
+          opacity: 0.24 - r * 0.032,
+        });
+        const line = new THREE.Line(geo, mat);
+        line.position.y = -0.75 + r * 0.14;
+        scene.add(line);
+        ribbons.push({ line, geo, phase: r * 0.9, z: -4.5 - r * 1.4 });
+        disposables.push(geo, mat);
       }
-      const nodesGeo = new THREE.BufferGeometry();
-      nodesGeo.setAttribute("position", new THREE.BufferAttribute(nodePositions, 3));
-      const nodesMat = new THREE.PointsMaterial({
-        color: "#9db4ff",
-        size: 0.032,
-        transparent: true,
-        opacity: 0.38,
-      });
-      const dust = new THREE.Points(nodesGeo, nodesMat);
-      scene.add(dust);
-      disposables.push(nodesGeo, nodesMat);
 
-      // Grounded dark architectural plane
-      const floorGeo = new THREE.PlaneGeometry(40, 40);
-      const floorMat = new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#06070a"),
-        metalness: 0.8,
-        roughness: 0.28,
-      });
-      const floor = new THREE.Mesh(floorGeo, floorMat);
-      floor.rotation.x = -Math.PI / 2;
-      floor.position.y = -2.6;
-      scene.add(floor);
-      disposables.push(floorGeo, floorMat);
+      // 3. Soft Cinematic Directional & Point Light Pools (sweeping across the 3D ridges)
+      const cobaltLight = new THREE.PointLight("#3d6bff", 14, 24, 1.5);
+      cobaltLight.position.set(4.5, 1.8, -2.0);
+      scene.add(cobaltLight);
+
+      const champagneLight = new THREE.PointLight("#f0ddc0", 7, 22, 1.6);
+      champagneLight.position.set(-2.5, 2.2, 1.0);
+      scene.add(champagneLight);
+
+      const rimLight = new THREE.DirectionalLight("#7fa2ff", 1.1);
+      rimLight.position.set(5, 6, -6);
+      scene.add(rimLight);
 
       let mx = 0;
       let my = 0;
@@ -194,22 +155,44 @@ export function Cinematic3DHero() {
         raf = requestAnimationFrame(animate);
         if (!visible || document.hidden) return;
 
-        const t = reduced ? 0 : clock.getElapsedTime();
+        const t = reduced ? 0 : clock.getElapsedTime() * 0.42;
+
+        // Smooth architectural wave ridges across terrain
+        for (let i = 0; i < posAttr.count; i++) {
+          const bx = basePositions[i * 3];
+          const bz = basePositions[i * 3 + 2];
+          // Slightly taller ridges on the right half to frame the left-aligned typography
+          const rightWeight = THREE.MathUtils.smoothstep(bx, -6, 9);
+          const elevation =
+            (Math.sin(bx * 0.28 + t) * Math.cos(bz * 0.26 - t * 0.7) * 0.95 +
+              Math.sin((bx + bz) * 0.16 - t * 0.5) * 0.55) *
+            (0.35 + rightWeight * 0.85);
+          posAttr.setY(i, elevation);
+        }
+        posAttr.needsUpdate = true;
+        terrainGeo.computeVertexNormals();
+
+        // Animate soft horizon light ribbons
+        ribbons.forEach(({ geo, phase }) => {
+          const arr = geo.attributes.position;
+          for (let i = 0; i < arr.count; i++) {
+            const x = arr.getX(i);
+            const y =
+              Math.sin(x * 0.24 + t * 1.1 + phase) * 0.42 +
+              Math.cos(x * 0.12 - t * 0.6 + phase) * 0.22;
+            arr.setY(i, y);
+          }
+          arr.needsUpdate = true;
+        });
+
+        // Subtle pointer-reactive light sweep & camera glide
+        cobaltLight.position.x = 4.2 + mx * 2.2;
+        cobaltLight.position.z = -2.2 + my * 1.4;
 
         camera.position.x += (mx * 0.45 - camera.position.x) * 0.04;
-        camera.position.y += (0.35 - my * 0.28 - scrollP * 0.5 - camera.position.y) * 0.04;
-        camera.position.z += (7.8 - scrollP * 2.2 - camera.position.z) * 0.05;
-        camera.lookAt(0.4, 0, -1.6);
-
-        coreMesh.rotation.y = t * 0.14;
-        coreMesh.rotation.x = Math.sin(t * 0.2) * 0.18;
-        cage.rotation.copy(coreMesh.rotation);
-
-        ring1.rotation.z = t * 0.16;
-        ring2.rotation.y = Math.PI * 0.2 + t * 0.1;
-        dust.rotation.y = t * 0.02;
-
-        monolith.position.y = 0.1 + Math.sin(t * 0.6) * 0.07;
+        camera.position.y += (2.35 - my * 0.25 - scrollP * 0.65 - camera.position.y) * 0.04;
+        camera.position.z += (7.6 - scrollP * 2.6 - camera.position.z) * 0.05;
+        camera.lookAt(0.6, -0.45 - scrollP * 0.25, -3.0);
 
         renderer.render(scene, camera);
       };
@@ -223,7 +206,6 @@ export function Cinematic3DHero() {
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("resize", onResize);
         disposables.forEach((d) => d.dispose?.());
-        pmrem.dispose();
         renderer.dispose();
         renderer.domElement.remove();
       };
