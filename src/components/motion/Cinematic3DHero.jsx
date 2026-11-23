@@ -25,8 +25,8 @@ export function Cinematic3DHero() {
       const height = container.clientHeight || window.innerHeight;
 
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color("#050608");
-      scene.fog = new THREE.FogExp2("#050608", 0.085);
+      scene.background = new THREE.Color("#160b0f");
+      scene.fog = new THREE.FogExp2("#160b0f", 0.085);
 
       const camera = new THREE.PerspectiveCamera(44, width / height, 0.1, 100);
       camera.position.set(0, 2.35, 7.6);
@@ -54,11 +54,11 @@ export function Cinematic3DHero() {
       const basePositions = new Float32Array(posAttr.array.length);
       basePositions.set(posAttr.array);
 
-      // Subtle shaded obsidian terrain
+      // Subtle shaded deep merlot terrain
       const solidMat = new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#090b10"),
-        metalness: 0.72,
-        roughness: 0.42,
+        color: new THREE.Color("#1d0e14"),
+        metalness: 0.68,
+        roughness: 0.44,
         flatShading: false,
       });
       const terrainMesh = new THREE.Mesh(terrainGeo, solidMat);
@@ -67,10 +67,10 @@ export function Cinematic3DHero() {
 
       // Crisp architectural hairline grid layered cleanly above the terrain
       const wireMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color("#8c1d35"),
+        color: new THREE.Color("#9c243e"),
         wireframe: true,
         transparent: true,
-        opacity: 0.24,
+        opacity: 0.26,
       });
       const wireMesh = new THREE.Mesh(terrainGeo, wireMat);
       wireMesh.position.copy(terrainMesh.position);
