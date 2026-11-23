@@ -2,8 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { SpatialHeroCanvas } from "@/components/motion/SpatialHeroCanvas";
-import { StoryAperture } from "@/components/portfolio/StoryAperture";
+import { ShaderHero } from "@/components/motion/ShaderHero";
+import { DepthDeck } from "@/components/portfolio/DepthDeck";
 import { profile, projects, experience } from "@/content/profile";
 import { systems, archive } from "@/content/engineering";
 import { gallery } from "@/content/gallery";
@@ -168,8 +168,12 @@ const roleMetrics = {
 
 export function AtelierHome() {
   const heroRef = useRef(null);
+  const topWordRef = useRef(null);
+  const bottomWordRef = useRef(null);
+  const lensRef = useRef(null);
   const worksWrapRef = useRef(null);
   const worksRailRef = useRef(null);
+
   const [workProgress, setWorkProgress] = useState(0);
   const [activePlate, setActivePlate] = useState(0);
   const [selectedWork, setSelectedWork] = useState(null);
@@ -181,16 +185,33 @@ export function AtelierHome() {
   const workDialogRef = useRef(null);
   const lightboxRef = useRef(null);
 
-  // Scroll-driven Nocturnal theme shift (Hero + Exhibition) & horizontal exhibition rail
+  // Unified scroll choreography: Hero split-scale kinetic type + Nocturnal theme + Horizontal Exhibition
   useEffect(() => {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isDesktop = () => window.innerWidth >= 960;
 
+    let currentHeroP = 0;
     let targetWork = 0;
     let currentWork = 0;
     let raf = 0;
 
     const tick = () => {
+      // 1. Hero kinetic split on scroll
+      const heroP = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.85)));
+      currentHeroP += (heroP - currentHeroP) * 0.12;
+      if (!reduced && isDesktop()) {
+        if (topWordRef.current) {
+          topWordRef.current.style.transform = `translate3d(${(-currentHeroP * 90).toFixed(1)}px, 0, 0)`;
+        }
+        if (bottomWordRef.current) {
+          bottomWordRef.current.style.transform = `translate3d(${(currentHeroP * 90).toFixed(1)}px, 0, 0)`;
+        }
+        if (lensRef.current) {
+          lensRef.current.style.transform = `scale(${(1 + currentHeroP * 0.08).toFixed(4)})`;
+        }
+      }
+
+      // 2. Nocturnal theme shift (Hero + Horizontal Exhibition)
       let nocturnal = false;
       if (heroRef.current) {
         const hRect = heroRef.current.getBoundingClientRect();
@@ -204,7 +225,6 @@ export function AtelierHome() {
         ) {
           nocturnal = true;
         }
-
         if (isDesktop() && !reduced) {
           const scrollable = Math.max(1, rect.height - window.innerHeight);
           targetWork = Math.min(1, Math.max(0, -rect.top / scrollable));
@@ -305,46 +325,48 @@ export function AtelierHome() {
 
   return (
     <main id="main">
-      {/* ACT I — FULL-BLEED 3D SPATIAL EXHIBITION HERO */}
-      <section ref={heroRef} className="spatialHero">
-        <SpatialHeroCanvas />
-        <div className="spatialHeroVignette" aria-hidden="true" />
+      {/* ACT I — LIQUID-SILK SHADER HERO WITH KINETIC SPLIT TYPOGRAPHY */}
+      <section ref={heroRef} className="kineticHero">
+        <ShaderHero />
 
-        <div className="atelierWrap spatialHeroInner">
-          <div className="spatialTopStrip">
-            <span>ARCHIVE / 2026</span>
-            <span>FULLSTACK ENGINEERING × APPLIED ML</span>
+        <div className="atelierWrap kineticHeroInner">
+          <div className="kineticTopBar">
+            <span>SHWETA SHARMA — VOL. 26</span>
+            <span>MOVE POINTER TO DISTURB SURFACE</span>
             <span>PHILADELPHIA, PA</span>
           </div>
 
-          <div className="spatialCenterpiece">
-            <p className="spatialEyebrow">DESIGNER’S EYE · ENGINEER’S ARCHITECTURE</p>
-            <h1 className="spatialTitle">
-              <span className="spatialLine" style={{ "--i": 0 }}>
-                <span>SHWETA</span>
+          <div className="kineticStage">
+            <h1 className="kineticTitle" aria-label="Shweta Sharma">
+              <span ref={topWordRef} className="kineticWordTop">
+                <span className="kineticReveal" style={{ "--i": 0 }}>
+                  SHWETA
+                </span>
               </span>
-              <span className="spatialLine spatialSerif" style={{ "--i": 1 }}>
-                <span>
+
+              <div ref={lensRef} className="heroApertureLens">
+                <span className="lensKicker">FULLSTACK × APPLIED ML</span>
+                <p>
+                  Building software where human interaction design and
+                  interpretable machine learning operate as one system.
+                </p>
+                <div className="lensMeta">
+                  <span>MS AI &amp; ML · 3.97 GPA</span>
+                  <span>6+ YRS UX &amp; ENG</span>
+                </div>
+              </div>
+
+              <span ref={bottomWordRef} className="kineticWordBottom">
+                <span className="kineticReveal" style={{ "--i": 1 }}>
                   <em>Sharma</em>
                 </span>
               </span>
             </h1>
-            <p className="spatialSub">
-              Owning software from human research and interface craft to APIs,
-              data pipelines, and interpretable machine learning.
-            </p>
           </div>
 
-          <div className="spatialBottomBar">
-            <div className="spatialMetaCol">
-              <small>EDUCATION</small>
-              <span>MS Computer Science (AI &amp; ML) · Drexel · 3.97 GPA</span>
-            </div>
-            <div className="spatialMetaCol">
-              <small>FEATURED IN ORBIT</small>
-              <span>Bias Checker · GesturePro · Urbanfit · PocketSaver · ABIM</span>
-            </div>
-            <a className="spatialScrollLink" href="#story" data-cursor="ENTER">
+          <div className="kineticFootBar">
+            <span>INTERFACE · API · MODEL EVALUATION</span>
+            <a className="kineticEnterLink" href="#story" data-cursor="ENTER">
               <span>SCROLL TO ENTER</span>
               <i aria-hidden="true">↓</i>
             </a>
@@ -352,8 +374,8 @@ export function AtelierHome() {
         </div>
       </section>
 
-      {/* ACT II — SPLIT-SHUTTER VISUAL DOSSIER (REPLACES FADE TEXT) */}
-      <StoryAperture />
+      {/* ACT II — STICKY 3D STACKING FOLIO DECK */}
+      <DepthDeck />
 
       {/* ACT III — NOCTURNAL HORIZONTAL EXHIBITION */}
       <section id="works" ref={worksWrapRef} className="exhibitionWrap">
@@ -658,7 +680,7 @@ export function AtelierHome() {
         </div>
       </section>
 
-      {/* ACT VI — BEYOND THE SCREEN (CONTACT SHEET) */}
+      {/* ACT VI — BEYOND THE SCREEN */}
       <section id="offscreen" className="offscreenSection atelierWrap">
         <div className="offscreenIntro" data-reveal>
           <figure className="offscreenPortrait">
@@ -757,7 +779,7 @@ export function AtelierHome() {
         )}
       </dialog>
 
-      {/* ACT VII — COLOPHON & CONTACT */}
+      {/* ACT VII — COLOPHON */}
       <section id="contact" className="colophonSection">
         <div className="atelierWrap">
           <div className="colophonTop" data-reveal>
