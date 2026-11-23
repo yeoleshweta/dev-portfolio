@@ -26,7 +26,6 @@ export function HiringBrief({ triggerClassName = "briefTrigger" }) {
         className={triggerClassName}
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
-        data-cursor="BRIEF"
       >
         The 30-second brief <span aria-hidden="true">↗</span>
       </button>
