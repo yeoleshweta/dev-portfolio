@@ -1,10 +1,12 @@
 import { Header } from "@/components/layout/Header";
+import "@/styles/palette.css";
 import "@/styles/globals.css";
 import "@/styles/header.css";
 import "@/styles/continuity.css";
 import "@/styles/portfolio-depth.css";
 import "@/styles/gallery.css";
 import "@/styles/motion.css";
+import "@/styles/carbon.css";
 export const metadata = {
   title: {
     default: "Shweta Sharma | Fullstack Dev",
@@ -20,6 +22,7 @@ export default function Layout({ children }) {
         <a className="skip" href="#main">
           Skip to content
         </a>
+        <div className="carbonPreview">
         <Header />
         {children}
         <footer className="wrap">
@@ -27,6 +30,7 @@ export default function Layout({ children }) {
           <span>Fullstack Dev</span>
           <a href="#main">Back to top ↑</a>
         </footer>
+        </div>
       </body>
     </html>
   );

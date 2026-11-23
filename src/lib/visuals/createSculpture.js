@@ -5,6 +5,10 @@ import { hand, ribbonGeometry } from "./sculptureGeometry.mjs";
 import { lastStoryStage, storyStages, storyWeights } from "./storyStages.mjs";
 
 export function createSculpture(host, getProgress, isReduced, getInteraction = () => ({ x: 0, y: 0, wire: false })) {
+  const palette = getComputedStyle(host);
+  const color = (name) => new THREE.Color(palette.getPropertyValue(`--${name}`).trim());
+  const metalColor = color("sculpture-metal");
+  const technicalColor = color("sculpture-line");
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
     antialias: true,
@@ -33,7 +37,7 @@ export function createSculpture(host, getProgress, isReduced, getInteraction = (
     (target) => target.attributes.normal,
   );
   const material = new THREE.MeshPhysicalMaterial({
-    color: 0xb1858c,
+    color: metalColor,
     metalness: 1,
     roughness: 0.23,
     clearcoat: 1,
@@ -43,17 +47,16 @@ export function createSculpture(host, getProgress, isReduced, getInteraction = (
     transparent: true,
     forceSinglePass: true,
   });
-  const technicalColor = new THREE.Color(0x5a3048);
   const ribbon = new THREE.Mesh(geometry, material);
   const group = new THREE.Group();
   group.add(ribbon);
-  const wireMaterial = new THREE.MeshBasicMaterial({ color: 0x674153, wireframe: true, transparent: true, opacity: 0, depthWrite: false });
+  const wireMaterial = new THREE.MeshBasicMaterial({ color: color("sculpture-wire"), wireframe: true, transparent: true, opacity: 0, depthWrite: false });
   const wireMesh = new THREE.Mesh(geometry, wireMaterial);
   group.add(wireMesh);
   scene.add(group);
   const nodeGeometry = new THREE.SphereGeometry(0.036, 16, 12);
   const nodeMaterial = new THREE.MeshStandardMaterial({
-    color: 0x643b4c,
+    color: color("sculpture-core"),
     metalness: 0.15,
     roughness: 0.55,
     transparent: true,
@@ -68,18 +71,18 @@ export function createSculpture(host, getProgress, isReduced, getInteraction = (
   const core = new THREE.Mesh(
     new THREE.SphereGeometry(0.19, 32, 24),
     new THREE.MeshPhysicalMaterial({
-      color: 0xf9b25f,
-      metalness: 0.65,
-      roughness: 0.19,
-      emissive: 0x7b3614,
-      emissiveIntensity: 0.3,
+      color: color("sculpture-core"),
+      metalness: 0.25,
+      roughness: 0.24,
+      emissive: color("sculpture-glow"),
+      emissiveIntensity: 0.2,
     }),
   );
   group.add(core);
-  const light = new THREE.DirectionalLight(0xffe8ce, 4);
+  const light = new THREE.DirectionalLight(color("sculpture-key-light"), 4);
   light.position.set(-3, 4, 5);
   scene.add(light);
-  const fill = new THREE.DirectionalLight(0xbda4e0, 2);
+  const fill = new THREE.DirectionalLight(color("sculpture-fill-light"), 2);
   fill.position.set(3, -2, 2);
   scene.add(fill);
   const resize = () => {
@@ -174,9 +177,9 @@ export function createSculpture(host, getProgress, isReduced, getInteraction = (
     );
     nodeMaterial.opacity = gesture;
     for (const node of nodes) node.visible = gesture > 0.005;
-    // A deeper, less reflective line keeps fine geometry legible on the paper stage.
+    // Neutral metal becomes a deeper ink line to keep the technical forms legible.
     const technical = gesture + evidence + forecast + lens * 0.65;
-    material.color.setRGB(0.69, 0.52, 0.55).lerp(technicalColor, technical);
+    material.color.copy(metalColor).lerp(technicalColor, technical);
     material.metalness = 1 - technical * 0.8;
     material.roughness = 0.23 + technical * 0.32;
     material.emissiveIntensity = 0;

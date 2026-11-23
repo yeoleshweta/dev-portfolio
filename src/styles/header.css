@@ -14,8 +14,8 @@
 .desktopNav,
 .siteHeader .menuToggle {
   pointer-events: auto;
-  background: #fcfaf4;
-  box-shadow: 0 8px 30px -16px #512c4326, inset 0 0 0 1px #512c4310;
+  background: var(--surface);
+  box-shadow: 0 8px 30px -16px rgb(var(--ink-rgb) / 0.149), inset 0 0 0 1px rgb(var(--ink-rgb) / 0.063);
 }
 .siteBrand {
   display: inline-flex;
@@ -33,7 +33,7 @@
   height: 44px;
   border-radius: 50%;
   padding: 3px;
-  background: #e8dfd6;
+  background: var(--surface-deep);
 }
 .brandSeal i {
   display: grid;
@@ -42,7 +42,7 @@
   height: 100%;
   padding: 0 3px 3px 0;
   border-radius: inherit;
-  background: var(--wine);
+  background: var(--accent);
   color: var(--paper);
   font: italic 28px/.9 "Iowan Old Style", Baskerville, Georgia, serif;
   transition: transform .6s var(--ease);
@@ -73,16 +73,16 @@
   white-space: nowrap;
   transition: background .4s var(--ease), color .4s var(--ease), transform .4s var(--ease);
 }
-.desktopNav a:hover { background: #eee7dd; color: var(--wine); }
+.desktopNav a:hover { background: var(--surface-muted); color: var(--primary); }
 .desktopNav a:active { transform: scale(.96); }
 .desktopNav .navContact {
   gap: 17px;
   padding: 5px 5px 5px 18px;
   margin-left: 8px;
   color: var(--paper);
-  background: var(--wine);
+  background: var(--primary);
 }
-.desktopNav .navContact:hover { background: #63364f; color: var(--paper); }
+.desktopNav .navContact:hover { background: var(--primary-hover); color: var(--paper); }
 .navContact i {
   display: grid;
   place-items: center;
@@ -106,10 +106,10 @@
   padding: 0 17px;
   border: 0;
   border-radius: 100px;
-  background: var(--wine);
+  background: var(--primary);
   color: var(--paper);
 }
-.siteHeader .menuToggle { background: var(--wine); color: var(--paper); }
+.siteHeader .menuToggle { background: var(--primary); color: var(--paper); }
 .menuLabel { font-size: 11px; line-height: 1; }
 .menuGlyph { position: relative; display: block; width: 18px; height: 18px; }
 .menuGlyph span {
@@ -134,11 +134,11 @@
   margin: 0;
   padding: 26px max(24px, 6vw) 40px;
   border: 0;
-  background: #f7f4ecf5;
+  background: var(--veil-strong);
   backdrop-filter: blur(24px);
-  color: var(--wine);
+  color: var(--primary);
 }
-.menuOverlay::backdrop { background: #251f2b50; }
+.menuOverlay::backdrop { background: rgb(var(--ink-rgb) / 31%); }
 .menuOverlayTop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; }
 .menuSignature { font: italic 44px/1 "Iowan Old Style", Baskerville, Georgia, serif; }
 .menuOverlay .menuToggle { display: inline-flex; }

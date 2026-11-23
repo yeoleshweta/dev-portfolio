@@ -56,7 +56,7 @@
 }
 .narrativeChapter h1 em,
 .narrativeChapter h2 em {
-  color: var(--wine);
+  color: var(--primary);
 }
 .narrativeKicker {
   display: flex;
@@ -79,7 +79,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #a26545;
+  background: var(--accent);
 }
 .narrativeLead {
   font-size: 19px;
@@ -104,7 +104,7 @@
   margin-top: 28px;
   padding: 7px 7px 7px 19px;
   border-radius: 30px;
-  background: var(--wine);
+  background: var(--primary);
   color: var(--paper);
   transition: transform 0.6s var(--ease);
 }
@@ -131,7 +131,7 @@
     7px ui-monospace,
     monospace;
   letter-spacing: 0.09em;
-  color: #8c7a81;
+  color: var(--muted);
   margin-top: 50px;
 }
 .engineeringDetails {
@@ -174,13 +174,13 @@
     40px/1 Georgia,
     serif;
   letter-spacing: -0.07em;
-  color: var(--wine);
+  color: var(--primary);
 }
 .narrativeStack {
   font:
     8px/1.7 ui-monospace,
     monospace;
-  color: #827079;
+  color: var(--muted);
   margin-top: 19px;
   max-width: 40ch;
 }
@@ -194,7 +194,7 @@
     10px ui-monospace,
     monospace;
   padding: 7px 11px;
-  background: #e9e0d5;
+  background: var(--surface-muted);
   border-radius: 4px;
 }
 
@@ -223,7 +223,7 @@
     7px ui-monospace,
     monospace;
   letter-spacing: 0.1em;
-  color: #937682;
+  color: var(--muted);
   z-index: 1;
 }
 .stageCrosshair {
@@ -231,7 +231,7 @@
   font:
     20px ui-monospace,
     monospace;
-  color: #b59a92;
+  color: var(--muted);
   z-index: 1;
 }
 .crosshairOne {
@@ -254,13 +254,13 @@
   font:
     7px ui-monospace,
     monospace;
-  color: #937682;
+  color: var(--muted);
   letter-spacing: 0.12em;
 }
 .continuityOrbit i {
   position: absolute;
   inset: 18% 8%;
-  border: 1px solid #512c4310;
+  border: 1px solid rgb(var(--ink-rgb) / 0.063);
   border-radius: 50%;
   transform: rotate(-22deg);
 }
@@ -281,7 +281,7 @@
   padding: 3px;
   border-radius: 10px;
   background: #fff9;
-  box-shadow: 0 25px 60px #512c4310;
+  box-shadow: 0 25px 60px rgb(var(--ink-rgb) / 0.063);
   overflow: hidden;
 }
 .interfaceImage img {
@@ -301,12 +301,12 @@
   font:
     7px ui-monospace,
     monospace;
-  color: var(--wine);
+  color: var(--primary);
 }
 .interfaceRoles i {
   flex: 1;
   height: 1px;
-  background: #512c4320;
+  background: rgb(var(--ink-rgb) / 0.125);
 }
 .objectFootnote {
   position: absolute;
@@ -326,7 +326,7 @@
   font:
     8px/1.8 ui-monospace,
     monospace;
-  color: #cfad95;
+  color: var(--secondary);
   letter-spacing: 0.1em;
 }
 .continuousMessage {
@@ -338,7 +338,7 @@
 }
 .continuousMessage label {
   display: block;
-  color: #d4b5a1;
+  color: var(--secondary);
   font:
     8px ui-monospace,
     monospace;
@@ -350,21 +350,21 @@
   padding: 12px 18px;
   border: 0;
   border-radius: 7px;
-  background: #f7eedf;
-  color: var(--wine);
+  background: var(--surface);
+  color: var(--primary);
   font:
     27px Georgia,
     serif;
 }
 .continuousMessage input:focus-visible {
-  outline: 2px solid #c19369;
+  outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
 .continuousMessage > span {
   display: block;
   margin-top: 8px;
   font-size: 7px;
-  color: #a98f9e;
+  color: var(--muted);
 }
 .evidenceOverlay {
   opacity: var(--chapter-3);
@@ -376,8 +376,8 @@
   width: 70%;
   border-radius: 10px;
   padding: 6px;
-  background: #e3d8ca;
-  box-shadow: 0 20px 50px #512c430a;
+  background: var(--surface-deep);
+  box-shadow: 0 20px 50px rgb(var(--ink-rgb) / 0.039);
 }
 .readoutHeader {
   display: flex;
@@ -394,14 +394,14 @@
   gap: 15px;
   padding: 13px 16px;
   margin-top: 2px;
-  background: #faf7ef;
+  background: var(--surface);
   font-size: 11px;
 }
 .readoutRow small {
   font:
     8px ui-monospace,
     monospace;
-  color: #af8b7c;
+  color: var(--muted);
 }
 .readoutRow code {
   margin-left: auto;
@@ -427,7 +427,7 @@
   font:
     8px ui-monospace,
     monospace;
-  color: #9c778a;
+  color: var(--muted);
 }
 .continuousStageFooter > span:first-child {
   display: flex;
@@ -438,17 +438,17 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #bc8a61;
+  background: var(--accent);
 }
 .continuityProgress {
   height: 1px;
-  background: #99748030;
+  background: var(--line);
   width: 100%;
 }
 .continuityProgress i {
   display: block;
   height: 100%;
-  background: #a47f76;
+  background: var(--accent);
   transform-origin: left;
   transform: scaleX(var(--story-progress));
 }
@@ -457,7 +457,7 @@
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  border-top: 1px solid #512c4315;
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.082);
   padding: 28px 0;
 }
 .continuityIndex a {
@@ -469,10 +469,10 @@
   color: var(--muted);
 }
 .continuityIndex span {
-  color: #ac897e;
+  color: var(--muted);
 }
 .continuityIndex a[aria-current] {
-  color: var(--wine);
+  color: var(--primary);
 }
 .storyCoda {
   padding: 130px 0;
@@ -486,7 +486,7 @@
   margin: 35px 0;
 }
 .storyCoda em {
-  color: var(--wine);
+  color: var(--primary);
 }
 .codaNote {
   font-size: 12px;
@@ -500,11 +500,11 @@
 .sculptureFallback i {
   position: absolute;
   inset: 8%;
-  border: 26px solid #99717d;
+  border: 26px solid var(--sculpture-metal);
   border-radius: 50%;
   box-shadow:
-    inset 6px 5px 8px #fff1db80,
-    7px 6px 0 #4c2b43;
+    inset 6px 5px 8px rgb(var(--white-rgb) / 50%),
+    7px 6px 0 var(--ink);
   transform: rotateX(35deg) rotateY(45deg);
 }
 .sculptureFallback i:nth-child(2) {
@@ -516,7 +516,7 @@
 .sculptureFallback b {
   position: absolute;
   inset: 45%;
-  background: #d59a62;
+  background: var(--accent);
   border-radius: 50%;
 }
 .signalSculpture[data-ready="true"] .sculptureFallback {
@@ -830,13 +830,13 @@
   color: var(--accent);
 }
 .continuousMessage label {
-  color: var(--wine);
+  color: var(--primary);
 }
 .continuousMessage input {
-  background: #fffdf7;
+  background: var(--surface);
   box-shadow:
-    0 0 0 5px #e9dfd1,
-    inset 0 0 0 1px #512c4310;
+    0 0 0 5px var(--surface-deep),
+    inset 0 0 0 1px rgb(var(--ink-rgb) / 0.063);
 }
 .continuousMessage > span {
   color: var(--muted);
@@ -855,8 +855,8 @@
 .chapterArchitecture {
   margin-top: 24px;
   max-width: 42ch;
-  border-top: 1px solid #512c4320;
-  border-bottom: 1px solid #512c4320;
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.125);
+  border-bottom: 1px solid rgb(var(--ink-rgb) / 0.125);
 }
 .chapterArchitecture summary {
   display: flex;
@@ -881,7 +881,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #e9e1d6;
+  background: var(--surface-muted);
   transition: transform 0.5s var(--ease);
 }
 .chapterArchitecture[open] summary > span:last-child {
@@ -928,9 +928,9 @@
 }
 .serviceProof code {
   font-size: 9px;
-  color: var(--wine);
+  color: var(--primary);
   padding: 9px 11px;
-  background: #e9e0d5;
+  background: var(--surface-muted);
   border-radius: 4px;
 }
 .serviceProof > span {
@@ -981,11 +981,11 @@
 }
 .vignetteLines i {
   height: 3px;
-  background: #b8a99550;
+  background: var(--edge);
   border-radius: 9px;
 }
 .vignetteLines i:nth-child(2) {
-  background: #a3452d60;
+  background: var(--accent-edge);
   width: 75%;
 }
 .vignetteLines i:nth-child(3) {
@@ -1002,12 +1002,12 @@
   font:
     9px ui-monospace,
     monospace;
-  color: var(--wine);
+  color: var(--primary);
 }
 .biasLensTags > span {
   padding: 8px 10px;
   border-radius: 99px;
-  background: #e8dfd1;
+  background: var(--surface-muted);
 }
 .biasLensTags i {
   font-style: normal;
@@ -1029,7 +1029,7 @@
 .biasServiceLabels i {
   flex: 1;
   height: 1px;
-  background: #512c4320;
+  background: rgb(var(--ink-rgb) / 0.125);
 }
 .forecastHeading {
   position: absolute;
@@ -1055,7 +1055,7 @@
 }
 .forecastPlot > i {
   height: 1px;
-  background: #512c4312;
+  background: rgb(var(--ink-rgb) / 0.071);
   width: 100%;
 }
 .forecastSplit {
@@ -1063,7 +1063,7 @@
   left: 60%;
   top: 0;
   bottom: 0;
-  border-left: 1px dashed #9b756e60;
+  border-left: 1px dashed var(--diagram-muted);
 }
 .forecastPlot > span {
   position: absolute;
@@ -1088,13 +1088,13 @@
 }
 .forecastServices > span {
   padding: 10px 14px;
-  background: #fdfaf4;
-  box-shadow: 0 0 0 4px #e9dfd1;
+  background: var(--surface);
+  box-shadow: 0 0 0 4px var(--surface-deep);
   border-radius: 8px;
   font:
     9px ui-monospace,
     monospace;
-  color: var(--wine);
+  color: var(--primary);
 }
 .forecastServices i {
   font-size: 9px;

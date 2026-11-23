@@ -12,7 +12,7 @@
 .briefTrigger {
   border: 0;
   background: none;
-  color: var(--wine);
+  color: var(--primary);
   font-size: 11px;
   padding: 12px 0;
   text-decoration: underline;
@@ -41,7 +41,7 @@
   display: flex;
   flex-direction: column;
   padding-right: 16px;
-  border-right: 1px solid #512c4320;
+  border-right: 1px solid rgb(var(--ink-rgb) / 0.125);
 }
 .heroCredentials strong {
   font-weight: 400;
@@ -68,7 +68,7 @@
   letter-spacing: -0.055em;
 }
 .practiceBridge > p em {
-  color: var(--wine);
+  color: var(--primary);
 }
 .bridgeLink {
   grid-column: 2;
@@ -81,7 +81,7 @@
 .bridgeLink span {
   display: grid;
   place-items: center;
-  background: #e9e0d5;
+  background: var(--surface-muted);
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -104,10 +104,10 @@
   font-size: 42px;
 }
 .projectArchive {
-  border-top: 1px solid #512c4320;
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.125);
 }
 .archiveItem {
-  border-bottom: 1px solid #512c4320;
+  border-bottom: 1px solid rgb(var(--ink-rgb) / 0.125);
 }
 .archiveItem summary {
   display: grid;
@@ -129,7 +129,7 @@
   font:
     9px ui-monospace,
     monospace;
-  color: #927969;
+  color: var(--muted);
 }
 .archiveName {
   font:
@@ -148,7 +148,7 @@
   place-items: center;
   width: 30px;
   height: 30px;
-  background: #e8dfd5;
+  background: var(--surface-muted);
   border-radius: 50%;
   font-size: 17px;
   transition: transform 0.5s var(--ease);
@@ -202,7 +202,7 @@
   gap: 12px;
   align-items: center;
   margin-top: 45px;
-  color: #987464;
+  color: var(--muted);
   font:
     8px ui-monospace,
     monospace;
@@ -211,11 +211,11 @@
 .disciplineMark i {
   height: 1px;
   width: 35px;
-  background: #bda999;
+  background: var(--edge);
 }
 .discipline {
   padding: 30px 0;
-  border-top: 1px solid #512c4320;
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.125);
 }
 .discipline:first-child {
   padding-top: 0;
@@ -251,13 +251,13 @@
   margin: 18px 0;
 }
 .skillTags span {
-  background: #ebe4d9;
+  background: var(--surface-muted);
   padding: 6px 10px;
   border-radius: 5px;
   font:
     9px ui-monospace,
     monospace;
-  color: var(--wine);
+  color: var(--primary);
 }
 .discipline > a {
   display: inline-flex;
@@ -273,15 +273,15 @@
 .educationShell {
   margin-top: 40px;
   padding: 6px;
-  background: #dcd1c4;
+  background: var(--surface-deep);
   border-radius: 18px;
   max-width: 410px;
 }
 .educationCard {
-  background: #f4eee3;
+  background: var(--surface-muted);
   padding: 25px;
   border-radius: 13px;
-  box-shadow: inset 0 1px #fff9ef;
+  box-shadow: inset 0 1px var(--surface);
 }
 .educationCard .tinyLabel {
   font-size: 8px;
@@ -307,7 +307,7 @@
   font:
     29px Georgia,
     serif;
-  color: var(--wine);
+  color: var(--primary);
 }
 .educationCard strong small {
   font:
@@ -349,7 +349,7 @@
   align-items: center;
 }
 .personalPhotoShell {
-  background: #dfd4c6;
+  background: var(--surface-deep);
   padding: 7px;
   border-radius: 20px;
   transform: rotate(-1.5deg);
@@ -375,8 +375,8 @@
   left: 0;
   right: 0;
   padding: 60px 28px 25px;
-  background: linear-gradient(transparent, #201b29e6);
-  color: #f8edde;
+  background: linear-gradient(transparent, rgb(var(--ink-rgb) / 90%));
+  color: var(--on-inverse);
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -422,7 +422,7 @@
   font:
     italic 37px Georgia,
     serif;
-  color: var(--wine);
+  color: var(--primary);
   margin-top: 25px;
 }
 .contactStatus {
@@ -433,15 +433,15 @@
   font:
     9px/1.7 ui-monospace,
     monospace;
-  color: #d4bdca;
+  color: var(--on-inverse-muted);
   padding-bottom: 60px;
 }
 .contactStatus > span:last-child {
   margin-left: auto;
-  color: #c2a9b8;
+  color: var(--on-inverse-muted);
 }
 .contactStatus .liveDot {
-  background: #d9ac8e;
+  background: var(--accent-light);
 }
 .contactLinks {
   display: flex;
@@ -452,7 +452,7 @@
   font:
     10px ui-monospace,
     monospace;
-  color: #ddc6d3;
+  color: var(--on-inverse-muted);
 }
 .briefDialog {
   padding: 8px;
@@ -460,12 +460,12 @@
   max-height: calc(100dvh - 48px);
   border: 0;
   border-radius: 25px;
-  background: #e4d8ca;
+  background: var(--surface-deep);
   color: var(--ink);
-  box-shadow: 0 35px 120px #24192b25;
+  box-shadow: 0 35px 120px rgb(var(--ink-rgb) / 14%);
 }
 .briefDialog::backdrop {
-  background: #20142170;
+  background: rgb(var(--ink-rgb) / 44%);
   backdrop-filter: blur(8px);
 }
 .briefDialog[open] {
@@ -491,8 +491,8 @@
   border-radius: 50%;
   width: 36px;
   height: 36px;
-  background: #e9e0d5;
-  color: var(--wine);
+  background: var(--surface-muted);
+  color: var(--primary);
   font-size: 24px;
   flex: none;
 }
@@ -509,8 +509,8 @@
 .briefFacts {
   margin: 25px 0;
   padding: 20px 0;
-  border-top: 1px solid #512c4315;
-  border-bottom: 1px solid #512c4315;
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.082);
+  border-bottom: 1px solid rgb(var(--ink-rgb) / 0.082);
   display: grid;
   gap: 16px;
 }
@@ -550,7 +550,7 @@
   display: block;
   font-size: 13px;
   font-weight: 500;
-  color: var(--wine);
+  color: var(--primary);
   margin-bottom: 3px;
 }
 .briefProof i {

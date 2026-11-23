@@ -1,9 +1,4 @@
 :root {
-  --paper: #f7f4ec;
-  --ink: #30232e;
-  --wine: #512c43;
-  --accent: #a3452d;
-  --muted: #70656a;
   --ease: cubic-bezier(0.32, 0.72, 0, 1);
   --layer-nav: 10;
   color-scheme: light;
@@ -44,7 +39,7 @@ h1 em,
 h2 em,
 h3 em {
   font-weight: 400;
-  color: var(--wine);
+  color: var(--primary);
 }
 a {
   color: inherit;
@@ -99,7 +94,7 @@ button:focus-visible {
   gap: 22px;
   padding: 7px 7px 7px 23px;
   border-radius: 99px;
-  background: var(--wine);
+  background: var(--primary);
   color: var(--paper);
   font-size: 13px;
   transition: transform 0.5s var(--ease);
@@ -139,7 +134,7 @@ button:active {
   display: flex;
   gap: 12px;
   font-size: 10px;
-  color: #e0bca6;
+  color: var(--accent-light);
 }
 .pipeline i {
   font-style: normal;
@@ -152,13 +147,13 @@ button:active {
 }
 .waveform i {
   width: 3px;
-  background: var(--wine);
+  background: var(--primary);
   border-radius: 5px;
   opacity: 0.55;
 }
 .journeySection {
   padding: 120px 0;
-  background: #eee7dc;
+  background: var(--surface-muted);
 }
 .journeyGrid {
   display: grid;
@@ -177,7 +172,7 @@ button:active {
 }
 .timeline {
   padding-left: 30px;
-  border-left: 1px solid #512c4320;
+  border-left: 1px solid rgb(var(--ink-rgb) / 0.125);
 }
 .timeline article {
   position: relative;
@@ -190,8 +185,8 @@ button:active {
   top: 9px;
   width: 9px;
   height: 9px;
-  background: var(--wine);
-  border: 3px solid #eee7dc;
+  background: var(--primary);
+  border: 3px solid var(--surface-muted);
   border-radius: 50%;
   box-sizing: content-box;
 }
@@ -221,7 +216,7 @@ button:active {
 }
 .travelShell {
   padding: 7px;
-  background: #e5daca;
+  background: var(--surface-deep);
   border-radius: 170px 170px 24px 24px;
   transform: rotate(-3deg);
 }
@@ -256,25 +251,25 @@ button:active {
 }
 .toolkit strong {
   font-weight: 500;
-  color: var(--wine);
+  color: var(--primary);
 }
 .storyContact {
   text-align: center;
   padding: 120px 0;
-  background: var(--wine);
+  background: var(--primary);
   color: var(--paper);
 }
 .storyContact .eyebrow {
-  color: #dcb89f;
+  color: var(--accent-light);
 }
 .storyContact h2 {
   font-size: clamp(55px, 7.5vw, 110px);
 }
 .storyContact h2 em {
-  color: #dfb59c;
+  color: var(--accent-light);
 }
 .storyContact p:not(.eyebrow) {
-  color: #d4c2cc;
+  color: var(--on-inverse-muted);
   margin: 30px 0;
   font-size: 14px;
 }
@@ -283,10 +278,10 @@ button:active {
 }
 .storyContact .primary {
   background: var(--paper);
-  color: var(--wine);
+  color: var(--primary);
 }
 .storyContact .primary i {
-  background: #512c4310;
+  background: rgb(var(--ink-rgb) / 0.063);
 }
 footer {
   display: flex;
@@ -319,7 +314,7 @@ footer a {
 }
 .deck {
   font: italic 30px Georgia;
-  color: var(--wine);
+  color: var(--primary);
   margin-top: 25px;
 }
 .caseLayout {
@@ -344,7 +339,7 @@ footer a {
   object-fit: contain;
   padding: 7px;
   border-radius: 24px;
-  background: #e4ddd1;
+  background: var(--surface-deep);
 }
 .study article section {
   margin: 50px 0;

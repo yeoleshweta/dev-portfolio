@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 const links = [
   ["Work", "work"],
@@ -11,7 +11,8 @@ const links = [
   ["Contact", "contact"],
 ];
 
-export function Header() {
+export function Header({ base = "/" }) {
+  const menuId = useId();
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(null);
   useEffect(() => {
@@ -39,7 +40,7 @@ export function Header() {
   return (
     <>
       <header className="siteHeader wrap">
-        <Link className="siteBrand" href="/#main" aria-label="Shweta Sharma, home">
+        <Link className="siteBrand" href={`${base}#main`} aria-label="Shweta Sharma, home">
           <span className="brandSeal" aria-hidden="true"><i>s.</i></span>
           <span className="brandIdentity">
             <strong>Shweta Sharma</strong>
@@ -48,7 +49,7 @@ export function Header() {
         </Link>
         <nav className="desktopNav" aria-label="Main navigation">
           {links.map(([label, id]) => (
-            <Link key={id} href={`/#${id}`} aria-current={active === id ? "location" : undefined} className={id === "contact" ? "navContact" : undefined}>
+            <Link key={id} href={`${base}#${id}`} aria-current={active === id ? "location" : undefined} className={id === "contact" ? "navContact" : undefined}>
               <span>{label}</span>
               {id === "contact" && <i aria-hidden="true">↗</i>}
             </Link>
@@ -59,7 +60,7 @@ export function Header() {
           className="menuToggle"
           aria-label="Open navigation"
           aria-expanded={open}
-          aria-controls="mobile-menu"
+          aria-controls={menuId}
           onClick={() => setOpen(true)}
         >
           <span className="menuLabel">Menu</span>
@@ -68,7 +69,7 @@ export function Header() {
       </header>
       <dialog
         ref={dialog}
-        id="mobile-menu"
+        id={menuId}
         className="menuOverlay"
         aria-labelledby="mobile-menu-title"
         onCancel={() => setOpen(false)}
@@ -90,7 +91,7 @@ export function Header() {
             <Link
               style={{ "--index": index }}
               key={id}
-              href={`/#${id}`}
+              href={`${base}#${id}`}
               aria-current={active === id ? "location" : undefined}
               onClick={() => setOpen(false)}
             >

@@ -1,5 +1,11 @@
 # Reference study and content provenance
 
+## Current palette — 2026-11-20
+
+The user selected porcelain, ink, and cobalt to replace the original cream/plum direction. The palette is centralized in `src/styles/palette.css`: porcelain `#F7F8FA`, ink `#20242C`, and cobalt `#254FDB`. White and cool-gray nested surfaces provide depth; cobalt identifies small active details, the identity mark, and the contact action. Primary buttons and editorial typography remain ink. The WebGL renderer reads the palette tokens for its neutral silver material, ink linework, cobalt core, and neutral studio lighting. Existing photographs and project artwork retain their original colors.
+
+Checked palette pairings: ink/porcelain 14.64:1; muted text/porcelain 5.45:1; cobalt/porcelain 6.14:1; light text/cobalt 6.14:1. Reference notes below describe the earlier design direction and its content provenance.
+
 ## Reference: Areef Syed, classic portfolio
 
 Reviewed https://www.areefsyed.com/?view=classic on 2026-11-19 in the browser, including the profile, project detail drawer, categorized capabilities, career, personal archive, and contact sections.

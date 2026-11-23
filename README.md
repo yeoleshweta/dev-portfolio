@@ -18,7 +18,8 @@ Open http://localhost:3000. Run `npm run build` to validate all routes and gener
 - `src/components/portfolio/`: portfolio-specific interactive components.
 - `src/components/motion/`: shared heading reveal and pointer-response enhancement.
 - `src/content/profile.js`: biography, experience, and project content.
-- `src/styles/globals.css`: responsive styling and visual tokens.
+- `src/styles/globals.css`: typography, shared layout, and motion tokens.
+- `src/styles/carbon.css`: carbon and citron color roles and bold typography, including WebGL materials and lighting.
 - `src/styles/header.css`: header identity, desktop navigation, and mobile menu. The header inherits the shared `.wrap` width; keep section stylesheets free of header overrides.
 - `public/`: images and downloadable résumé.
 
@@ -26,7 +27,7 @@ Use the `@/` alias for imports from `src`. Keep content in the content module an
 
 ## Design conventions
 
-Preserve the cream, plum, and rust palette. Editorial serif headings pair with a system-native Avenir text stack. Cards use nested surfaces; primary actions use circular inset arrows. Motion uses transforms and opacity, with reduced-motion support. The mobile navigation uses a native dialog for keyboard focus containment and Escape dismissal. Content remains visible without JavaScript; scroll scenes progressively enhance the portfolio.
+Preserve the carbon, ivory, and citron direction in `src/styles/carbon.css`. Use semantic color tokens rather than adding local tints. The sculpture uses silver and citron materials. Editorial serif headings pair with a system-native Avenir text stack. Cards use nested surfaces; primary actions use circular inset arrows. Motion uses transforms and opacity, with reduced-motion support. The mobile navigation uses a native dialog for keyboard focus containment and Escape dismissal. Content remains visible without JavaScript; scroll scenes progressively enhance the portfolio.
 
 Before shipping, run the production build and check navigation, scroll sequences, all case studies, mobile layouts, keyboard focus, and reduced-motion behavior. Update factual claims only from verified portfolio material.
 
@@ -50,12 +51,6 @@ The GesturePro input is an editable illustration, not a camera or inference serv
 - `ContactInvitation.jsx` closes with a scroll-linked circular contact action and an email-copy control.
 - `src/styles/motion.css` owns these interactions, line-by-line typography, the practice statement, and career timeline. CSS view timelines enhance supported browsers; all content remains readable without them. No new animation dependency is required.
 
-Run `node --test tests/sculpture-geometry.test.mjs` to verify matching topology across all six forms, normalized transition weights, finite positions/normals, the 21 landmarks, and the frame dimensions used to align the actual project image. Run `npm run build` for route compilation and static export.
-
-### Design research
-
-[Bruno Simon](https://bruno-simon.com/) uses interaction as a demonstration of craft. [Lusion](https://lusion.co/) connects 3D art direction and storytelling. [NN/g's portfolio guidance](https://www.nngroup.com/articles/ux-design-portfolios/) emphasizes scannability, role clarity, process, and outcomes. This design uses a signature sculptural object while retaining direct access to case studies and contact information.
-
 ## Engineering evidence and hiring overview
 
 - `src/content/engineering.js`: sourced system architecture, disciplines, and additional project summaries.
@@ -71,4 +66,4 @@ Run `node --test tests/sculpture-geometry.test.mjs` to verify matching topology 
 The portfolio keeps model demonstrations illustrative. It does not send vignette text or camera input to a live service. New employment and education details were checked against the bundled résumé; source-linked architecture was checked against the corresponding public repositories.
 
 
-The main story now keeps a single paper background throughout. Fine geometry uses a deeper plum material for contrast. `src/lib/visuals/storyStages.mjs` defines the shared order/count used by scroll progress, morph targets, chapter navigation, and tests. The renderer checks for discrete progress changes in reduced-motion mode, without animating between forms.
+The main story keeps a single porcelain background throughout. Fine geometry uses a deeper ink material for contrast. `src/lib/visuals/storyStages.mjs` defines the shared order/count used by scroll progress, morph targets, chapter navigation, and tests. The renderer checks for discrete progress changes in reduced-motion mode, without animating between forms.

@@ -1,0 +1,39 @@
+/* Porcelain / ink / cobalt. Keep large surfaces neutral; color signals interaction. */
+:root {
+  --paper: #f7f8fa;
+  --surface: #ffffff;
+  --surface-muted: #eef0f3;
+  --surface-deep: #e3e7ed;
+  --edge: #c5cdd8;
+  --ink: #20242c;
+  --ink-rgb: 32 36 44;
+  --white-rgb: 255 255 255;
+  --primary: var(--ink);
+  --primary-hover: #363e4d;
+  --secondary: #465063;
+  --muted: #5d6675;
+  --accent: #254fdb;
+  --accent-soft: #e8edfd;
+  --accent-edge: #99adef;
+  --accent-light: #a6b8ff;
+  --line: rgb(var(--ink-rgb) / 12%);
+  --veil: rgb(247 248 250 / 92%);
+  --veil-strong: rgb(247 248 250 / 96%);
+
+  --inverse: #171b23;
+  --inverse-surface: #303845;
+  --on-inverse: #f7f8fa;
+  --on-inverse-muted: #abb4c4;
+  --on-inverse-secondary: #cbd2de;
+  --diagram-muted: #7c889c;
+
+  /* The WebGL renderer reads these same tokens at initialization. */
+  --sculpture-metal: #acb3bf;
+  --sculpture-line: #263247;
+  --sculpture-wire: #4b5d7a;
+  /* Deeper pigment offsets the bright studio lighting so the rendered core stays cobalt. */
+  --sculpture-core: #0923a8;
+  --sculpture-glow: #102575;
+  --sculpture-key-light: #ffffff;
+  --sculpture-fill-light: #dce5f8;
+}
