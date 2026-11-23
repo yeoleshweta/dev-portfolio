@@ -576,8 +576,45 @@ a:focus-visible, button:focus-visible {
 .ledgerSub p { font-size: 14px; color: var(--ink-muted); line-height: 1.7; max-width: 56ch; }
 
 /* ACT VI — BEYOND THE SCREEN */
-.offscreenSection { padding: 110px 0 120px; border-top: 1px solid var(--line); }
-.offscreenIntro { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-bottom: 90px; }
+.offscreenSection { padding: 110px 0 36px; border-top: 1px solid var(--line); }
+.offscreenIntro { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-bottom: 0; }
+
+/* Token bridge for original scattered PersonalGallery */
+.photoGallery {
+  --ink-rgb: 17 17 16;
+  --muted: #66635c;
+  --surface: #ffffff;
+  --surface-muted: #edeae2;
+  --surface-deep: #e3dfd5;
+  --paper: #f6f4ef;
+  --primary: #111110;
+  --veil: rgb(246 244 239 / 0.9);
+  --veil-strong: rgb(246 244 239 / 0.94);
+  padding-top: 56px;
+}
+.photoGallery .wrap {
+  width: 100%;
+  max-width: 1400px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4.5vw, 60px);
+}
+.photoGallery .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.photoGallery .galleryHeading h2 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+}
+.photoGallery .galleryHeading h2 em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
 .offscreenPortrait { border: 1px solid var(--line); padding: 10px; background: var(--bg-subtle); }
 .offscreenPortrait img { width: 100%; height: 490px; object-fit: cover; object-position: center 38%; }
 .offscreenPortrait figcaption { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 4px 4px; font-family: var(--font-mono); font-size: 10px; color: var(--ink-muted); }

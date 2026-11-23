@@ -4,9 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { CleanHero } from "@/components/portfolio/CleanHero";
 import { PracticePillars } from "@/components/portfolio/PracticePillars";
+import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
 import { profile, projects, experience } from "@/content/profile";
 import { systems, archive } from "@/content/engineering";
-import { gallery } from "@/content/gallery";
+import "@/styles/gallery.css";
 
 const exhibitionPlates = [
   {
@@ -175,11 +176,9 @@ export function AtelierHome() {
   const [selectedWork, setSelectedWork] = useState(null);
   const [activeCraft, setActiveCraft] = useState(0);
   const [activeExp, setActiveExp] = useState(0);
-  const [lightboxIdx, setLightboxIdx] = useState(null);
   const [copied, setCopied] = useState(false);
 
   const workDialogRef = useRef(null);
-  const lightboxRef = useRef(null);
 
   // Header theme sync (nocturnal over Hero only) + Horizontal Exhibition rail
   useEffect(() => {
@@ -275,12 +274,6 @@ export function AtelierHome() {
     };
   }, [selectedWork]);
 
-  useEffect(() => {
-    const d = lightboxRef.current;
-    if (!d) return;
-    if (lightboxIdx !== null && !d.open) d.showModal();
-    if (lightboxIdx === null && d.open) d.close();
-  }, [lightboxIdx]);
 
   async function copyEmail() {
     try {
@@ -649,62 +642,10 @@ export function AtelierHome() {
           </div>
         </div>
 
-        <div className="contactSheet" data-reveal>
-          <div className="contactSheetHead">
-            <span>CONTACT SHEET / 05 FRAMES</span>
-            <span>CLICK ANY FRAME TO EXPAND</span>
-          </div>
-          <div className="contactSheetGrid">
-            {gallery.map((item, idx) => (
-              <button
-                key={item.src}
-                className="sheetFrame"
-                style={{ "--stagger": idx % 2 === 1 ? "26px" : "0px" }}
-                onClick={() => setLightboxIdx(idx)}
-                data-cursor="VIEW"
-              >
-                <div className="sheetFrameImg">
-                  <img
-                    src={item.src}
-                    alt={item.alt}
-                    style={{ objectPosition: item.position }}
-                  />
-                </div>
-                <div className="sheetFrameMeta">
-                  <small>0{idx + 1}</small>
-                  <strong>{item.title}</strong>
-                  <span>{item.caption}</span>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
       </section>
 
-      <dialog
-        ref={lightboxRef}
-        className="atelierLightbox"
-        onClick={(e) => {
-          if (e.target === e.currentTarget) setLightboxIdx(null);
-        }}
-        onCancel={() => setLightboxIdx(null)}
-      >
-        {lightboxIdx !== null && (
-          <div className="lightboxContent">
-            <img
-              src={gallery[lightboxIdx].src}
-              alt={gallery[lightboxIdx].alt}
-            />
-            <div className="lightboxCaption">
-              <div>
-                <strong>{gallery[lightboxIdx].title}</strong>
-                <span>{gallery[lightboxIdx].caption}</span>
-              </div>
-              <button onClick={() => setLightboxIdx(null)}>Close ×</button>
-            </div>
-          </div>
-        )}
-      </dialog>
+      {/* ORIGINAL SCATTERED PHOTO DESK GALLERY */}
+      <PersonalGallery />
 
       {/* ACT VII — COLOPHON */}
       <section id="contact" className="colophonSection">
