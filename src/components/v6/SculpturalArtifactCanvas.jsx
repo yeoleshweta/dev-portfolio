@@ -62,8 +62,10 @@ function sampleChapterState(chP) {
  * nebula (molten gold, electric violet, glacial blue) with cursor repulsion, then
  * physically vertex-morphs those exact grains through all 5 build phases as you scroll.
  */
-export function SculpturalArtifactCanvas({ progressRef }) {
+export function SculpturalArtifactCanvas({ progressRef, theme = "dark" }) {
   const hostRef = useRef(null);
+  const themeRef = useRef(theme);
+  themeRef.current = theme;
 
   useEffect(() => {
     const container = hostRef.current;
@@ -267,6 +269,7 @@ export function SculpturalArtifactCanvas({ progressRef }) {
         uColorB: { value: new THREE.Color(0.95, 0.65, 0.24) },
         uColorMix: { value: 0 },
         uOpacity: { value: 1 },
+        uLightMode: { value: themeRef.current === "light" ? 1 : 0 },
         uPointer: { value: new THREE.Vector3(99, 99, 0) },
         uPointerStrength: { value: 0 },
       };
@@ -447,6 +450,7 @@ export function SculpturalArtifactCanvas({ progressRef }) {
         uniform vec3 uColorB;
         uniform float uColorMix;
         uniform float uOpacity;
+        uniform float uLightMode;
 
         varying float vShade;
         varying float vSpark;
@@ -462,17 +466,24 @@ export function SculpturalArtifactCanvas({ progressRef }) {
 
           float bead = smoothstep(0.5, 0.12, d);
 
-          // Sculpted phase color
+          // Sculpted phase color (luminous on dark, jewel-saturated ink on light)
           vec3 base = mix(uColorA, uColorB, uColorMix);
           vec3 ivory = vec3(0.98, 0.96, 0.92);
-          vec3 deep = base * 0.24;
-          vec3 sculptCol = mix(deep, base, vShade);
-          sculptCol = mix(sculptCol, ivory, clamp(vSpark * 0.42 + vTone * 0.14, 0.0, 0.62));
-          float sculptAlpha = 0.62 + 0.34 * vShade;
+          vec3 deepDark = base * 0.24;
+          vec3 sculptDark = mix(deepDark, base, vShade);
+          sculptDark = mix(sculptDark, ivory, clamp(vSpark * 0.42 + vTone * 0.14, 0.0, 0.62));
+
+          vec3 jewelBase = base * 0.64;
+          vec3 jewelDeep = base * 0.28;
+          vec3 sculptLight = mix(jewelDeep, jewelBase, vShade);
+          vec3 sculptCol = mix(sculptDark, sculptLight, uLightMode);
+          float sculptAlpha = mix(0.62 + 0.34 * vShade, 0.74 + 0.22 * vShade, uLightMode);
 
           // Hero Grain Mass micro-bead highlight
           float highlight = smoothstep(0.32, 0.0, length(uv - vec2(-0.12, -0.12))) * 0.24 * vShade;
-          vec3 heroCol = vHeroColor + highlight;
+          vec3 heroDark = vHeroColor + highlight;
+          vec3 heroLight = mix(vHeroColor * 0.62, vec3(0.28, 0.12, 0.48), 0.14);
+          vec3 heroCol = mix(heroDark, heroLight, uLightMode);
 
           vec3 finalCol = mix(sculptCol, heroCol, vHeroWeight);
           float finalAlpha = mix(sculptAlpha, vHeroAlpha, vHeroWeight);
@@ -550,11 +561,28 @@ export function SculpturalArtifactCanvas({ progressRef }) {
       window.addEventListener("resize", onResize);
 
       const clock = new THREE.Clock();
+      const clearDark = new THREE.Color(0x0b0a0f);
+      const clearLight = new THREE.Color(0xf5f2eb);
+      const clearCur = new THREE.Color(themeRef.current === "light" ? 0xf5f2eb : 0x0b0a0f);
+      let curLight = themeRef.current === "light" ? 1 : 0;
       let raf = 0;
 
       const animate = () => {
         raf = requestAnimationFrame(animate);
         if (document.hidden) return;
+
+        const targetLight = themeRef.current === "light" ? 1 : 0;
+        curLight += (targetLight - curLight) * 0.12;
+        uniforms.uLightMode.value = curLight;
+        clearCur.copy(clearDark).lerp(clearLight, curLight);
+        renderer.setClearColor(clearCur, 1);
+        const desiredBlend = curLight > 0.45 ? THREE.NormalBlending : THREE.AdditiveBlending;
+        if (mat.blending !== desiredBlend) {
+          mat.blending = desiredBlend;
+          mat.needsUpdate = true;
+        }
+        bgMat.color.setHex(curLight > 0.45 ? 0x262030 : 0xffffff);
+        bgMat.opacity = curLight > 0.45 ? 0.14 : 0.16;
 
         const t = reduced ? 0 : clock.getElapsedTime();
         const chP = progressRef?.current ?? 0;
