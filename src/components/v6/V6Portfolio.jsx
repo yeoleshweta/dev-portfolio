@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { V6Header } from "@/components/v6/V6Header";
 import { SculpturalArtifactCanvas } from "@/components/v6/SculpturalArtifactCanvas";
+import { AetherglintCanvas } from "@/components/v4/AetherglintCanvas";
 import { HiringBrief } from "@/components/portfolio/HiringBrief";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
 import { profile, projects, experience } from "@/content/profile";
@@ -923,8 +924,10 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 09 — COLOPHON */}
+        {/* CHAPTER 09 — COLOPHON (AETHERGLINT TWILIGHT MEADOW FOOTER) */}
         <section id="contact" className="v6Colophon">
+          <AetherglintCanvas />
+          <div className="v6ColophonVeil" aria-hidden="true" />
           <div className="v6Wrap v6ColophonInner">
             <span className="v6Kicker">09 / READY FOR THE NEXT BUILD</span>
             <h2 className="v6ColophonTitle">

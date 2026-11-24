@@ -26,7 +26,7 @@ const CHAPTER_STATES = [
   [ 0.00,  0.04, 1.02, 5.0, 5, 0.22], // 7 Craft & Toolkit Index
   [ 0.00,  0.04, 0.98, 5.0, 5, 0.22], // 8 Horizontal Experience Timeline
   [ 0.00,  0.08, 0.84, 5.0, 5, 0.14], // 9 Off-screen photo desk
-  [ 0.00,  0.02, 1.08, 5.0, 5, 0.45], // 10 Colophon
+  [ 0.00,  0.02, 1.08, 5.0, 5, 0.00], // 10 Colophon (Aetherglint meadow owns footer)
 ];
 
 const PHASE_PALETTE = [

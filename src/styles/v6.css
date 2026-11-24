@@ -755,24 +755,57 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
 .v6Darkroom .galleryCaption small { color: #8c6320; }
 .v6Darkroom .galleryMode button[aria-pressed="true"] { background: var(--v6-gold); color: var(--v6-bg); box-shadow: none; }
 
-/* Colophon */
+/* Colophon — Aetherglint Twilight Dusk Meadow Footer */
 .v6Colophon {
+  position: relative;
+  overflow: hidden;
   min-height: 92svh;
   display: flex;
   align-items: center;
-  padding: 120px 0 44px;
-  border-top: 1px solid var(--v6-line);
+  padding: 130px 0 48px;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  background: #140f21;
   text-align: center;
 }
-.v6ColophonInner { display: flex; flex-direction: column; align-items: center; }
-.v6ColophonTitle { font-size: clamp(46px, 7vw, 108px); line-height: 0.94; letter-spacing: -0.05em; font-weight: 500; margin-bottom: 20px; }
-.v6ColophonTitle em { font-family: var(--v6-serif); font-style: italic; font-weight: 400; color: var(--v6-gold); }
+.v6Colophon .v4CanvasHost {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.v6Colophon .v4CanvasHost canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+.v6ColophonVeil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, #0b0c10 0%, rgb(11 12 16 / 0.35) 18%, rgb(18 13 29 / 0.25) 56%, rgb(12 9 20 / 0.82) 100%);
+}
+.v6ColophonInner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.v6ColophonInner a,
+.v6ColophonInner button {
+  pointer-events: auto;
+}
+.v6Colophon .v6Kicker { color: #f093c4; }
+.v6ColophonTitle { font-size: clamp(46px, 7vw, 108px); line-height: 0.94; letter-spacing: -0.05em; font-weight: 500; margin-bottom: 20px; text-shadow: 0 16px 42px rgb(10 6 20 / 0.55); }
+.v6ColophonTitle em { font-family: var(--v6-serif); font-style: italic; font-weight: 400; color: #f093c4; }
 .v6ContactActions { display: flex; flex-direction: column; align-items: center; gap: 22px; margin: 44px 0 64px; }
-.v6EmailBig { font-family: var(--v6-serif); font-style: italic; font-size: clamp(24px, 3.6vw, 48px); border-bottom: 1px solid transparent; transition: color 0.3s ease, border-color 0.3s ease; }
-.v6EmailBig:hover { color: var(--v6-gold); border-color: var(--v6-gold); }
-.v6Footer { width: 100%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-top: 28px; border-top: 1px solid var(--v6-line); font-family: var(--v6-mono); font-size: 10px; letter-spacing: 0.14em; color: var(--v6-dim); }
+.v6EmailBig { font-family: var(--v6-serif); font-style: italic; font-size: clamp(24px, 3.6vw, 48px); border-bottom: 1px solid transparent; transition: color 0.3s ease, border-color 0.3s ease; text-shadow: 0 8px 28px rgb(10 6 20 / 0.65); }
+.v6EmailBig:hover { color: #f093c4; border-color: #f093c4; }
+.v6Footer { width: 100%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding: 18px 24px; border-radius: 16px; border: 1px solid rgb(255 255 255 / 0.14); border-top-color: rgb(255 255 255 / 0.28); background: linear-gradient(135deg, rgb(255 255 255 / 0.08), rgb(12 9 20 / 0.45)); backdrop-filter: blur(22px) saturate(160%); -webkit-backdrop-filter: blur(22px) saturate(160%); font-family: var(--v6-mono); font-size: 10px; letter-spacing: 0.14em; color: rgb(244 243 239 / 0.72); }
 .v6FooterLinks { display: flex; gap: 22px; }
-.v6FooterLinks a:hover { color: var(--v6-gold); }
+.v6FooterLinks a:hover, .v6Footer > a:hover { color: #f093c4; }
 
 /* Architecture Sheet & HiringBrief Dialog (Frosted Glass) */
 .v6Sheet { margin: 0 0 0 auto; width: min(680px, 100vw); height: 100dvh; max-height: 100dvh; padding: 0; border: 0; border-left: 1px solid rgb(255 255 255 / 0.18); background: linear-gradient(160deg, rgb(28 30 42 / 0.78), rgb(12 13 20 / 0.84)); backdrop-filter: blur(34px) saturate(170%); -webkit-backdrop-filter: blur(34px) saturate(170%); color: var(--v6-ink); box-shadow: inset 1px 0 0 rgb(255 255 255 / 0.16); }
