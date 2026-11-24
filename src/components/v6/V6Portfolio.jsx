@@ -251,8 +251,9 @@ export function V6Portfolio() {
           currentTraj += (targetTraj - currentTraj) * 0.11;
 
           const rail = trajRailRef.current;
-          const viewportW = rail.parentElement ? rail.parentElement.clientWidth : window.innerWidth;
-          const maxShift = Math.max(0, rail.scrollWidth - viewportW + 80);
+          const parent = rail.parentElement;
+          const padLeft = parent ? parseFloat(getComputedStyle(parent).paddingLeft) || 0 : 0;
+          const maxShift = Math.max(0, padLeft * 2 + rail.scrollWidth - window.innerWidth);
           rail.style.transform = `translate3d(${(-currentTraj * maxShift).toFixed(2)}px, 0, 0)`;
 
           if (trajBarRef.current) {
