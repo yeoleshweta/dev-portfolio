@@ -12,16 +12,16 @@ import { systems, archive } from "@/content/engineering";
 import "@/styles/gallery.css";
 
 const CHAPTERS = [
-  { id: "arrival", num: "01", label: "Intro", accent: "#e8b85a", side: "right", state: "01 · RAW GRAIN MASS", mapping: "Unshaped mineral cloud — scroll to sculpt it through 5 builds" },
-  { id: "research", num: "02", label: "UX Research", accent: "#e8a848", side: "left", state: "02 · SIX AFFINITY CLUSTERS", mapping: "Splits into 6 discovery clusters & bridges → UX Research" },
-  { id: "frontend", num: "03", label: "Frontend UI", accent: "#6fb6ff", side: "right", state: "03 · MODULAR 3D GRID CUBE", mapping: "Snaps into a crisp 3×3 structural grid → React & Figma UI" },
-  { id: "backend", num: "04", label: "Backend APIs", accent: "#3ee09c", side: "left", state: "04 · FLOWING TORUS PIPELINE", mapping: "Unwinds into a continuous data loop → APIs & PostgreSQL" },
-  { id: "ai", num: "05", label: "AI & ML", accent: "#a76bff", side: "right", state: "05 · DUAL-HEMISPHERE NEURAL BRAIN", mapping: "Folds into a firing neural network → Applied AI & Eval" },
-  { id: "testing", num: "06", label: "Tested & Shipped", accent: "#e8b85a", side: "left", state: "06 · BRILLIANT-CUT DIAMOND", mapping: "Compressed, faceted & verified → QA, Usability & Shipped" },
-  { id: "works", num: "07", label: "Selected Builds", accent: "#e8b85a", side: "center", state: "SHIPPED BUILDS", mapping: "Inspect every shipped system & architecture" },
-  { id: "craft", num: "08", label: "Craft & Toolkit", accent: "#e8b85a", side: "center", state: "CRAFT & TOOLKIT", mapping: "Every framework & method behind the shipped work" },
-  { id: "trajectory", num: "09", label: "Trajectory", accent: "#d992b4", side: "center", state: "THE FINISHED CUT", mapping: "Six years of craft + MS AI & ML (3.97 GPA)" },
-  { id: "contact", num: "10", label: "Next Build", accent: "#e8b85a", side: "center", state: "READY FOR WHAT'S NEXT", mapping: "Let's shape the next product from research to shipped AI" },
+  { id: "arrival", num: "01", label: "Intro", accent: "#e8b85a", accentLight: "#a66c14", side: "right", state: "01 · RAW GRAIN MASS", mapping: "Unshaped mineral cloud — scroll to sculpt it through 5 builds" },
+  { id: "research", num: "02", label: "UX Research", accent: "#e8a848", accentLight: "#b56510", side: "left", state: "02 · SIX AFFINITY CLUSTERS", mapping: "Splits into 6 discovery clusters & bridges → UX Research" },
+  { id: "frontend", num: "03", label: "Frontend UI", accent: "#6fb6ff", accentLight: "#1d63b8", side: "right", state: "03 · MODULAR 3D GRID CUBE", mapping: "Snaps into a crisp 3×3 structural grid → React & Figma UI" },
+  { id: "backend", num: "04", label: "Backend APIs", accent: "#3ee09c", accentLight: "#0d8456", side: "left", state: "04 · FLOWING TORUS PIPELINE", mapping: "Unwinds into a continuous data loop → APIs & PostgreSQL" },
+  { id: "ai", num: "05", label: "AI & ML", accent: "#a76bff", accentLight: "#6a32c9", side: "right", state: "05 · DUAL-HEMISPHERE NEURAL BRAIN", mapping: "Folds into a firing neural network → Applied AI & Eval" },
+  { id: "testing", num: "06", label: "Tested & Shipped", accent: "#e8b85a", accentLight: "#a66c14", side: "left", state: "06 · BRILLIANT-CUT DIAMOND", mapping: "Compressed, faceted & verified → QA, Usability & Shipped" },
+  { id: "works", num: "07", label: "Selected Builds", accent: "#e8b85a", accentLight: "#a66c14", side: "center", state: "SHIPPED BUILDS", mapping: "Inspect every shipped system & architecture" },
+  { id: "craft", num: "08", label: "Craft & Toolkit", accent: "#e8b85a", accentLight: "#a66c14", side: "center", state: "CRAFT & TOOLKIT", mapping: "Every framework & method behind the shipped work" },
+  { id: "trajectory", num: "09", label: "Trajectory", accent: "#d992b4", accentLight: "#a33f6e", side: "center", state: "THE FINISHED CUT", mapping: "Six years of craft + MS AI & ML (3.97 GPA)" },
+  { id: "contact", num: "10", label: "Next Build", accent: "#f093c4", accentLight: "#f093c4", side: "center", state: "READY FOR WHAT'S NEXT", mapping: "Let's shape the next product from research to shipped AI" },
 ];
 
 const shippedWorks = [
@@ -179,6 +179,7 @@ export function V6Portfolio() {
   const trajRailRef = useRef(null);
   const trajBarRef = useRef(null);
 
+  const [theme, setTheme] = useState("dark");
   const [chapterIdx, setChapterIdx] = useState(0);
   const [activeBuildIdx, setActiveBuildIdx] = useState(0);
   const [activeTrajIdx, setActiveTrajIdx] = useState(0);
@@ -186,6 +187,25 @@ export function V6Portfolio() {
   const [craftCat, setCraftCat] = useState("all");
   const [hoveredToken, setHoveredToken] = useState(null);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("v6-theme");
+      if (saved === "light" || saved === "dark") setTheme(saved);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.v6Theme = theme;
+    try {
+      localStorage.setItem("v6-theme", theme);
+    } catch {}
+    return () => {
+      delete document.documentElement.dataset.v6Theme;
+    };
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   // Measure exact continuous chapterProgress (0.0 .. 10.0) + sticky scroll-driven horizontal trajectory rail
   useEffect(() => {
@@ -318,6 +338,7 @@ export function V6Portfolio() {
   }
 
   const activeChapter = CHAPTERS[chapterIdx];
+  const activeAccent = theme === "light" ? activeChapter.accentLight : activeChapter.accent;
   const currentBuild = shippedWorks[activeBuildIdx];
   const focusedToken =
     hoveredToken ??
@@ -327,15 +348,16 @@ export function V6Portfolio() {
   return (
     <div
       className="v6CanvasRoot"
-      style={{ "--phase-accent": activeChapter.accent }}
+      data-v6-theme={theme}
+      style={{ "--phase-accent": activeAccent }}
     >
-      <V6Header />
+      <V6Header theme={theme} onToggleTheme={toggleTheme} />
 
       {/* ===================================================================
           THE ONE PERSISTENT SCULPTURAL 3D ARTIFACT (LIVE FROM 0% TO 100%)
           =================================================================== */}
       <div className="v6FixedStage" aria-hidden="true">
-        <SculpturalArtifactCanvas progressRef={progressRef} />
+        <SculpturalArtifactCanvas progressRef={progressRef} theme={theme} />
         <div className="v6StageAura" />
 
         {/* Live Lifecycle Caption anchored directly beneath the 3D Sculpture */}
@@ -965,11 +987,6 @@ export function V6Portfolio() {
                 <a href={profile.linkedin} target="_blank" rel="noreferrer">
                   LinkedIn ↗
                 </a>
-                <Link href="/v1">v1</Link>
-                <Link href="/v2">v2</Link>
-                <Link href="/v3">v3</Link>
-                <Link href="/v4">v4</Link>
-                <Link href="/v5">v5</Link>
               </div>
               <a href="#main">Back to top ↑</a>
             </footer>

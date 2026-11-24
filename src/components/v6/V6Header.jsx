@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { profile } from "@/content/profile";
 
@@ -12,7 +11,7 @@ const links = [
   ["06", "Contact", "contact"],
 ];
 
-export function V6Header() {
+export function V6Header({ theme = "dark", onToggleTheme }) {
   const drawerId = useId();
   const [open, setOpen] = useState(false);
   const drawerRef = useRef(null);
@@ -31,6 +30,8 @@ export function V6Header() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  const isLight = theme === "light";
 
   return (
     <>
@@ -52,14 +53,18 @@ export function V6Header() {
           </nav>
 
           <div className="v6HeaderRight">
-            <div className="v6Versions" aria-label="Portfolio versions">
-              <Link href="/v1">v1</Link>
-              <Link href="/v2">v2</Link>
-              <Link href="/v3">v3</Link>
-              <Link href="/v4">v4</Link>
-              <Link href="/v5">v5</Link>
-              <span aria-current="page">v6</span>
-            </div>
+            <button
+              type="button"
+              className="v6ThemeToggle"
+              onClick={onToggleTheme}
+              aria-label={isLight ? "Switch to dark mode" : "Switch to light mode"}
+              aria-pressed={isLight}
+            >
+              <span className="v6ThemeIcon" aria-hidden="true">
+                {isLight ? "☾" : "☀"}
+              </span>
+              <span>{isLight ? "Dark" : "Light"}</span>
+            </button>
             <a
               className="v6HeaderResume"
               href={profile.resume}
@@ -89,7 +94,7 @@ export function V6Header() {
         onCancel={() => setOpen(false)}
       >
         <div className="v6DrawerTop">
-          <span>SHWETA SHARMA / V6</span>
+          <span>SHWETA SHARMA</span>
           <button type="button" onClick={() => setOpen(false)}>
             Close ×
           </button>
@@ -104,13 +109,16 @@ export function V6Header() {
         </nav>
         <div className="v6DrawerFoot">
           <a href={`mailto:${profile.email}`}>{profile.email}</a>
-          <div className="v6DrawerVers">
-            <Link href="/v1">v1</Link>
-            <Link href="/v2">v2</Link>
-            <Link href="/v3">v3</Link>
-            <Link href="/v4">v4</Link>
-            <Link href="/v5">v5</Link>
-          </div>
+          <button
+            type="button"
+            className="v6ThemeToggle"
+            onClick={onToggleTheme}
+          >
+            <span className="v6ThemeIcon" aria-hidden="true">
+              {isLight ? "☾" : "☀"}
+            </span>
+            <span>{isLight ? "Dark mode" : "Light mode"}</span>
+          </button>
         </div>
       </dialog>
     </>
