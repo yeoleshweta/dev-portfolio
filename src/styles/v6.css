@@ -1128,13 +1128,39 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
 }
 .v6CraftReadout p { font-size: 14.5px; line-height: 1.7; color: var(--v6-muted); }
 
-/* 07 / HORIZONTALLY SCROLLABLE DETAILED EXPERIENCE TIMELINE */
+/* 07 / STICKY SCROLL-DRIVEN HORIZONTAL EXPERIENCE TIMELINE (LIKE V2) */
+.v6TrajRunway {
+  position: relative;
+  height: 280svh;
+}
+.v6TrajSticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: 56px;
+}
 .v6TrajRight {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
 }
+.v6TrajCounter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--v6-serif);
+  font-style: italic;
+  font-size: 32px;
+  line-height: 1;
+  color: var(--v6-ink);
+}
+.v6TrajCounter i { font-style: normal; font-size: 16px; color: var(--v6-dim); }
+.v6TrajCounter small { font-family: var(--v6-mono); font-style: normal; font-size: 12px; color: var(--v6-dim); }
 .v6DrexelGlass {
   display: flex;
   align-items: center;
@@ -1151,18 +1177,19 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
 .v6DrexelGlass strong { font-size: 13.5px; font-weight: 500; }
 .v6DrexelGlass em { font-family: var(--v6-serif); font-style: italic; font-size: 22px; color: var(--phase-accent); white-space: nowrap; }
 
+.v6TrajViewport {
+  width: 100%;
+  padding-left: max(clamp(20px, 5vw, 72px), calc((100vw - 1380px) / 2 + clamp(20px, 5vw, 72px)));
+}
 .v6HTimeline {
   display: flex;
-  gap: 22px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 8px 4px 18px;
-  scrollbar-width: thin;
-  scrollbar-color: rgb(255 255 255 / 0.2) transparent;
+  gap: 24px;
+  width: max-content;
+  padding: 10px 80px 18px 0;
+  will-change: transform;
 }
 .v6HTimelineItem {
-  flex: 0 0 min(420px, 84vw);
-  scroll-snap-align: start;
+  flex: 0 0 min(440px, 84vw);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1201,9 +1228,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
     inset 0 1px 0 rgb(255 255 255 / 0.25);
   transition: transform 0.3s var(--ease), border-color 0.3s ease;
 }
+.v6HTimelineItem[data-active="true"] .v6HTimelineCard,
 .v6HTimelineCard:hover {
-  transform: translateY(-4px);
-  border-color: color-mix(in srgb, var(--phase-accent) 44%, rgb(255 255 255 / 0.25));
+  border-color: color-mix(in srgb, var(--phase-accent) 44%, rgb(255 255 255 / 0.28));
 }
 .v6HTimelineTop {
   display: flex;
@@ -1236,6 +1263,41 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
   font-size: 14px;
   line-height: 1.72;
   color: var(--v6-muted);
+}
+.v6TrajScrub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 22px;
+  font-family: var(--v6-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--v6-dim);
+}
+.v6TrajTrack {
+  flex: 1;
+  max-width: 340px;
+  height: 2px;
+  border-radius: 99px;
+  background: rgb(255 255 255 / 0.12);
+  overflow: hidden;
+}
+.v6TrajTrack i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--phase-accent);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+@media (max-width: 960px) {
+  .v6TrajRunway { height: auto; padding: 72px 0; }
+  .v6TrajSticky { position: static; height: auto; padding-top: 0; overflow: visible; }
+  .v6TrajViewport { overflow-x: auto; padding-inline: clamp(20px, 5vw, 72px); }
+  .v6HTimeline { padding: 10px 0 18px; }
+  .v6TrajScrub { display: none; }
 }
 
 @media (max-width: 1024px) {

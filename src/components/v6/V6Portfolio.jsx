@@ -174,17 +174,22 @@ export function V6Portfolio() {
   const progressRef = useRef(0);
   const sheetRef = useRef(null);
   const filmstripRef = useRef(null);
-  const timelineRef = useRef(null);
+  const trajWrapRef = useRef(null);
+  const trajRailRef = useRef(null);
+  const trajBarRef = useRef(null);
 
   const [chapterIdx, setChapterIdx] = useState(0);
   const [activeBuildIdx, setActiveBuildIdx] = useState(0);
+  const [activeTrajIdx, setActiveTrajIdx] = useState(0);
   const [selectedWork, setSelectedWork] = useState(null);
   const [craftCat, setCraftCat] = useState("all");
   const [hoveredToken, setHoveredToken] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  // Measure exact continuous chapterProgress (0.0 .. 10.0) directly from live DOM section centers
+  // Measure exact continuous chapterProgress (0.0 .. 10.0) + sticky scroll-driven horizontal trajectory rail
   useEffect(() => {
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isDesktop = () => window.innerWidth >= 960;
     const sectionIds = [
       "arrival",
       "research",
@@ -198,6 +203,7 @@ export function V6Portfolio() {
       "offscreen",
       "contact",
     ];
+    let currentTraj = 0;
     let raf = 0;
 
     const tick = () => {
@@ -207,6 +213,10 @@ export function V6Portfolio() {
         const el = document.getElementById(id);
         if (!el) return 0;
         const r = el.getBoundingClientRect();
+        // Keep tall sticky runway pinned at its chapter index while traversing horizontally
+        if (id === "trajectory" && r.top <= viewCenter && r.bottom >= viewCenter) {
+          return viewCenter;
+        }
         return r.top + r.height * 0.5;
       });
 
@@ -231,6 +241,32 @@ export function V6Portfolio() {
       const nearest = Math.round(chP);
       const mappedChapter = nearest === 9 ? 8 : nearest >= 10 ? 9 : nearest;
       setChapterIdx((prev) => (prev === mappedChapter ? prev : mappedChapter));
+
+      // Drive horizontal Trajectory timeline directly from vertical scroll (same silky feel as v2)
+      if (trajWrapRef.current && trajRailRef.current) {
+        if (isDesktop() && !reduced) {
+          const rect = trajWrapRef.current.getBoundingClientRect();
+          const scrollable = Math.max(1, rect.height - window.innerHeight);
+          const targetTraj = Math.min(1, Math.max(0, -rect.top / scrollable));
+          currentTraj += (targetTraj - currentTraj) * 0.11;
+
+          const rail = trajRailRef.current;
+          const viewportW = rail.parentElement ? rail.parentElement.clientWidth : window.innerWidth;
+          const maxShift = Math.max(0, rail.scrollWidth - viewportW + 80);
+          rail.style.transform = `translate3d(${(-currentTraj * maxShift).toFixed(2)}px, 0, 0)`;
+
+          if (trajBarRef.current) {
+            trajBarRef.current.style.transform = `scaleX(${Math.max(0.08, currentTraj).toFixed(4)})`;
+          }
+          const idx = Math.min(
+            experience.length - 1,
+            Math.round(currentTraj * (experience.length - 1))
+          );
+          setActiveTrajIdx((prev) => (prev === idx ? prev : idx));
+        } else {
+          trajRailRef.current.style.transform = "none";
+        }
+      }
     };
 
     raf = requestAnimationFrame(tick);
@@ -265,6 +301,18 @@ export function V6Portfolio() {
   function scrollRail(ref, delta) {
     if (!ref.current) return;
     ref.current.scrollBy({ left: delta, behavior: "smooth" });
+  }
+
+  function stepTrajectory(delta) {
+    const nextIdx = Math.max(0, Math.min(experience.length - 1, activeTrajIdx + delta));
+    if (window.innerWidth >= 960 && trajWrapRef.current) {
+      const wrapTop = trajWrapRef.current.getBoundingClientRect().top + window.scrollY;
+      const scrollable = Math.max(1, trajWrapRef.current.offsetHeight - window.innerHeight);
+      const targetY = wrapTop + (nextIdx / (experience.length - 1)) * scrollable;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+    } else if (trajRailRef.current?.parentElement) {
+      trajRailRef.current.parentElement.scrollBy({ left: delta * 360, behavior: "smooth" });
+    }
   }
 
   const activeChapter = CHAPTERS[chapterIdx];
@@ -749,70 +797,91 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 08 — THE TRAJECTORY (HORIZONTALLY SCROLLABLE DETAILED GLASS TIMELINE) */}
-        <section id="trajectory" className="v6WideBand">
-          <div className="v6Wrap">
-            <div className="v6BandHead">
-              <div>
-                <span className="v6Kicker">07 / THE TRAJECTORY</span>
-                <h2 className="v6ChapterTitle">
-                  Different roles. <em>One curiosity.</em>
-                </h2>
-                <p className="v6Lead">
-                  From establishing enterprise UX research practices from
-                  scratch to building clinical NLP and full-stack AI evaluation
-                  tools.
-                </p>
-              </div>
-
-              <div className="v6TrajRight">
-                <div className="v6DrexelGlass">
-                  <div>
-                    <small>DREXEL UNIVERSITY · 2024–2026</small>
-                    <strong>MS Computer Science — AI &amp; Machine Learning</strong>
-                  </div>
-                  <em>3.97 / 4.0 GPA</em>
+        {/* CHAPTER 08 — THE TRAJECTORY (STICKY SCROLL-DRIVEN HORIZONTAL TIMELINE LIKE V2) */}
+        <section id="trajectory" ref={trajWrapRef} className="v6TrajRunway">
+          <div className="v6TrajSticky">
+            <div className="v6Wrap">
+              <div className="v6BandHead" style={{ marginBottom: "28px" }}>
+                <div>
+                  <span className="v6Kicker">07 / THE TRAJECTORY</span>
+                  <h2 className="v6ChapterTitle" style={{ marginBottom: "10px" }}>
+                    Different roles. <em>One curiosity.</em>
+                  </h2>
+                  <p className="v6Lead">
+                    From establishing enterprise UX research practices from
+                    scratch to building clinical NLP and full-stack AI evaluation
+                    tools.
+                  </p>
                 </div>
 
-                <div className="v6RailControls">
-                  <button
-                    type="button"
-                    className="v6RailBtn"
-                    onClick={() => scrollRail(timelineRef, -440)}
-                    aria-label="Scroll experience left"
-                  >
-                    ←
-                  </button>
-                  <button
-                    type="button"
-                    className="v6RailBtn"
-                    onClick={() => scrollRail(timelineRef, 440)}
-                    aria-label="Scroll experience right"
-                  >
-                    →
-                  </button>
+                <div className="v6TrajRight">
+                  <div className="v6DrexelGlass">
+                    <div>
+                      <small>DREXEL UNIVERSITY · 2024–2026</small>
+                      <strong>MS Computer Science — AI &amp; Machine Learning</strong>
+                    </div>
+                    <em>3.97 / 4.0 GPA</em>
+                  </div>
+
+                  <div className="v6TrajCounter">
+                    <span>{String(activeTrajIdx + 1).padStart(2, "0")}</span>
+                    <i aria-hidden="true">/</i>
+                    <small>{String(experience.length).padStart(2, "0")}</small>
+                  </div>
+
+                  <div className="v6RailControls">
+                    <button
+                      type="button"
+                      className="v6RailBtn"
+                      onClick={() => stepTrajectory(-1)}
+                      aria-label="Previous role"
+                    >
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      className="v6RailBtn"
+                      onClick={() => stepTrajectory(1)}
+                      aria-label="Next role"
+                    >
+                      →
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div ref={timelineRef} className="v6HTimeline">
-              {experience.map(([dates, company, role, detail]) => (
-                <article className="v6HTimelineItem" key={company}>
-                  <div className="v6HTimelineRail" aria-hidden="true">
-                    <span className="v6HTimelineNode" />
-                    <i className="v6HTimelineLine" />
-                  </div>
-                  <div className="v6HTimelineCard">
-                    <div className="v6HTimelineTop">
-                      <small>{dates}</small>
-                      <span>{roleImpact[company] || role}</span>
+            <div className="v6TrajViewport">
+              <div ref={trajRailRef} className="v6HTimeline">
+                {experience.map(([dates, company, role, detail], idx) => (
+                  <article
+                    className="v6HTimelineItem"
+                    data-active={activeTrajIdx === idx ? "true" : "false"}
+                    key={company}
+                  >
+                    <div className="v6HTimelineRail" aria-hidden="true">
+                      <span className="v6HTimelineNode" />
+                      <i className="v6HTimelineLine" />
                     </div>
-                    <h3>{company}</h3>
-                    <strong>{role}</strong>
-                    <p>{detail}</p>
-                  </div>
-                </article>
-              ))}
+                    <div className="v6HTimelineCard">
+                      <div className="v6HTimelineTop">
+                        <small>{dates}</small>
+                        <span>{roleImpact[company] || role}</span>
+                      </div>
+                      <h3>{company}</h3>
+                      <strong>{role}</strong>
+                      <p>{detail}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="v6Wrap v6TrajScrub">
+              <span>SCROLL TO TRAVERSE TRAJECTORY</span>
+              <div className="v6TrajTrack">
+                <i ref={trajBarRef} style={{ transform: "scaleX(0.08)" }} />
+              </div>
             </div>
           </div>
         </section>
