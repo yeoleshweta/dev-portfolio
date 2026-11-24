@@ -11,7 +11,7 @@ import "@/styles/project-archive.css";
 
 export const metadata = {
   title: {
-    default: "Shweta Sharma | Fullstack Dev (Classic)",
+    default: "Shweta Sharma | Fullstack Dev (v1)",
     template: "%s | Shweta Sharma",
   },
   description:
@@ -26,7 +26,7 @@ export default function ClassicLayout({ children }) {
           Skip to content
         </a>
         <div className="carbonPreview">
-          <Header base="/classic" />
+          <Header base="/v1" />
           {children}
           <footer className="wrap">
             <span>Shweta Sharma</span>

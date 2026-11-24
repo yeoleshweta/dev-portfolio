@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { profile } from "@/content/profile";
 
@@ -11,7 +12,9 @@ const links = [
   ["Contact", "contact"],
 ];
 
-export function AtelierHeader({ base = "/" }) {
+export function AtelierHeader({ base }) {
+  const pathname = usePathname();
+  const resolvedBase = base ?? (pathname?.startsWith("/v2") ? "/v2" : "/");
   const drawerId = useId();
   const [open, setOpen] = useState(false);
   const [clock, setClock] = useState("");
@@ -56,14 +59,14 @@ export function AtelierHeader({ base = "/" }) {
     <>
       <header className="atelierHeader">
         <div className="atelierHeaderInner">
-          <Link className="atelierWordmark" href={`${base}#main`}>
+          <Link className="atelierWordmark" href={`${resolvedBase}#main`}>
             <strong>SHWETA SHARMA</strong>
             <span>FOLIO ’26</span>
           </Link>
 
           <nav className="atelierNav" aria-label="Primary navigation">
             {links.map(([label, id], i) => (
-              <Link key={id} href={`${base}#${id}`}>
+              <Link key={id} href={`${resolvedBase}#${id}`}>
                 <small>0{i + 1}</small>
                 <span>{label}</span>
               </Link>
@@ -105,7 +108,7 @@ export function AtelierHeader({ base = "/" }) {
         </div>
         <nav className="atelierDrawerNav" aria-label="Mobile navigation">
           {links.map(([label, id], i) => (
-            <Link key={id} href={`${base}#${id}`} onClick={() => setOpen(false)}>
+            <Link key={id} href={`${resolvedBase}#${id}`} onClick={() => setOpen(false)}>
               <small>0{i + 1}</small>
               <span>{label}</span>
             </Link>
