@@ -123,31 +123,54 @@ export function V6Portfolio() {
   const [selectedWork, setSelectedWork] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  // Track normalized scroll progress 0..1 for the single persistent 3D WebGL sculpture
+  // Measure exact continuous chapterProgress (0.0 .. 8.0) directly from live DOM section positions
+  // so the 3D sculpture is ALWAYS on the exact opposite half from the visible card — zero overlap!
   useEffect(() => {
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let curP = 0;
+    const sectionIds = [
+      "arrival",
+      "research",
+      "frontend",
+      "backend",
+      "ai",
+      "works",
+      "trajectory",
+      "offscreen",
+      "contact",
+    ];
     let raf = 0;
 
     const tick = () => {
       raf = requestAnimationFrame(tick);
-      const maxScroll = Math.max(
-        1,
-        document.documentElement.scrollHeight - window.innerHeight
-      );
-      const targetP = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-      curP += (targetP - curP) * (reduced ? 1 : 0.1);
-      progressRef.current = curP;
+      const viewCenter = window.innerHeight * 0.5;
+      const centers = sectionIds.map((id) => {
+        const el = document.getElementById(id);
+        if (!el) return 0;
+        const r = el.getBoundingClientRect();
+        return r.top + r.height * 0.5;
+      });
 
-      let active = 0;
-      const mid = window.innerHeight * 0.48;
-      for (let i = 0; i < CHAPTERS.length; i++) {
-        const el = document.getElementById(CHAPTERS[i].id);
-        if (el && el.getBoundingClientRect().top <= mid) {
-          active = i;
+      // Compute continuous index 0..(N-1) where integer i means section i is centered in viewport
+      let chP = 0;
+      if (centers[0] >= viewCenter) {
+        chP = 0;
+      } else if (centers[centers.length - 1] <= viewCenter) {
+        chP = centers.length - 1;
+      } else {
+        for (let i = 0; i < centers.length - 1; i++) {
+          if (centers[i] <= viewCenter && centers[i + 1] >= viewCenter) {
+            const span = Math.max(1, centers[i + 1] - centers[i]);
+            chP = i + (viewCenter - centers[i]) / span;
+            break;
+          }
         }
       }
-      setChapterIdx((prev) => (prev === active ? prev : active));
+
+      progressRef.current = chP;
+
+      // Map 9 DOM sections (including offscreen at index 7) to CHAPTERS (0..7)
+      const nearest = Math.round(chP);
+      const mappedChapter = nearest === 7 ? 6 : nearest >= 8 ? 7 : nearest;
+      setChapterIdx((prev) => (prev === mappedChapter ? prev : mappedChapter));
     };
 
     raf = requestAnimationFrame(tick);

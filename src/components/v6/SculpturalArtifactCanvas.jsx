@@ -1,27 +1,28 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-// Scroll progress stops for the 6 distinct 3D morphed silhouettes:
-// 0: Seed Sphere (Intro)
-// 1: 6 Scattered Affinity Clusters (UX Research)
-// 2: Modular 3D Architectural Grid Cube (Frontend UI)
-// 3: Interlocking Flowing Data Pipeline / Torus Knot (Backend APIs)
-// 4: Dual-Hemisphere Firing Neural Brain (Applied AI & ML)
-// 5: Faceted Brilliant-Cut Diamond (Testing & Shipped)
-const SHAPE_STOPS = [0.0, 0.14, 0.29, 0.44, 0.58, 0.72];
-
-// Screen X position & scale & opacity across 0..1 scroll
-// [p, xWorld, yWorld, scale, opacity]
-const POS_KEYS = [
-  [0.00,  1.65,  0.08, 1.00, 1.00], // 01 Intro (right)
-  [0.14, -1.65,  0.08, 1.04, 1.00], // 02 UX Research (left)
-  [0.29,  1.65,  0.08, 1.02, 1.00], // 03 Frontend UI (right)
-  [0.44, -1.60,  0.08, 1.00, 1.00], // 04 Backend APIs (left)
-  [0.58,  1.60,  0.08, 1.04, 1.00], // 05 AI & ML (right)
-  [0.72, -1.65,  0.08, 1.06, 1.00], // 06 Testing & Shipped (left)
-  [0.85,  1.72,  0.08, 0.86, 0.82], // 07 Trajectory (right)
-  [0.93,  0.00,  0.10, 0.86, 0.20], // Off-screen gallery breathing room
-  [1.00,  0.00,  0.02, 1.12, 0.62], // 08 Colophon (centered diamond)
+// Indexed by DOM-measured chapterProgress (0.0 .. 8.0):
+// [xFracOfHalfWidth, yWorld, scale, morphIdx, colorIdx, opacity]
+// Card alignment:
+//   0 Arrival (card LEFT)    -> sculpture RIGHT (+0.50) | Shape 0: Seed Sphere
+//   1 Research (card RIGHT)  -> sculpture LEFT  (-0.50) | Shape 1: 6 Affinity Clusters
+//   2 Frontend (card LEFT)   -> sculpture RIGHT (+0.50) | Shape 2: Modular 3D Grid Cube
+//   3 Backend (card RIGHT)   -> sculpture LEFT  (-0.50) | Shape 3: Flowing Torus Pipeline
+//   4 AI & ML (card LEFT)    -> sculpture RIGHT (+0.50) | Shape 4: Dual-Hemisphere Neural Brain
+//   5 Shipped (card RIGHT)   -> sculpture LEFT  (-0.50) | Shape 5: Brilliant-Cut Diamond
+//   6 Trajectory (card LEFT) -> sculpture RIGHT (+0.50) | Shape 5: Brilliant-Cut Diamond
+//   7 Offscreen (full width) -> sculpture CENTER (0.00) | Faded softly so photo desk owns stage
+//   8 Contact (centered)     -> sculpture CENTER (0.00) | Glowing behind colophon
+const CHAPTER_STATES = [
+  [ 0.50,  0.06, 0.96, 0.0, 0, 1.00], // 0 Arrival
+  [-0.50,  0.06, 0.98, 1.0, 1, 1.00], // 1 UX Research
+  [ 0.50,  0.06, 0.96, 2.0, 2, 1.00], // 2 Frontend UI
+  [-0.50,  0.06, 0.96, 3.0, 3, 1.00], // 3 Backend APIs
+  [ 0.50,  0.06, 0.98, 4.0, 4, 1.00], // 4 AI & ML
+  [-0.50,  0.06, 1.00, 5.0, 5, 1.00], // 5 Shipped & Tested
+  [ 0.50,  0.06, 0.88, 5.0, 5, 0.90], // 6 Trajectory
+  [ 0.00,  0.08, 0.84, 5.0, 5, 0.14], // 7 Off-screen photo desk
+  [ 0.00,  0.02, 1.06, 5.0, 5, 0.45], // 8 Colophon
 ];
 
 const PHASE_PALETTE = [
@@ -33,44 +34,29 @@ const PHASE_PALETTE = [
   [0.96, 0.79, 0.44], // 5: Brilliant Champagne Gold (Tested & Shipped)
 ];
 
-function samplePos(p) {
-  const c = Math.max(0, Math.min(1, p));
-  for (let i = 0; i < POS_KEYS.length - 1; i++) {
-    const a = POS_KEYS[i];
-    const b = POS_KEYS[i + 1];
-    if (c >= a[0] && c <= b[0]) {
-      const raw = (c - a[0]) / Math.max(0.0001, b[0] - a[0]);
-      const t = raw * raw * (3 - 2 * raw);
-      return [
-        a[1] + (b[1] - a[1]) * t,
-        a[2] + (b[2] - a[2]) * t,
-        a[3] + (b[3] - a[3]) * t,
-        a[4] + (b[4] - a[4]) * t,
-      ];
-    }
-  }
-  return POS_KEYS[POS_KEYS.length - 1].slice(1);
-}
-
-// Compute continuous morph index 0..5 from scroll progress 0..1
-function scrollToMorph(p) {
-  if (p <= SHAPE_STOPS[0]) return 0;
-  if (p >= SHAPE_STOPS[SHAPE_STOPS.length - 1]) return SHAPE_STOPS.length - 1;
-  for (let i = 0; i < SHAPE_STOPS.length - 1; i++) {
-    if (p >= SHAPE_STOPS[i] && p <= SHAPE_STOPS[i + 1]) {
-      const raw = (p - SHAPE_STOPS[i]) / (SHAPE_STOPS[i + 1] - SHAPE_STOPS[i]);
-      // Hold slightly on each shape then glide crisply to the next
-      const eased = raw * raw * (3 - 2 * raw);
-      return i + eased;
-    }
-  }
-  return 5;
+function sampleChapterState(chP) {
+  const maxIdx = CHAPTER_STATES.length - 1;
+  const c = Math.max(0, Math.min(maxIdx, chP));
+  const i0 = Math.min(maxIdx - 1, Math.floor(c));
+  const i1 = i0 + 1;
+  const raw = c - i0;
+  const t = raw * raw * (3 - 2 * raw); // smoothstep
+  const a = CHAPTER_STATES[i0];
+  const b = CHAPTER_STATES[i1];
+  return [
+    a[0] + (b[0] - a[0]) * t, // xFrac
+    a[1] + (b[1] - a[1]) * t, // yWorld
+    a[2] + (b[2] - a[2]) * t, // scale
+    a[3] + (b[3] - a[3]) * t, // morphIdx (0..5)
+    a[4] + (b[4] - a[4]) * t, // colorIdx (0..5)
+    a[5] + (b[5] - a[5]) * t, // opacity
+  ];
 }
 
 /**
- * SculpturalArtifactCanvas — True GPU Vertex-Morphing 3D Particle Sculpture.
- * 24,000 shaded micro-grains physically swarm and re-sculpt into 6 completely
- * distinct 3D silhouettes as the user scrolls through every phase of Shweta's lifecycle.
+ * SculpturalArtifactCanvas — True GPU Vertex-Morphing 3D Particle Sculpture
+ * strictly synchronized to live DOM chapter centers and camera frustum width
+ * so it ALWAYS occupies the open half opposite the narrative card.
  */
 export function SculpturalArtifactCanvas({ progressRef }) {
   const hostRef = useRef(null);
@@ -93,7 +79,7 @@ export function SculpturalArtifactCanvas({ progressRef }) {
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-      camera.position.set(0, 0, 6.4);
+      camera.position.set(0, 0, 6.8);
 
       const renderer = new THREE.WebGLRenderer({
         antialias: false,
@@ -108,26 +94,23 @@ export function SculpturalArtifactCanvas({ progressRef }) {
 
       const COUNT = isMobile ? 12000 : 24000;
 
-      // Allocate 6 distinct 3D shape buffers
       const s0 = new Float32Array(COUNT * 3); // 0: Seed Sphere
       const s1 = new Float32Array(COUNT * 3); // 1: 6 Affinity Clusters (UX Research)
       const s2 = new Float32Array(COUNT * 3); // 2: Modular 3D Grid Cube (Frontend UI)
       const s3 = new Float32Array(COUNT * 3); // 3: Flowing Data Torus Knot (Backend APIs)
       const s4 = new Float32Array(COUNT * 3); // 4: Dual-Hemisphere Neural Brain (AI & ML)
       const s5 = new Float32Array(COUNT * 3); // 5: Faceted Brilliant-Cut Diamond (Shipped)
-      const seeds = new Float32Array(COUNT * 3); // [phase, size, tone]
+      const seeds = new Float32Array(COUNT * 3);
 
-      // 6 cluster centers for UX Research (distributed in 3D space)
       const clusters = [
-        [-1.15,  0.85,  0.35],
-        [ 1.10,  0.75, -0.40],
-        [-0.95, -0.82, -0.35],
-        [ 1.05, -0.78,  0.42],
-        [ 0.05,  1.22, -0.15],
-        [-0.08, -1.18,  0.22],
+        [-1.08,  0.80,  0.32],
+        [ 1.04,  0.72, -0.38],
+        [-0.90, -0.78, -0.32],
+        [ 1.00, -0.74,  0.40],
+        [ 0.05,  1.16, -0.14],
+        [-0.08, -1.12,  0.20],
       ];
 
-      // 12 edges of a 3D architectural cube for crisp wireframe emphasis
       const cubeEdges = [
         [-1,-1,-1,  1,-1,-1], [ 1,-1,-1,  1, 1,-1], [ 1, 1,-1, -1, 1,-1], [-1, 1,-1, -1,-1,-1],
         [-1,-1, 1,  1,-1, 1], [ 1,-1, 1,  1, 1, 1], [ 1, 1, 1, -1, 1, 1], [-1, 1, 1, -1,-1, 1],
@@ -145,33 +128,28 @@ export function SculpturalArtifactCanvas({ progressRef }) {
         seeds[i3 + 1] = 0.75 + Math.random() * 1.45;
         seeds[i3 + 2] = Math.random();
 
-        // -------------------------------------------------------------
-        // SHAPE 0: LATENT SEED SPHERE + EQUATORIAL HALO
-        // -------------------------------------------------------------
+        // Shape 0: Latent Seed Sphere + Equatorial Ring
         if (i < COUNT * 0.82) {
-          const r = 1.12 + (Math.random() - 0.5) * 0.14;
+          const r = 1.08 + (Math.random() - 0.5) * 0.14;
           s0[i3] = r * Math.sin(phi) * Math.cos(theta);
           s0[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
           s0[i3 + 2] = r * Math.cos(phi);
         } else {
           const ang = Math.random() * Math.PI * 2;
-          const rr = 1.62 + (Math.random() - 0.5) * 0.08;
+          const rr = 1.54 + (Math.random() - 0.5) * 0.08;
           s0[i3] = Math.cos(ang) * rr;
           s0[i3 + 1] = (Math.random() - 0.5) * 0.06;
           s0[i3 + 2] = Math.sin(ang) * rr;
         }
 
-        // -------------------------------------------------------------
-        // SHAPE 1: UX RESEARCH — 6 SCATTERED AFFINITY CLUSTERS + BRIDGES
-        // -------------------------------------------------------------
+        // Shape 1: 6 Scattered Affinity Clusters + Bridges
         if (i < COUNT * 0.85) {
           const c = clusters[i % clusters.length];
-          const cr = Math.pow(Math.random(), 0.6) * 0.44;
+          const cr = Math.pow(Math.random(), 0.6) * 0.42;
           s1[i3] = c[0] + cr * Math.sin(phi) * Math.cos(theta);
           s1[i3 + 1] = c[1] + cr * Math.sin(phi) * Math.sin(theta);
           s1[i3 + 2] = c[2] + cr * Math.cos(phi);
         } else {
-          // Fine affinity thread bridges connecting pairs of clusters
           const cA = clusters[i % clusters.length];
           const cB = clusters[(i + 1 + (i % 2)) % clusters.length];
           const t = Math.random();
@@ -180,22 +158,18 @@ export function SculpturalArtifactCanvas({ progressRef }) {
           s1[i3 + 2] = cA[2] + (cB[2] - cA[2]) * t + (Math.random() - 0.5) * 0.05;
         }
 
-        // -------------------------------------------------------------
-        // SHAPE 2: FRONTEND UI — CRISP MODULAR 3D ARCHITECTURAL GRID CUBE
-        // -------------------------------------------------------------
-        const half = 1.08;
+        // Shape 2: Modular 3D Architectural Grid Cube
+        const half = 1.02;
         if (i < COUNT * 0.36) {
-          // Razor-sharp outer cube edges
           const e = cubeEdges[i % cubeEdges.length];
           const t = Math.random();
           s2[i3] = (e[0] + (e[3] - e[0]) * t) * half + (Math.random() - 0.5) * 0.025;
           s2[i3 + 1] = (e[1] + (e[4] - e[1]) * t) * half + (Math.random() - 0.5) * 0.025;
           s2[i3 + 2] = (e[2] + (e[5] - e[2]) * t) * half + (Math.random() - 0.5) * 0.025;
         } else {
-          // Structured 3x3 modular grid lines on all 6 faces of the cube
           const face = i % 6;
-          const gridStep = (Math.floor(Math.random() * 5) - 2) * 0.5; // -1, -0.5, 0, 0.5, 1
-          const span = (Math.random() * 2 - 1);
+          const gridStep = (Math.floor(Math.random() * 5) - 2) * 0.5;
+          const span = Math.random() * 2 - 1;
           const flip = Math.random() > 0.5;
           const a = flip ? gridStep : span;
           const b = flip ? span : gridStep;
@@ -207,73 +181,56 @@ export function SculpturalArtifactCanvas({ progressRef }) {
           else { s2[i3] = a * half; s2[i3+1] = b * half; s2[i3+2] = -half; }
         }
 
-        // -------------------------------------------------------------
-        // SHAPE 3: BACKEND APIS — INTERLOCKING TORUS KNOT DATA PIPELINE (p=2, q=3)
-        // -------------------------------------------------------------
+        // Shape 3: Interlocking Torus Knot Data Pipeline (p=2, q=3)
         const kt = (i / COUNT) * Math.PI * 2 * 3.0 + Math.random() * 0.1;
-        const pK = 2;
-        const qK = 3;
-        const rK = 0.92 + 0.36 * Math.cos(qK * kt);
-        const cx = rK * Math.cos(pK * kt);
-        const cy = rK * Math.sin(pK * kt);
-        const cz = 0.42 * Math.sin(qK * kt);
-        const tubeR = 0.18 + Math.random() * 0.12;
+        const rK = 0.88 + 0.34 * Math.cos(3 * kt);
+        const cx = rK * Math.cos(2 * kt);
+        const cy = rK * Math.sin(2 * kt);
+        const cz = 0.40 * Math.sin(3 * kt);
+        const tubeR = 0.16 + Math.random() * 0.11;
         const tubeA = Math.random() * Math.PI * 2;
         s3[i3] = cx + Math.cos(tubeA) * tubeR;
         s3[i3 + 1] = cy + Math.sin(tubeA) * tubeR;
         s3[i3 + 2] = cz + Math.sin(tubeA + kt) * tubeR;
 
-        // -------------------------------------------------------------
-        // SHAPE 4: AI & ML — DUAL-HEMISPHERE NEURAL BRAIN WITH FOLDED GYRI
-        // -------------------------------------------------------------
+        // Shape 4: Dual-Hemisphere Neural Brain
         const hemi = i % 2 === 0 ? 1 : -1;
-        // Slightly elongated brain lobe ellipsoid with sinusoidal cortical folds
         const bTheta = Math.random() * Math.PI * 2;
         const bPhi = Math.acos(2 * Math.random() - 1);
         let bx = Math.sin(bPhi) * Math.cos(bTheta);
         let by = Math.sin(bPhi) * Math.sin(bTheta);
         let bz = Math.cos(bPhi);
-        // Flatten inner medial fissure between left & right hemispheres
         bx = Math.abs(bx) * 0.74 * hemi + hemi * 0.12;
-        by *= 0.95;
-        bz *= 1.24;
-        // Organic cortical folds (gyri ridges)
+        by *= 0.94;
+        bz *= 1.22;
         const fold =
           1.0 +
           0.11 * Math.sin(bx * 10.0 + bz * 8.0) * Math.cos(by * 9.0) +
           0.07 * Math.cos(bz * 13.0 - by * 7.0);
-        const br = (0.95 + Math.pow(Math.random(), 2.0) * 0.25) * fold;
-        s4[i3] = bx * br * 1.15;
-        s4[i3 + 1] = by * br * 1.05;
-        s4[i3 + 2] = bz * br * 1.1;
+        const br = (0.92 + Math.pow(Math.random(), 2.0) * 0.24) * fold;
+        s4[i3] = bx * br * 1.12;
+        s4[i3 + 1] = by * br * 1.02;
+        s4[i3 + 2] = bz * br * 1.08;
 
-        // -------------------------------------------------------------
-        // SHAPE 5: TESTED & SHIPPED — FACETED BRILLIANT-CUT DIAMOND GEM
-        // -------------------------------------------------------------
-        // Octahedral / brilliant-cut diamond (flat crown table, crisp girdle, pointed pavilion)
+        // Shape 5: Faceted Brilliant-Cut Diamond
         const dAng = Math.random() * Math.PI * 2;
-        // Quantize slightly to 8-fold facet symmetry for razor-sharp diamond facets
         const facetAng = Math.round(dAng / (Math.PI / 4)) * (Math.PI / 4);
         const blendAng = dAng + (facetAng - dAng) * 0.22;
         const zone = Math.random();
         let dy, dr;
         if (zone < 0.16) {
-          // Flat crown table on top
-          dy = 0.72;
-          dr = Math.sqrt(Math.random()) * 0.74;
+          dy = 0.68;
+          dr = Math.sqrt(Math.random()) * 0.70;
         } else if (zone < 0.45) {
-          // Upper crown bevel (table -> girdle)
           const f = Math.random();
-          dy = 0.72 - f * 0.48;
-          dr = 0.74 + f * 0.56;
+          dy = 0.68 - f * 0.46;
+          dr = 0.70 + f * 0.54;
         } else {
-          // Lower pavilion cone (girdle -> culet point)
           const f = Math.pow(Math.random(), 0.72);
-          dy = 0.24 - f * 1.62;
-          dr = 1.30 * (1.0 - f);
+          dy = 0.22 - f * 1.54;
+          dr = 1.24 * (1.0 - f);
         }
-        // Crisp 8-sided polygonal cross-section
-        const polyCos = Math.cos(((blendAng % (Math.PI / 4)) - Math.PI / 8));
+        const polyCos = Math.cos((blendAng % (Math.PI / 4)) - Math.PI / 8);
         const polyR = dr / Math.max(0.85, polyCos);
         s5[i3] = Math.cos(blendAng) * polyR;
         s5[i3 + 1] = dy + 0.12;
@@ -291,7 +248,7 @@ export function SculpturalArtifactCanvas({ progressRef }) {
 
       const uniforms = {
         uTime: { value: 0 },
-        uMorph: { value: 0 }, // continuous 0..5
+        uMorph: { value: 0 },
         uPixelRatio: { value: dpr },
         uColorA: { value: new THREE.Color(0.93, 0.75, 0.40) },
         uColorB: { value: new THREE.Color(0.95, 0.65, 0.24) },
@@ -316,36 +273,27 @@ export function SculpturalArtifactCanvas({ progressRef }) {
         varying float vTone;
 
         void main() {
-          // Select the two adjacent 3D shapes based on continuous uMorph (0..5)
           float seg = floor(clamp(uMorph, 0.0, 4.9999));
           float frac = clamp(uMorph - seg, 0.0, 1.0);
           float t = frac * frac * (3.0 - 2.0 * frac);
 
           vec3 pA = position;
           vec3 pB = aPos1;
-          if (seg < 0.5) {
-            pA = position; pB = aPos1;
-          } else if (seg < 1.5) {
-            pA = aPos1; pB = aPos2;
-          } else if (seg < 2.5) {
-            pA = aPos2; pB = aPos3;
-          } else if (seg < 3.5) {
-            pA = aPos3; pB = aPos4;
-          } else {
-            pA = aPos4; pB = aPos5;
-          }
+          if (seg < 0.5) { pA = position; pB = aPos1; }
+          else if (seg < 1.5) { pA = aPos1; pB = aPos2; }
+          else if (seg < 2.5) { pA = aPos2; pB = aPos3; }
+          else if (seg < 3.5) { pA = aPos3; pB = aPos4; }
+          else { pA = aPos4; pB = aPos5; }
 
           vec3 pos = mix(pA, pB, t);
 
-          // Dramatic 3D vortex swirl mid-transition so every morph feels alive!
           float swirlAmt = sin(frac * 3.14159265);
           float angle = swirlAmt * (1.25 + aSeed.z * 0.9);
           float ca = cos(angle);
           float sa = sin(angle);
           pos.xz = mat2(ca, -sa, sa, ca) * pos.xz;
-          pos += normalize(pos + vec3(0.001)) * swirlAmt * (0.28 + 0.35 * sin(aSeed.x + uTime * 2.0));
+          pos += normalize(pos + vec3(0.001)) * swirlAmt * (0.26 + 0.32 * sin(aSeed.x + uTime * 2.0));
 
-          // Subtle living micro-breathing & data/synapse pulse
           float pulse = sin(uTime * 2.4 + aSeed.x * 2.0 + pos.y * 3.0) * 0.5 + 0.5;
           pos += vec3(
             sin(uTime * 0.9 + aSeed.x) * 0.02,
@@ -353,7 +301,6 @@ export function SculpturalArtifactCanvas({ progressRef }) {
             sin(uTime * 0.7 + aSeed.x) * 0.02
           );
 
-          // Upper-left studio directional shading for real 3D sculptural depth
           vec3 n = normalize(pos + vec3(0.0001));
           vec3 lightDir = normalize(vec3(-0.55, 0.72, 0.52));
           vShade = clamp(dot(n, lightDir) * 0.5 + 0.55, 0.18, 1.0);
@@ -363,8 +310,8 @@ export function SculpturalArtifactCanvas({ progressRef }) {
           vec4 mv = modelViewMatrix * vec4(pos, 1.0);
           gl_Position = projectionMatrix * mv;
 
-          float ptSize = (aSeed.y * 7.8 * uPixelRatio) / max(1.5, -mv.z);
-          gl_PointSize = clamp(ptSize + vSpark * 1.4, 1.15, 5.2);
+          float ptSize = (aSeed.y * 7.6 * uPixelRatio) / max(1.5, -mv.z);
+          gl_PointSize = clamp(ptSize + vSpark * 1.4, 1.15, 5.0);
         }
       `;
 
@@ -391,7 +338,7 @@ export function SculpturalArtifactCanvas({ progressRef }) {
           vec3 col = mix(deep, base, vShade);
           col = mix(col, ivory, clamp(vSpark * 0.45 + vTone * 0.16, 0.0, 0.65));
 
-          gl_FragColor = vec4(col, bead * (0.62 + 0.34 * vShade) * uOpacity);
+          gl_FragColor = vec4(col, bead * (0.64 + 0.34 * vShade) * uOpacity);
         }
       `;
 
@@ -407,8 +354,7 @@ export function SculpturalArtifactCanvas({ progressRef }) {
       const sculpture = new THREE.Points(geo, mat);
       scene.add(sculpture);
 
-      // Subtle background micro-starfield for depth
-      const BG_COUNT = isMobile ? 600 : 1400;
+      const BG_COUNT = isMobile ? 550 : 1200;
       const bgPos = new Float32Array(BG_COUNT * 3);
       for (let i = 0; i < BG_COUNT; i++) {
         bgPos[i * 3] = (Math.random() - 0.5) * 16;
@@ -421,7 +367,7 @@ export function SculpturalArtifactCanvas({ progressRef }) {
         color: 0xffffff,
         size: 0.02,
         transparent: true,
-        opacity: 0.22,
+        opacity: 0.2,
         depthWrite: false,
       });
       const bgField = new THREE.Points(bgGeo, bgMat);
@@ -429,10 +375,11 @@ export function SculpturalArtifactCanvas({ progressRef }) {
 
       let mx = 0;
       let my = 0;
-      let curX = 1.65;
-      let curY = 0.08;
-      let curScale = 1;
+      let curX = 1.6;
+      let curY = 0.06;
+      let curScale = 0.96;
       let curMorph = 0;
+      let curOp = 1;
 
       const onPointer = (e) => {
         mx = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -457,28 +404,37 @@ export function SculpturalArtifactCanvas({ progressRef }) {
         if (document.hidden) return;
 
         const t = reduced ? 0 : clock.getElapsedTime();
-        const p = progressRef?.current ?? 0;
+        // progressRef.current is now exact DOM-measured chapterProgress (0.0 .. 8.0)
+        const chP = progressRef?.current ?? 0;
 
-        const targetMorph = scrollToMorph(p);
-        curMorph += (targetMorph - curMorph) * (reduced ? 1 : 0.09);
+        const [xFrac, kfY, kfScale, targetMorph, colorIdx, targetOp] = sampleChapterState(chP);
 
-        const [kfX, kfY, kfScale, kfOp] = samplePos(p);
+        // Compute exact world-space half-width at z=0 so sculpture sits dead-center in the open half!
+        const vFovRad = (camera.fov * Math.PI) / 180;
+        const halfH = Math.tan(vFovRad / 2) * camera.position.z;
+        const halfW = halfH * camera.aspect;
+
         const isNarrow = window.innerWidth < 1024;
-        curX += ((isNarrow ? 0 : kfX) - curX) * 0.09;
-        curY += (kfY - curY) * 0.09;
-        curScale += ((isNarrow ? kfScale * 0.78 : kfScale) - curScale) * 0.09;
+        const targetX = isNarrow ? 0 : xFrac * halfW;
+        const targetScale = isNarrow ? kfScale * 0.72 : Math.min(1.05, kfScale * Math.min(1, halfW / 3.4));
+
+        curX += (targetX - curX) * (reduced ? 1 : 0.12);
+        curY += (kfY - curY) * (reduced ? 1 : 0.12);
+        curScale += (targetScale - curScale) * (reduced ? 1 : 0.12);
+        curMorph += (targetMorph - curMorph) * (reduced ? 1 : 0.11);
+        curOp += (targetOp - curOp) * 0.1;
 
         sculpture.position.set(curX, curY + Math.sin(t * 0.85) * 0.05, 0);
         sculpture.scale.setScalar(curScale);
-        sculpture.rotation.y = t * 0.24 + p * Math.PI * 1.8 + mx * 0.35;
+        sculpture.rotation.y = t * 0.24 + chP * 0.65 + mx * 0.35;
         sculpture.rotation.x = Math.sin(t * 0.35) * 0.12 + my * 0.28;
 
         uniforms.uTime.value = t;
         uniforms.uMorph.value = curMorph;
-        uniforms.uOpacity.value = kfOp * (isNarrow ? 0.42 : 0.96);
+        uniforms.uOpacity.value = curOp * (isNarrow ? 0.34 : 0.96);
 
-        const seg = Math.min(4, Math.floor(curMorph));
-        const frac = curMorph - seg;
+        const seg = Math.min(4, Math.floor(colorIdx));
+        const frac = colorIdx - seg;
         const cA = PHASE_PALETTE[seg];
         const cB = PHASE_PALETTE[seg + 1];
         uniforms.uColorA.value.setRGB(cA[0], cA[1], cA[2]);
