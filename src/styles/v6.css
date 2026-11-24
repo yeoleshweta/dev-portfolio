@@ -126,6 +126,61 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
   );
   transition: background 0.6s ease;
 }
+
+/* Live Lifecycle Telemetry Caption anchored below the 3D Sculpture */
+.v6ArtifactCaption {
+  position: absolute;
+  bottom: 42px;
+  left: 50%;
+  z-index: 3;
+  width: min(360px, 42vw);
+  text-align: center;
+  transition: transform 0.75s var(--ease), opacity 0.45s ease;
+}
+.v6ArtifactCaption[data-side="right"] { transform: translateX(calc(-50% + 22vw)); }
+.v6ArtifactCaption[data-side="left"] { transform: translateX(calc(-50% - 22vw)); }
+.v6ArtifactCaption[data-side="center"] { transform: translateX(-50%); opacity: 0; }
+.v6ArtifactCaptionInner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 18px;
+  border-radius: 99px;
+  border: 1px solid color-mix(in srgb, var(--phase-accent) 32%, transparent);
+  background: rgb(11 12 16 / 0.72);
+  backdrop-filter: blur(12px);
+  animation: v6-cap 0.4s var(--ease) both;
+}
+@keyframes v6-cap {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.v6ArtifactState {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--v6-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--phase-accent);
+}
+.v6ArtifactState i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--phase-accent);
+  box-shadow: 0 0 10px var(--phase-accent);
+}
+.v6ArtifactCaptionInner p {
+  font-family: var(--v6-mono);
+  font-size: 10px;
+  color: var(--v6-muted);
+  white-space: nowrap;
+}
+@media (max-width: 1024px) {
+  .v6ArtifactCaption { display: none; }
+}
 .v6PerspectivePlane {
   position: absolute;
   inset: 0;
