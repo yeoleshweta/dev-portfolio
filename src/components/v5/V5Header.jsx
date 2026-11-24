@@ -57,6 +57,7 @@ export function V5Header() {
               <Link href="/v3">v3</Link>
               <Link href="/v4">v4</Link>
               <span aria-current="page">v5</span>
+              <Link href="/v6">v6</Link>
             </div>
             <a
               className="v5HeaderResume"
