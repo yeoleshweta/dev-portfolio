@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AccretionCanvas } from "@/components/v4/AccretionCanvas";
+import { AetherloomCanvas } from "@/components/v4/AetherloomCanvas";
 import { AsciiRadarCanvas } from "@/components/v4/AsciiRadarCanvas";
 import { V4Header } from "@/components/v4/V4Header";
 import { HiringBrief } from "@/components/portfolio/HiringBrief";
@@ -375,9 +375,9 @@ export function V4Portfolio() {
       <V4Header />
 
       <main id="main" className="v4Main">
-        {/* ACT I — ACCRETION DISC HERO + 3D TEXT UNFOLD */}
+        {/* ACT I — AETHERLOOM FLUID SILK HERO + 3D TEXT UNFOLD */}
         <section id="hero" className="v4Hero">
-          <AccretionCanvas />
+          <AetherloomCanvas />
           <div className="v4HeroMask" aria-hidden="true" />
 
           <div className="v4Wrap v4HeroContent">
@@ -434,53 +434,49 @@ export function V4Portfolio() {
           </div>
         </section>
 
-        {/* ACT II — ABACUS DRIFT KINETIC IMPACT RAILS */}
+        {/* ACT II — ARCHITECTURAL EXPANDING OUTCOME PANELS */}
         <section id="impact" className="v4Section v4Wrap">
-          <div className="v4SectionIntro" data-v4-unfold>
-            <span className="v4Kicker">01 / MEASURED SIGNAL</span>
-            <h2 className="v4Display">
-              Outcomes, <em>calibrated.</em>
-            </h2>
+          <div className="v4SectionRow" data-v4-unfold>
+            <div>
+              <span className="v4Kicker">01 / MEASURED SIGNAL</span>
+              <h2 className="v4Display">
+                Outcomes in <em>practice.</em>
+              </h2>
+            </div>
+            <p className="v4CopyMuted">
+              Six years of research-led product design and applied ML — each
+              number anchored to a real shipped system.
+            </p>
           </div>
 
-          <div className="v4AbacusList" data-v4-unfold>
+          <div className="v4PillarDeck" data-v4-unfold>
             {abacusMetrics.map((m, i) => {
               const active = activeMetric === i;
               return (
                 <button
                   key={m.id}
                   type="button"
-                  className="v4AbacusRow"
+                  className="v4PillarPanel"
                   data-active={active}
                   onMouseEnter={() => setActiveMetric(i)}
                   onFocus={() => setActiveMetric(i)}
                   onClick={() => setActiveMetric(i)}
                 >
-                  <div className="v4AbacusHead">
-                    <span className="v4AbacusVal">{m.value}</span>
-                    <div className="v4AbacusMeta">
-                      <strong>{m.label}</strong>
-                      <small>{m.org}</small>
-                    </div>
+                  <div className="v4PillarGlow" aria-hidden="true" />
+                  <div className="v4PillarTop">
+                    <span>0{i + 1}</span>
+                    <small>{m.org.toUpperCase()}</small>
                   </div>
-                  <div className="v4AbacusTrack" aria-hidden="true">
-                    <span
-                      className="v4AbacusFill"
-                      style={{ width: `${active ? m.pos : Math.max(18, m.pos - 26)}%` }}
-                    />
-                    <i
-                      className="v4AbacusBead"
-                      style={{ left: `${active ? m.pos : Math.max(18, m.pos - 26)}%` }}
-                    />
+
+                  <div className="v4PillarCenter">
+                    <strong className="v4PillarNum">{m.value}</strong>
+                    <span className="v4PillarLabel">{m.label}</span>
                   </div>
+
+                  <p className="v4PillarNote">{m.detail}</p>
                 </button>
               );
             })}
-          </div>
-
-          <div className="v4AbacusDetail" aria-live="polite" data-v4-unfold>
-            <span>{abacusMetrics[activeMetric].org.toUpperCase()}</span>
-            <p>{abacusMetrics[activeMetric].detail}</p>
           </div>
         </section>
 
