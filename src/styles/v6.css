@@ -109,19 +109,19 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
   pointer-events: none;
   overflow: hidden;
 }
-.v6FieldCanvas {
+.v6SculptureCanvas {
   position: absolute;
   inset: 0;
   z-index: 0;
 }
-.v6FieldCanvas canvas { width: 100% !important; height: 100% !important; display: block; }
+.v6SculptureCanvas canvas { width: 100% !important; height: 100% !important; display: block; }
 .v6StageAura {
   position: absolute;
   inset: 0;
   z-index: 1;
   background: radial-gradient(
     ellipse 54% 58% at 50% 50%,
-    color-mix(in srgb, var(--phase-accent) 13%, transparent),
+    color-mix(in srgb, var(--phase-accent) 11%, transparent),
     transparent 70%
   );
   transition: background 0.6s ease;

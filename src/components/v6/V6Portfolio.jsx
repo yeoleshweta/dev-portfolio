@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { V6Header } from "@/components/v6/V6Header";
-import { PhaseFieldCanvas } from "@/components/v6/PhaseFieldCanvas";
+import { SculpturalArtifactCanvas } from "@/components/v6/SculpturalArtifactCanvas";
 import { HiringBrief } from "@/components/portfolio/HiringBrief";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
 import { profile, projects, experience } from "@/content/profile";
@@ -115,73 +115,19 @@ const roleImpact = {
   "Capita, for Arcadia Group": "+11% conversion · 7 UK brands",
 };
 
-// Continuous keyframe interpolation for the single persistent 3D artifact across 0..1 page scroll
-// Each keyframe: [scrollProgress, xVw, yVh, scale, rotX, rotY, rotZ, explode, stageOpacity]
-const KEYFRAMES = [
-  [0.00,  22,   0, 1.00,  6,  -12,   0, 0.00, 1.00], // 01 Arrival (right)
-  [0.14, -22,   0, 0.98,  9,   14,  -2, 0.00, 1.00], // 02 UX Research (left — blueprint wireframe)
-  [0.29,  22,   0, 1.00,  5,  -12,   1, 0.00, 1.00], // 03 Frontend UI (right — crystallized app)
-  [0.44, -21,   2, 0.92, 48,   -8, -20, 1.00, 1.00], // 04 Backend APIs (left — exploded 3D stack)
-  [0.58,  21,   0, 0.95, 30,   14, -10, 0.78, 1.00], // 05 AI & ML (right — ignited neural core)
-  [0.72, -22,   0, 0.98,  6,   10,   0, 0.00, 1.00], // 06 Shipped & Tested (left — sealed production app)
-  [0.85,  24,   2, 0.80, 12,  -16,   4, 0.15, 0.72], // 07 Trajectory (right — subtle companion seal)
-  [0.93,   0,  -4, 0.86,  8,    0,   0, 0.00, 0.18], // Gallery breathing room (recedes softly)
-  [1.00,   0,   0, 0.94,  6,    0,   0, 0.00, 0.34], // 08 Colophon (centered monolithic aura)
-];
-
-function sampleKeyframes(p) {
-  const clamped = Math.max(0, Math.min(1, p));
-  for (let i = 0; i < KEYFRAMES.length - 1; i++) {
-    const a = KEYFRAMES[i];
-    const b = KEYFRAMES[i + 1];
-    if (clamped >= a[0] && clamped <= b[0]) {
-      const span = Math.max(0.0001, b[0] - a[0]);
-      const raw = (clamped - a[0]) / span;
-      const t = raw * raw * (3 - 2 * raw); // smoothstep
-      return {
-        x: a[1] + (b[1] - a[1]) * t,
-        y: a[2] + (b[2] - a[2]) * t,
-        scale: a[3] + (b[3] - a[3]) * t,
-        rx: a[4] + (b[4] - a[4]) * t,
-        ry: a[5] + (b[5] - a[5]) * t,
-        rz: a[6] + (b[6] - a[6]) * t,
-        explode: a[7] + (b[7] - a[7]) * t,
-        opacity: a[8] + (b[8] - a[8]) * t,
-      };
-    }
-  }
-  const last = KEYFRAMES[KEYFRAMES.length - 1];
-  return {
-    x: last[1], y: last[2], scale: last[3],
-    rx: last[4], ry: last[5], rz: last[6],
-    explode: last[7], opacity: last[8],
-  };
-}
-
 export function V6Portfolio() {
-  const stageRef = useRef(null);
-  const rigRef = useRef(null);
   const progressRef = useRef(0);
-  const pointerRef = useRef({ x: 0, y: 0 });
   const sheetRef = useRef(null);
 
   const [chapterIdx, setChapterIdx] = useState(0);
   const [selectedWork, setSelectedWork] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  // Drive the ONE persistent 3D artifact continuously across the entire page scroll
+  // Track normalized scroll progress 0..1 for the single persistent 3D WebGL sculpture
   useEffect(() => {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let curP = 0;
-    let curPtrX = 0;
-    let curPtrY = 0;
     let raf = 0;
-
-    const onPointer = (e) => {
-      pointerRef.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      pointerRef.current.y = (e.clientY / window.innerHeight - 0.5) * 2;
-    };
-    window.addEventListener("pointermove", onPointer, { passive: true });
 
     const tick = () => {
       raf = requestAnimationFrame(tick);
@@ -190,10 +136,9 @@ export function V6Portfolio() {
         document.documentElement.scrollHeight - window.innerHeight
       );
       const targetP = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-      curP += (targetP - curP) * (reduced ? 1 : 0.11);
+      curP += (targetP - curP) * (reduced ? 1 : 0.1);
       progressRef.current = curP;
 
-      // Determine active narrative chapter from actual section positions
       let active = 0;
       const mid = window.innerHeight * 0.48;
       for (let i = 0; i < CHAPTERS.length; i++) {
@@ -203,30 +148,10 @@ export function V6Portfolio() {
         }
       }
       setChapterIdx((prev) => (prev === active ? prev : active));
-
-      curPtrX += ((reduced ? 0 : pointerRef.current.x * 5) - curPtrX) * 0.08;
-      curPtrY += ((reduced ? 0 : -pointerRef.current.y * 4) - curPtrY) * 0.08;
-
-      const kf = sampleKeyframes(curP);
-      const stage = stageRef.current;
-      const rig = rigRef.current;
-      if (stage && rig) {
-        stage.style.setProperty("--stage-op", kf.opacity.toFixed(3));
-        rig.style.setProperty("--tx", `${kf.x.toFixed(2)}vw`);
-        rig.style.setProperty("--ty", `${kf.y.toFixed(2)}vh`);
-        rig.style.setProperty("--sc", kf.scale.toFixed(3));
-        rig.style.setProperty("--rx", `${(kf.rx + curPtrY).toFixed(2)}deg`);
-        rig.style.setProperty("--ry", `${(kf.ry + curPtrX).toFixed(2)}deg`);
-        rig.style.setProperty("--rz", `${kf.rz.toFixed(2)}deg`);
-        rig.style.setProperty("--explode", kf.explode.toFixed(3));
-      }
     };
 
     raf = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("pointermove", onPointer);
-    };
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   useEffect(() => {
@@ -255,10 +180,6 @@ export function V6Portfolio() {
   }
 
   const activeChapter = CHAPTERS[chapterIdx];
-  const isBlueprint = chapterIdx <= 1;
-  const isUiReady = chapterIdx >= 2;
-  const isAiLit = chapterIdx >= 4;
-  const isVerified = chapterIdx >= 5;
 
   return (
     <div
@@ -268,164 +189,11 @@ export function V6Portfolio() {
       <V6Header />
 
       {/* ===================================================================
-          THE ONE PERSISTENT FULL-PAGE STAGE (FOLLOWS YOU FROM 0% TO 100%)
+          THE ONE PERSISTENT SCULPTURAL 3D ARTIFACT (LIVE FROM 0% TO 100%)
           =================================================================== */}
-      <div ref={stageRef} className="v6FixedStage" aria-hidden="true">
-        <PhaseFieldCanvas progressRef={progressRef} />
+      <div className="v6FixedStage" aria-hidden="true">
+        <SculpturalArtifactCanvas progressRef={progressRef} />
         <div className="v6StageAura" />
-
-        <div className="v6PerspectivePlane">
-          <div
-            ref={rigRef}
-            className="v6ArtifactRig"
-            data-blueprint={isBlueprint}
-            data-chapter={activeChapter.id}
-          >
-            {/* LAYER 1 (BOTTOM) — DATA & INFRASTRUCTURE */}
-            <div className="v6Layer v6LayerInfra">
-              <div className="v6LayerLabel">03 / PERSISTENCE &amp; RUNTIME</div>
-              <div className="v6InfraCards">
-                <div>
-                  <small>POSTGRESQL</small>
-                  <strong>vignettes · rubrics · audit_logs</strong>
-                </div>
-                <div>
-                  <small>DOCKER COMPOSE</small>
-                  <strong>HF Spaces · Container Live ✓</strong>
-                </div>
-              </div>
-            </div>
-
-            {/* LAYER 2 (MIDDLE) — API BUS + AI INFERENCE ENGINE */}
-            <div className="v6Layer v6LayerCore">
-              <div className="v6LayerLabel">
-                {isAiLit
-                  ? "02 / AI INFERENCE & EXPLAINABILITY"
-                  : "02 / SERVICE BOUNDARIES & API"}
-              </div>
-              <div className="v6CoreStack">
-                <div className="v6ApiBar">
-                  <span className="v6Method">POST</span>
-                  <code>/api/analyze</code>
-                  <span className="v6Latency">200 OK · 42ms</span>
-                </div>
-                <div className="v6BusTrack">
-                  <span />
-                </div>
-                <div className="v6NeuralRow">
-                  <div className="v6ModelPill" data-lit={isAiLit}>
-                    <small>CLASSIFIER</small>
-                    <strong>RoBERTa + LoRA</strong>
-                  </div>
-                  <i>→</i>
-                  <div className="v6ModelPill" data-lit={isAiLit}>
-                    <small>REASONING</small>
-                    <strong>GPT-4o Explain</strong>
-                  </div>
-                  <i>→</i>
-                  <div className="v6ModelPill" data-lit={isAiLit}>
-                    <small>VISION</small>
-                    <strong>MediaPipe 21pt</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* LAYER 3 (TOP) — MORPHS FROM BLANK/RESEARCH WIREFRAME -> UI -> AI AUDIT -> VERIFIED APP */}
-            <div className="v6Layer v6LayerTop">
-              <div className="v6TopChrome">
-                <div className="v6ChromeDots">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <span className="v6ChromeFile">
-                  {chapterIdx === 0
-                    ? "shweta-sharma / artifact.canvas"
-                    : chapterIdx === 1
-                      ? "01-discovery.fig — Taxonomy & Stickies"
-                      : chapterIdx === 2
-                        ? "02-interface.tsx — Atomic Next.js UI"
-                        : chapterIdx === 3
-                          ? "03-services.py ⇄ Flask · FastAPI · SQL"
-                          : chapterIdx === 4
-                            ? "04-inference.py — RoBERTa + GPT-4o"
-                            : "BiasChecker v1.0 — Verified & Live"}
-                </span>
-                <span className="v6ChromeTag">
-                  {isVerified ? "LIVE ✓" : `0${Math.min(5, chapterIdx + 1)}/05`}
-                </span>
-              </div>
-
-              {/* Phase 0–1: Research Wireframe & Stickies */}
-              <div className="v6FaceResearch" data-show={isBlueprint}>
-                <div className="v6StickyPair">
-                  <div className="v6Sticky">
-                    <small>CONTEXTUAL INQUIRY</small>
-                    <p>“A score without reasoning won’t pass clinical review.”</p>
-                  </div>
-                  <div className="v6Sticky isSoft">
-                    <small>TAXONOMY RUBRIC</small>
-                    <p>Calgary-Cambridge · NURSE · IRR Protocol</p>
-                  </div>
-                </div>
-                <div className="v6WireLines">
-                  <span style={{ width: "68%" }} />
-                  <span style={{ width: "100%" }} />
-                  <span style={{ width: "52%" }} />
-                </div>
-                <div className="v6WireFlow">
-                  <span>01 Discover</span>
-                  <i>→</i>
-                  <span>02 Prototype</span>
-                  <i>→</i>
-                  <span>03 Ship</span>
-                </div>
-              </div>
-
-              {/* Phase 2–8: Crystallized App + AI Audit + Shipped Verification */}
-              <div className="v6FaceApp" data-show={isUiReady}>
-                <div className="v6AppRail">
-                  <span className="v6AppMark">BC</span>
-                  <i className="isOn" />
-                  <i />
-                  <i />
-                </div>
-                <div className="v6AppBody">
-                  <div className="v6AppBar">
-                    <strong>Clinical Vignette Assessment</strong>
-                    <span>{isAiLit ? "RoBERTa+LoRA · Active" : "Next.js · Ready"}</span>
-                  </div>
-                  <div className="v6Vignette">
-                    “54-year-old patient reports recurring chest discomfort;{" "}
-                    <mark className={isAiLit ? "isLit" : ""}>
-                      symptoms attributed to stress before ECG workup
-                    </mark>
-                    .”
-                  </div>
-                  <div className="v6ExplainBox" data-lit={isAiLit}>
-                    <div className="v6ExplainHead">
-                      <span>EXPLAINABLE SIGNAL</span>
-                      <strong>{isAiLit ? "94.2% confidence" : "Model slot ready"}</strong>
-                    </div>
-                    <p>
-                      {isAiLit
-                        ? "GPT-4o: Premature attribution to anxiety risks anchoring bias; recommend standard cardiac rubric check."
-                        : "Structured output container prepared for human-auditable inference."}
-                    </p>
-                  </div>
-                  <div className="v6ChecksRow" data-show={isVerified}>
-                    <span>Usability n=6 ✓</span>
-                    <span>IRR Rubric ✓</span>
-                    <span>A/B +11% ✓</span>
-                    <span>WCAG 2.1 ✓</span>
-                    <span>Docker ✓</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* FIXED LEFT CHAPTER PROGRESS SPINE */}
