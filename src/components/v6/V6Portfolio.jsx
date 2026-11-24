@@ -11,7 +11,7 @@ import { systems, archive } from "@/content/engineering";
 import "@/styles/gallery.css";
 
 const CHAPTERS = [
-  { id: "arrival", num: "01", label: "Intro", accent: "#e8b85a", side: "right", state: "01 · LATENT SEED SPHERE", mapping: "One raw idea — scroll to watch it morph through 5 builds" },
+  { id: "arrival", num: "01", label: "Intro", accent: "#e8b85a", side: "right", state: "01 · RAW GRAIN MASS", mapping: "Unshaped mineral cloud — scroll to sculpt it through 5 builds" },
   { id: "research", num: "02", label: "UX Research", accent: "#e8a848", side: "left", state: "02 · SIX AFFINITY CLUSTERS", mapping: "Splits into 6 discovery clusters & bridges → UX Research" },
   { id: "frontend", num: "03", label: "Frontend UI", accent: "#6fb6ff", side: "right", state: "03 · MODULAR 3D GRID CUBE", mapping: "Snaps into a crisp 3×3 structural grid → React & Figma UI" },
   { id: "backend", num: "04", label: "Backend APIs", accent: "#3ee09c", side: "left", state: "04 · FLOWING TORUS PIPELINE", mapping: "Unwinds into a continuous data loop → APIs & PostgreSQL" },
@@ -303,10 +303,11 @@ export function V6Portfolio() {
                 First, dissolve into <em>raw human signal.</em>
               </h2>
               <p className="v6Lead">
-                Watch the seed split apart into six orbiting affinity clusters
-                bridged by amber threads. Every build begins here: contextual
-                inquiry, clinical rubrics (Calgary-Cambridge, NURSE), and
-                behavioral analytics before a single component is drawn.
+                Watch the swirling grain mass pull together into six orbiting
+                affinity clusters bridged by amber threads. Every build begins
+                here: contextual inquiry, clinical rubrics (Calgary-Cambridge,
+                NURSE), and behavioral analytics before a single component is
+                drawn.
               </p>
               <div className="v6SkillStrip">
                 <span>Contextual Inquiry</span>
