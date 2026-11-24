@@ -16,9 +16,10 @@ const CHAPTERS = [
   { id: "frontend", num: "03", label: "Frontend UI", accent: "#6fb6ff", side: "right", state: "03 · MODULAR 3D GRID CUBE", mapping: "Snaps into a crisp 3×3 structural grid → React & Figma UI" },
   { id: "backend", num: "04", label: "Backend APIs", accent: "#3ee09c", side: "left", state: "04 · FLOWING TORUS PIPELINE", mapping: "Unwinds into a continuous data loop → APIs & PostgreSQL" },
   { id: "ai", num: "05", label: "AI & ML", accent: "#a76bff", side: "right", state: "05 · DUAL-HEMISPHERE NEURAL BRAIN", mapping: "Folds into a firing neural network → Applied AI & Eval" },
-  { id: "works", num: "06", label: "Tested & Shipped", accent: "#e8b85a", side: "left", state: "06 · BRILLIANT-CUT DIAMOND", mapping: "Compressed, faceted & verified → QA, Usability & Shipped" },
-  { id: "trajectory", num: "07", label: "Trajectory", accent: "#d992b4", side: "right", state: "THE FINISHED CUT", mapping: "Six years of craft + MS AI & ML (3.97 GPA)" },
-  { id: "contact", num: "08", label: "Next Build", accent: "#e8b85a", side: "center", state: "READY FOR WHAT'S NEXT", mapping: "Let's shape the next product from research to shipped AI" },
+  { id: "works", num: "06", label: "Selected Builds", accent: "#e8b85a", side: "center", state: "06 · BRILLIANT-CUT DIAMOND", mapping: "Compressed, faceted & verified → QA, Usability & Shipped" },
+  { id: "craft", num: "07", label: "Craft & Toolkit", accent: "#e8b85a", side: "center", state: "CRAFT & TOOLKIT", mapping: "Every framework & method behind the shipped work" },
+  { id: "trajectory", num: "08", label: "Trajectory", accent: "#d992b4", side: "center", state: "THE FINISHED CUT", mapping: "Six years of craft + MS AI & ML (3.97 GPA)" },
+  { id: "contact", num: "09", label: "Next Build", accent: "#e8b85a", side: "center", state: "READY FOR WHAT'S NEXT", mapping: "Let's shape the next product from research to shipped AI" },
 ];
 
 const shippedWorks = [
@@ -35,6 +36,11 @@ const shippedWorks = [
     repo: systems[0].repository,
     nodes: systems[0].nodes,
     decision: systems[0].decision,
+    blueprint: {
+      kicker: "PIPELINE SPECIMEN · 01 → 04",
+      diagram: "Clinical Vignette → RoBERTa + LoRA → GPT-4o Explainability → Review",
+      foot: "Solo full-stack build · Hugging Face Spaces",
+    },
   },
   {
     id: "gesturepro",
@@ -46,6 +52,8 @@ const shippedWorks = [
     summary:
       "Browser prototype reading 21 MediaPipe hand landmarks per frame into editable text, validated with six usability testing participants.",
     stack: ["Next.js", "FastAPI", "MediaPipe", "TensorFlow"],
+    image: projects[0].image,
+    alt: projects[0].alt,
     caseHref: `/work/${projects[0].slug}/`,
     repo: projects[0].repository,
     nodes: systems[1].nodes,
@@ -61,6 +69,8 @@ const shippedWorks = [
     summary:
       "Multi-role desktop workspace spanning 30 screens and 484 connected interactions for administrators, warehouse teams, and franchise shops.",
     stack: ["Figma", "Design Systems", "Interaction Design"],
+    image: projects[1].image,
+    alt: projects[1].alt,
     caseHref: `/work/${projects[1].slug}/`,
     decision:
       "Anchor three distinct operational roles to one shared navigation grammar and consistent table patterns.",
@@ -78,6 +88,11 @@ const shippedWorks = [
     repo: systems[2].repository,
     nodes: systems[2].nodes,
     decision: systems[2].decision,
+    blueprint: {
+      kicker: "TOPOLOGY SPECIMEN · MULTI-SERVICE",
+      diagram: "Next.js Client → Node /api/forecast → PostgreSQL + Python /predict",
+      foot: "Docker Compose stack · Explicit service boundaries",
+    },
   },
   {
     id: "clinical-communication",
@@ -89,6 +104,8 @@ const shippedWorks = [
     summary:
       "Supervised NLP annotation workflow mapping doctor-patient dialogue behaviors to Calgary-Cambridge and NURSE rubrics.",
     stack: ["Python", "NLP", "Label Studio"],
+    image: projects[2].image,
+    alt: projects[2].alt,
     caseHref: `/work/${projects[2].slug}/`,
     decision:
       "Connect every model output to named clinical communication frameworks so reviewers can audit predictions.",
@@ -104,7 +121,44 @@ const shippedWorks = [
     stack: ["LangGraph", "FastAPI", "React", "Tailwind CSS"],
     decision:
       "Surface completed versus deferred agent work explicitly at the interface layer.",
+    blueprint: {
+      kicker: "ACTIVE RESEARCH · MULTI-AGENT",
+      diagram: "LangGraph Orchestrator → Agent Handoff → Visible Human Ledger",
+      foot: "In active development · Deliberate non-capture UX",
+    },
   },
+];
+
+const craftFilters = [
+  { id: "all", label: "All Craft" },
+  { id: "engineering", label: "Frontend & APIs" },
+  { id: "ai", label: "Applied AI & ML" },
+  { id: "design", label: "Design Systems" },
+  { id: "research", label: "Research & Data" },
+];
+
+const craftTokens = [
+  { name: "React", cat: "engineering", italic: false, proof: "Production interfaces across CentralPerk, dashboards, and design-system handoffs." },
+  { name: "Next.js", cat: "engineering", italic: true, proof: "App Router frontends for Bias Checker (ABIM), GesturePro, and PocketSaver." },
+  { name: "Python", cat: "ai", italic: false, proof: "Clinical NLP pipelines at ABIM, FastAPI/Flask backends, and forecasting services." },
+  { name: "Figma", cat: "design", italic: true, proof: "Urbanfit's 30-screen atomic design system and John Deere's 250+ product survey platform." },
+  { name: "RoBERTa + LoRA", cat: "ai", italic: false, proof: "Fine-tuned healthcare bias classifier deployed in Bias Checker on Hugging Face Spaces." },
+  { name: "FastAPI", cat: "engineering", italic: false, proof: "Real-time hand-landmark inference backend in GesturePro and CentralPerk API layer." },
+  { name: "Design Systems", cat: "design", italic: true, proof: "Atomic component libraries built from scratch at Urbanfit and maintained across 7 UK brands at Capita." },
+  { name: "LLM Evaluation", cat: "ai", italic: false, proof: "Rubric-based clinical evaluation frameworks at ABIM covering accuracy, IRR, and edge cases." },
+  { name: "Usability Testing", cat: "research", italic: true, proof: "Moderated studies across 6+ John Deere teams, Urbanfit (+35% engagement), and GesturePro." },
+  { name: "Flask", cat: "engineering", italic: false, proof: "Served classification and GPT-4o explainability endpoints for Bias Checker." },
+  { name: "GPT-4o", cat: "ai", italic: false, proof: "Few-shot explainability layer giving clinicians auditable reasoning beside model labels." },
+  { name: "PostgreSQL", cat: "engineering", italic: true, proof: "Containerized relational persistence orchestrated alongside Node.js and Python in PocketSaver." },
+  { name: "Label Studio", cat: "ai", italic: false, proof: "Annotated clinical dialogue reference sets mapped to Calgary-Cambridge, NURSE, and SHARE." },
+  { name: "TensorFlow", cat: "ai", italic: false, proof: "Trained the sign classification model behind GesturePro's browser-to-text flow." },
+  { name: "MediaPipe", cat: "ai", italic: true, proof: "Extracted 21 real-time hand landmarks per webcam frame in GesturePro." },
+  { name: "Docker", cat: "engineering", italic: false, proof: "Multi-service Compose topology in PocketSaver and containerized Bias Checker deployment." },
+  { name: "LangGraph", cat: "ai", italic: true, proof: "Stateful multi-agent orchestration powering CentralPerk's transparent handoff UX." },
+  { name: "A/B Testing", cat: "research", italic: false, proof: "Behavioral segmentation and experimentation on Qubit's ML platform (+11% conversion at Capita)." },
+  { name: "Information Architecture", cat: "design", italic: true, proof: "Self-serve survey platform across 250+ John Deere products (−60% setup time)." },
+  { name: "WCAG 2.1", cat: "design", italic: false, proof: "Accessible contrast, keyboard navigation, and inclusive interaction patterns." },
+  { name: "Behavioral Analytics", cat: "research", italic: false, proof: "Hotjar, FullStory, Google Analytics, Amplitude, SQL, Tableau, and Power BI." },
 ];
 
 const roleImpact = {
@@ -118,13 +172,17 @@ const roleImpact = {
 export function V6Portfolio() {
   const progressRef = useRef(0);
   const sheetRef = useRef(null);
+  const filmstripRef = useRef(null);
+  const timelineRef = useRef(null);
 
   const [chapterIdx, setChapterIdx] = useState(0);
+  const [activeBuildIdx, setActiveBuildIdx] = useState(0);
   const [selectedWork, setSelectedWork] = useState(null);
+  const [craftCat, setCraftCat] = useState("all");
+  const [hoveredToken, setHoveredToken] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  // Measure exact continuous chapterProgress (0.0 .. 8.0) directly from live DOM section positions
-  // so the 3D sculpture is ALWAYS on the exact opposite half from the visible card — zero overlap!
+  // Measure exact continuous chapterProgress (0.0 .. 9.0) directly from live DOM section centers
   useEffect(() => {
     const sectionIds = [
       "arrival",
@@ -133,6 +191,7 @@ export function V6Portfolio() {
       "backend",
       "ai",
       "works",
+      "craft",
       "trajectory",
       "offscreen",
       "contact",
@@ -149,7 +208,6 @@ export function V6Portfolio() {
         return r.top + r.height * 0.5;
       });
 
-      // Compute continuous index 0..(N-1) where integer i means section i is centered in viewport
       let chP = 0;
       if (centers[0] >= viewCenter) {
         chP = 0;
@@ -167,9 +225,9 @@ export function V6Portfolio() {
 
       progressRef.current = chP;
 
-      // Map 9 DOM sections (including offscreen at index 7) to CHAPTERS (0..7)
+      // Map 10 DOM sections (with offscreen at index 8) to CHAPTERS (0..8)
       const nearest = Math.round(chP);
-      const mappedChapter = nearest === 7 ? 6 : nearest >= 8 ? 7 : nearest;
+      const mappedChapter = nearest === 8 ? 7 : nearest >= 9 ? 8 : nearest;
       setChapterIdx((prev) => (prev === mappedChapter ? prev : mappedChapter));
     };
 
@@ -202,7 +260,17 @@ export function V6Portfolio() {
     }
   }
 
+  function scrollRail(ref, delta) {
+    if (!ref.current) return;
+    ref.current.scrollBy({ left: delta, behavior: "smooth" });
+  }
+
   const activeChapter = CHAPTERS[chapterIdx];
+  const currentBuild = shippedWorks[activeBuildIdx];
+  const focusedToken =
+    hoveredToken ??
+    craftTokens.find((t) => craftCat === "all" || t.cat === craftCat) ??
+    craftTokens[0];
 
   return (
     <div
@@ -250,7 +318,7 @@ export function V6Portfolio() {
           CONTINUOUS SCROLLING STORY CHAPTERS FLOWING AROUND THE ONE ARTIFACT
           =================================================================== */}
       <main id="main" className="v6StoryStream">
-        {/* CHAPTER 01 — ARRIVAL (Left copy, artifact floats right) */}
+        {/* CHAPTER 01 — ARRIVAL (Left copy, Grain Mass blooms right) */}
         <section id="arrival" className="v6Chapter v6AlignLeft v6ChapterHero">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
@@ -294,7 +362,7 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 02 — UX RESEARCH (Sculpture dissolves into raw signal cloud + affinity threads) */}
+        {/* CHAPTER 02 — UX RESEARCH */}
         <section id="research" className="v6Chapter v6AlignRight">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
@@ -328,7 +396,7 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 03 — FRONTEND UI (Clusters snap into crisp 3D modular grid cube) */}
+        {/* CHAPTER 03 — FRONTEND UI */}
         <section id="frontend" className="v6Chapter v6AlignLeft">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
@@ -363,7 +431,7 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 04 — BACKEND & APIS (Cube unwinds into a flowing torus-knot pipeline) */}
+        {/* CHAPTER 04 — BACKEND & APIS */}
         <section id="backend" className="v6Chapter v6AlignRight">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
@@ -398,7 +466,7 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 05 — APPLIED AI & ML (Pipeline folds into dual-hemisphere neural brain) */}
+        {/* CHAPTER 05 — APPLIED AI & ML */}
         <section id="ai" className="v6Chapter v6AlignLeft">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
@@ -433,71 +501,278 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 06 — TESTED & SHIPPED (Brain crystallizes into brilliant-cut gold diamond) */}
-        <section id="works" className="v6Chapter v6AlignRight">
+        {/* CHAPTER 06 — SELECTED BUILDS SPOTLIGHT + HORIZONTAL 6-PLATE SELECTOR */}
+        <section id="works" className="v6WideBand">
           <div className="v6Wrap">
-            <div className="v6ChapterCard v6CardWide">
-              <span className="v6Kicker">05 / TESTING, EVALUATION &amp; SHIPPED</span>
-              <h2 className="v6ChapterTitle">
-                Cut, tested, <em>crystallized.</em>
-              </h2>
-              <p className="v6Lead">
-                Finally, all 38,000 grains compress into a razor-sharp,
-                brilliant-cut champagne-gold diamond — usability tested (n=6),
-                rubric-audited (IRR), A/B validated, and shipped. Select any
-                build below to inspect its full architecture.
-              </p>
-
-              <div className="v6WorksList">
-                {shippedWorks.map((w) => (
+            <div className="v6BandHead">
+              <div>
+                <span className="v6Kicker">05 / TESTING, EVALUATION &amp; SHIPPED BUILDS</span>
+                <h2 className="v6ChapterTitle">
+                  Cut, tested, <em>crystallized.</em>
+                </h2>
+              </div>
+              <div className="v6BandHeadRight">
+                <p className="v6Lead">
+                  All 38,000 grains compress into a brilliant-cut diamond behind
+                  the glass. Select any build along the horizontal strip to
+                  inspect its architecture.
+                </p>
+                <div className="v6RailControls">
                   <button
-                    key={w.id}
                     type="button"
-                    className="v6WorkLine"
-                    onClick={() => setSelectedWork(w)}
+                    className="v6RailBtn"
+                    onClick={() => scrollRail(filmstripRef, -320)}
+                    aria-label="Scroll builds left"
                   >
-                    <small>{w.num}</small>
-                    <div>
-                      <strong>{w.title}</strong>
-                      <span>{w.field} · {w.headline}</span>
-                    </div>
-                    <i>Inspect ↗</i>
+                    ←
                   </button>
-                ))}
+                  <button
+                    type="button"
+                    className="v6RailBtn"
+                    onClick={() => scrollRail(filmstripRef, 320)}
+                    aria-label="Scroll builds right"
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Featured Frosted Glass Spotlight */}
+            <div className="v6GlassSpotlight" key={currentBuild.id}>
+              <div
+                className="v6SpotlightVisual"
+                onClick={() => setSelectedWork(currentBuild)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setSelectedWork(currentBuild);
+                  }
+                }}
+              >
+                {currentBuild.image ? (
+                  <Image
+                    src={currentBuild.image}
+                    alt={currentBuild.alt}
+                    width={1100}
+                    height={680}
+                    sizes="(max-width: 960px) 92vw, 48vw"
+                  />
+                ) : (
+                  <div className="v6BlueprintSpecimen">
+                    <small>{currentBuild.blueprint.kicker}</small>
+                    <p>{currentBuild.blueprint.diagram}</p>
+                    <span>{currentBuild.blueprint.foot}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="v6SpotlightCopy">
+                <div className="v6SpotlightTopMeta">
+                  <span>
+                    PLATE {currentBuild.num} · {currentBuild.field.toUpperCase()}
+                  </span>
+                  <small>{currentBuild.year}</small>
+                </div>
+
+                <h3>{currentBuild.title}</h3>
+                <p className="v6SpotlightSub">{currentBuild.headline}</p>
+                <p className="v6SpotlightSummary">{currentBuild.summary}</p>
+
+                <div className="v6SkillStrip" style={{ margin: "20px 0 24px" }}>
+                  {currentBuild.stack.map((tech) => (
+                    <span key={tech}>{tech}</span>
+                  ))}
+                </div>
+
+                <div className="v6SpotlightBtns">
+                  <button
+                    type="button"
+                    className="v6BtnPrimary"
+                    onClick={() => setSelectedWork(currentBuild)}
+                  >
+                    Inspect Architecture ↗
+                  </button>
+                  {currentBuild.caseHref && (
+                    <Link className="v6GlassPillBtn" href={currentBuild.caseHref}>
+                      Case Study ↗
+                    </Link>
+                  )}
+                  {currentBuild.repo && (
+                    <a
+                      className="v6GlassPillBtn"
+                      href={currentBuild.repo}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      GitHub ↗
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Horizontally Scrollable 6-Plate Selector Strip */}
+            <div
+              ref={filmstripRef}
+              className="v6HStrip"
+              role="tablist"
+              aria-label="Choose a shipped build"
+            >
+              {shippedWorks.map((b, idx) => (
+                <button
+                  key={b.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeBuildIdx === idx}
+                  className="v6HPlate"
+                  onClick={() => setActiveBuildIdx(idx)}
+                >
+                  <small>{b.num}</small>
+                  <strong>{b.title}</strong>
+                  <span>{b.field}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CHAPTER 07 — CRAFT & TOOLKIT (INTERACTIVE FROSTED-GLASS TYPOGRAPHIC INDEX) */}
+        <section id="craft" className="v6WideBand">
+          <div className="v6Wrap">
+            <div className="v6GlassVessel">
+              <div className="v6CraftHead">
+                <div>
+                  <span className="v6Kicker">06 / CRAFT &amp; TOOLKIT</span>
+                  <h2 className="v6ChapterTitle" style={{ marginBottom: 0 }}>
+                    The tools behind <em>the work.</em>
+                  </h2>
+                </div>
+
+                <div className="v6CraftFilters" role="tablist" aria-label="Filter craft">
+                  {craftFilters.map((f) => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={craftCat === f.id}
+                      className="v6CraftFilterBtn"
+                      onClick={() => {
+                        setCraftCat(f.id);
+                        setHoveredToken(null);
+                      }}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div
+                className="v6CraftWall"
+                data-has-hover={hoveredToken !== null}
+                onMouseLeave={() => setHoveredToken(null)}
+              >
+                {craftTokens.map((tok, i) => {
+                  const matches = craftCat === "all" || tok.cat === craftCat;
+                  const isActive = hoveredToken?.name === tok.name;
+                  return (
+                    <span className="v6CraftTokenWrap" key={tok.name}>
+                      <button
+                        type="button"
+                        className={`v6CraftToken${tok.italic ? " isItalic" : ""}`}
+                        data-match={matches}
+                        data-active={isActive}
+                        onMouseEnter={() => setHoveredToken(tok)}
+                        onFocus={() => setHoveredToken(tok)}
+                        onClick={() => setHoveredToken(tok)}
+                      >
+                        {tok.name}
+                      </button>
+                      {i < craftTokens.length - 1 && (
+                        <span className="v6CraftDot" aria-hidden="true">
+                          ·
+                        </span>
+                      )}
+                    </span>
+                  );
+                })}
+              </div>
+
+              <div className="v6CraftReadout" aria-live="polite">
+                <strong>{focusedToken.name}</strong>
+                <p>{focusedToken.proof}</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* CHAPTER 07 — TRAJECTORY & HUMAN CONTEXT (Artifact shrinks right, career on left) */}
-        <section id="trajectory" className="v6Chapter v6AlignLeft">
+        {/* CHAPTER 08 — THE TRAJECTORY (HORIZONTALLY SCROLLABLE DETAILED GLASS TIMELINE) */}
+        <section id="trajectory" className="v6WideBand">
           <div className="v6Wrap">
-            <div className="v6ChapterCard v6CardWide">
-              <span className="v6Kicker">06 / THE TRAJECTORY</span>
-              <h2 className="v6ChapterTitle">
-                Different roles. <em>One curiosity.</em>
-              </h2>
-
-              <div className="v6DrexelBar">
-                <div>
-                  <small>DREXEL UNIVERSITY · 2024–2026</small>
-                  <strong>MS Computer Science — AI &amp; Machine Learning</strong>
-                </div>
-                <em>3.97 / 4.0 GPA</em>
+            <div className="v6BandHead">
+              <div>
+                <span className="v6Kicker">07 / THE TRAJECTORY</span>
+                <h2 className="v6ChapterTitle">
+                  Different roles. <em>One curiosity.</em>
+                </h2>
+                <p className="v6Lead">
+                  From establishing enterprise UX research practices from
+                  scratch to building clinical NLP and full-stack AI evaluation
+                  tools.
+                </p>
               </div>
 
-              <div className="v6ExpList">
-                {experience.map(([dates, company, role, detail]) => (
-                  <article className="v6ExpRow" key={company}>
-                    <div className="v6ExpHead">
-                      <strong>{company}</strong>
+              <div className="v6TrajRight">
+                <div className="v6DrexelGlass">
+                  <div>
+                    <small>DREXEL UNIVERSITY · 2024–2026</small>
+                    <strong>MS Computer Science — AI &amp; Machine Learning</strong>
+                  </div>
+                  <em>3.97 / 4.0 GPA</em>
+                </div>
+
+                <div className="v6RailControls">
+                  <button
+                    type="button"
+                    className="v6RailBtn"
+                    onClick={() => scrollRail(timelineRef, -440)}
+                    aria-label="Scroll experience left"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    className="v6RailBtn"
+                    onClick={() => scrollRail(timelineRef, 440)}
+                    aria-label="Scroll experience right"
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div ref={timelineRef} className="v6HTimeline">
+              {experience.map(([dates, company, role, detail]) => (
+                <article className="v6HTimelineItem" key={company}>
+                  <div className="v6HTimelineRail" aria-hidden="true">
+                    <span className="v6HTimelineNode" />
+                    <i className="v6HTimelineLine" />
+                  </div>
+                  <div className="v6HTimelineCard">
+                    <div className="v6HTimelineTop">
+                      <small>{dates}</small>
                       <span>{roleImpact[company] || role}</span>
                     </div>
-                    <small>{dates} · {role}</small>
+                    <h3>{company}</h3>
+                    <strong>{role}</strong>
                     <p>{detail}</p>
-                  </article>
-                ))}
-              </div>
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </section>
@@ -520,7 +795,7 @@ export function V6Portfolio() {
                 </figcaption>
               </figure>
               <div className="v6HumanText">
-                <span className="v6Kicker">07 / BEYOND THE SCREEN</span>
+                <span className="v6Kicker">08 / BEYOND THE SCREEN</span>
                 <h2 className="v6ChapterTitle">
                   A little more <em>human context.</em>
                 </h2>
@@ -538,10 +813,10 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 08 — COLOPHON (Artifact returns softly centered behind closing call) */}
+        {/* CHAPTER 09 — COLOPHON */}
         <section id="contact" className="v6Colophon">
           <div className="v6Wrap v6ColophonInner">
-            <span className="v6Kicker">08 / READY FOR THE NEXT BUILD</span>
+            <span className="v6Kicker">09 / READY FOR THE NEXT BUILD</span>
             <h2 className="v6ColophonTitle">
               Thoughtful people.
               <br />

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-// Indexed by DOM-measured chapterProgress (0.0 .. 8.0):
+// Indexed by DOM-measured chapterProgress (0.0 .. 9.0):
 // [xFracOfHalfWidth, yWorld, scale, morphIdx, colorIdx, opacity]
 // Card alignment:
 //   0 Arrival (transparent hero LEFT) -> Grain Mass nebula blooms right/center-right (+0.26)
@@ -9,20 +9,22 @@ import { useEffect, useRef } from "react";
 //   2 Frontend (card LEFT)            -> sculpture RIGHT (+0.50) | Shape 2: Modular 3D Grid Cube
 //   3 Backend (card RIGHT)            -> sculpture LEFT  (-0.50) | Shape 3: Flowing Torus Pipeline
 //   4 AI & ML (card LEFT)             -> sculpture RIGHT (+0.50) | Shape 4: Dual-Hemisphere Neural Brain
-//   5 Shipped (card RIGHT)            -> sculpture LEFT  (-0.50) | Shape 5: Brilliant-Cut Diamond
-//   6 Trajectory (card LEFT)          -> sculpture RIGHT (+0.50) | Shape 5: Brilliant-Cut Diamond
-//   7 Offscreen (full width)          -> sculpture CENTER (0.00) | Faded softly so photo desk owns stage
-//   8 Contact (centered)              -> sculpture CENTER (0.00) | Glowing behind colophon
+//   5 Works (full-width glass stage)  -> Brilliant-Cut Diamond centered softly behind frosted glass (0.28)
+//   6 Craft (full-width glass index)  -> Brilliant-Cut Diamond centered softly behind frosted glass (0.24)
+//   7 Trajectory (horiz. glass deck)  -> Brilliant-Cut Diamond centered softly behind frosted glass (0.24)
+//   8 Offscreen (photo desk)          -> Faded softly so photo desk owns stage (0.14)
+//   9 Contact (centered colophon)     -> Glowing behind closing call (0.45)
 const CHAPTER_STATES = [
   [ 0.26,  0.02, 1.46, 0.0, 0, 1.00], // 0 Arrival — Swirling Grain Mass Nebula
   [-0.50,  0.06, 0.98, 1.0, 1, 1.00], // 1 UX Research
   [ 0.50,  0.06, 0.96, 2.0, 2, 1.00], // 2 Frontend UI
   [-0.50,  0.06, 0.96, 3.0, 3, 1.00], // 3 Backend APIs
   [ 0.50,  0.06, 0.98, 4.0, 4, 1.00], // 4 AI & ML
-  [-0.50,  0.06, 1.00, 5.0, 5, 1.00], // 5 Shipped & Tested
-  [ 0.50,  0.06, 0.88, 5.0, 5, 0.90], // 6 Trajectory
-  [ 0.00,  0.08, 0.84, 5.0, 5, 0.14], // 7 Off-screen photo desk
-  [ 0.00,  0.02, 1.06, 5.0, 5, 0.45], // 8 Colophon
+  [ 0.00,  0.04, 1.12, 5.0, 5, 0.28], // 5 Shipped Builds Spotlight (frosted glass refracts diamond)
+  [ 0.00,  0.04, 1.04, 5.0, 5, 0.24], // 6 Craft & Toolkit Index
+  [ 0.00,  0.04, 1.00, 5.0, 5, 0.24], // 7 Horizontal Experience Timeline
+  [ 0.00,  0.08, 0.84, 5.0, 5, 0.14], // 8 Off-screen photo desk
+  [ 0.00,  0.02, 1.08, 5.0, 5, 0.45], // 9 Colophon
 ];
 
 const PHASE_PALETTE = [
