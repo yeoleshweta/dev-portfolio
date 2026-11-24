@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/content/profile";
 
-export function HiringBrief({ triggerClassName = "briefTrigger" }) {
+export function HiringBrief({ triggerClassName = "briefTrigger", biasHref = "#bias-checker" }) {
   const [open, setOpen] = useState(false);
   const dialog = useRef(null);
   const trigger = useRef(null);
@@ -81,7 +81,7 @@ export function HiringBrief({ triggerClassName = "briefTrigger" }) {
           </dl>
           <div className="briefProof">
             <span className="tinyLabel">Three places to start</span>
-            <a href="#works" onClick={() => setOpen(false)}>
+            <a href={biasHref} onClick={() => setOpen(false)}>
               <span>
                 <strong>Bias Checker</strong>Model → Flask API → Next.js
                 interface

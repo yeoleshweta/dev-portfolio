@@ -42,7 +42,7 @@ export function CleanHero() {
           </p>
 
           <div className="cinemaActions">
-            <HiringBrief triggerClassName="cinemaBtnPrimary" />
+            <HiringBrief triggerClassName="cinemaBtnPrimary" biasHref="#works" />
             <a
               className="cinemaBtnLink"
               href={profile.resume}
