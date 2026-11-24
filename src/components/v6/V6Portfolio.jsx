@@ -16,10 +16,11 @@ const CHAPTERS = [
   { id: "frontend", num: "03", label: "Frontend UI", accent: "#6fb6ff", side: "right", state: "03 · MODULAR 3D GRID CUBE", mapping: "Snaps into a crisp 3×3 structural grid → React & Figma UI" },
   { id: "backend", num: "04", label: "Backend APIs", accent: "#3ee09c", side: "left", state: "04 · FLOWING TORUS PIPELINE", mapping: "Unwinds into a continuous data loop → APIs & PostgreSQL" },
   { id: "ai", num: "05", label: "AI & ML", accent: "#a76bff", side: "right", state: "05 · DUAL-HEMISPHERE NEURAL BRAIN", mapping: "Folds into a firing neural network → Applied AI & Eval" },
-  { id: "works", num: "06", label: "Selected Builds", accent: "#e8b85a", side: "center", state: "06 · BRILLIANT-CUT DIAMOND", mapping: "Compressed, faceted & verified → QA, Usability & Shipped" },
-  { id: "craft", num: "07", label: "Craft & Toolkit", accent: "#e8b85a", side: "center", state: "CRAFT & TOOLKIT", mapping: "Every framework & method behind the shipped work" },
-  { id: "trajectory", num: "08", label: "Trajectory", accent: "#d992b4", side: "center", state: "THE FINISHED CUT", mapping: "Six years of craft + MS AI & ML (3.97 GPA)" },
-  { id: "contact", num: "09", label: "Next Build", accent: "#e8b85a", side: "center", state: "READY FOR WHAT'S NEXT", mapping: "Let's shape the next product from research to shipped AI" },
+  { id: "testing", num: "06", label: "Tested & Shipped", accent: "#e8b85a", side: "left", state: "06 · BRILLIANT-CUT DIAMOND", mapping: "Compressed, faceted & verified → QA, Usability & Shipped" },
+  { id: "works", num: "07", label: "Selected Builds", accent: "#e8b85a", side: "center", state: "SHIPPED BUILDS", mapping: "Inspect every shipped system & architecture" },
+  { id: "craft", num: "08", label: "Craft & Toolkit", accent: "#e8b85a", side: "center", state: "CRAFT & TOOLKIT", mapping: "Every framework & method behind the shipped work" },
+  { id: "trajectory", num: "09", label: "Trajectory", accent: "#d992b4", side: "center", state: "THE FINISHED CUT", mapping: "Six years of craft + MS AI & ML (3.97 GPA)" },
+  { id: "contact", num: "10", label: "Next Build", accent: "#e8b85a", side: "center", state: "READY FOR WHAT'S NEXT", mapping: "Let's shape the next product from research to shipped AI" },
 ];
 
 const shippedWorks = [
@@ -182,7 +183,7 @@ export function V6Portfolio() {
   const [hoveredToken, setHoveredToken] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  // Measure exact continuous chapterProgress (0.0 .. 9.0) directly from live DOM section centers
+  // Measure exact continuous chapterProgress (0.0 .. 10.0) directly from live DOM section centers
   useEffect(() => {
     const sectionIds = [
       "arrival",
@@ -190,6 +191,7 @@ export function V6Portfolio() {
       "frontend",
       "backend",
       "ai",
+      "testing",
       "works",
       "craft",
       "trajectory",
@@ -225,9 +227,9 @@ export function V6Portfolio() {
 
       progressRef.current = chP;
 
-      // Map 10 DOM sections (with offscreen at index 8) to CHAPTERS (0..8)
+      // Map 11 DOM sections (with offscreen at index 9) to CHAPTERS (0..9)
       const nearest = Math.round(chP);
-      const mappedChapter = nearest === 8 ? 7 : nearest >= 9 ? 8 : nearest;
+      const mappedChapter = nearest === 9 ? 8 : nearest >= 10 ? 9 : nearest;
       setChapterIdx((prev) => (prev === mappedChapter ? prev : mappedChapter));
     };
 
@@ -501,21 +503,59 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 06 — SELECTED BUILDS SPOTLIGHT + HORIZONTAL 6-PLATE SELECTOR */}
+        {/* CHAPTER 06 — TESTING, EVALUATION & SHIPPED (DEDICATED FULL-GROWN DIAMOND REVEAL) */}
+        <section id="testing" className="v6Chapter v6AlignRight">
+          <div className="v6Wrap">
+            <div className="v6ChapterCard">
+              <span className="v6Kicker">05 / TESTING, EVALUATION &amp; SHIPPED</span>
+              <h2 className="v6ChapterTitle">
+                Cut, tested, <em>crystallized.</em>
+              </h2>
+              <p className="v6Lead">
+                On the left, all 38,000 grains compress into a razor-sharp,
+                brilliant-cut champagne-gold diamond. Nothing ships unverified:
+                I validate every interface with moderated usability studies,
+                clinical inter-rater reliability (IRR) rubrics, and live A/B
+                experimentation.
+              </p>
+              <div className="v6SkillStrip">
+                <span>Usability Testing (n=6)</span>
+                <span>IRR Rubric Audits</span>
+                <span>A/B Experimentation</span>
+                <span>Calgary-Cambridge</span>
+                <span>NURSE · SHARE</span>
+                <span>Dockerized Release</span>
+              </div>
+              <div className="v6ProofBox">
+                <strong>Audited in clinic · Proven in production</strong>
+                <span>
+                  Validated GesturePro with six participants, audited clinical
+                  NLP at ABIM, and shipped across 250+ John Deere products.
+                </span>
+              </div>
+              <div className="v6CtaRow" style={{ marginTop: "22px" }}>
+                <a className="v6BtnPlain" href="#works">
+                  Inspect the shipped builds ↓
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CHAPTER 07 — SELECTED BUILDS SPOTLIGHT + HORIZONTAL 6-PLATE SELECTOR */}
         <section id="works" className="v6WideBand">
           <div className="v6Wrap">
             <div className="v6BandHead">
               <div>
-                <span className="v6Kicker">05 / TESTING, EVALUATION &amp; SHIPPED BUILDS</span>
+                <span className="v6Kicker">06 / SELECTED BUILDS</span>
                 <h2 className="v6ChapterTitle">
-                  Cut, tested, <em>crystallized.</em>
+                  Work carried <em>from question to code.</em>
                 </h2>
               </div>
               <div className="v6BandHeadRight">
                 <p className="v6Lead">
-                  All 38,000 grains compress into a brilliant-cut diamond behind
-                  the glass. Select any build along the horizontal strip to
-                  inspect its architecture.
+                  Select any plate along the horizontal strip below to inspect
+                  the live system, or open its full architecture pipeline.
                 </p>
                 <div className="v6RailControls">
                   <button
