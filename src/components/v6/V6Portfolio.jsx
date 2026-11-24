@@ -11,14 +11,14 @@ import { systems, archive } from "@/content/engineering";
 import "@/styles/gallery.css";
 
 const CHAPTERS = [
-  { id: "arrival", num: "01", label: "Intro", accent: "#e8b85a" },
-  { id: "research", num: "02", label: "UX Research", accent: "#e8a848" },
-  { id: "frontend", num: "03", label: "Frontend UI", accent: "#6fb6ff" },
-  { id: "backend", num: "04", label: "Backend APIs", accent: "#3ee09c" },
-  { id: "ai", num: "05", label: "AI & ML", accent: "#a76bff" },
-  { id: "works", num: "06", label: "Shipped", accent: "#e8b85a" },
-  { id: "trajectory", num: "07", label: "Trajectory", accent: "#d992b4" },
-  { id: "contact", num: "08", label: "Next Build", accent: "#e8b85a" },
+  { id: "arrival", num: "01", label: "Intro", accent: "#e8b85a", side: "right", state: "LATENT FORM", mapping: "Raw idea waiting to be shaped across 5 phases" },
+  { id: "research", num: "02", label: "UX Research", accent: "#e8a848", side: "left", state: "DISPERSED SIGNAL CLOUD", mapping: "4,200 raw observations + affinity threads → Discovery" },
+  { id: "frontend", num: "03", label: "Frontend UI", accent: "#6fb6ff", side: "right", state: "GEOMETRIC LATTICE", mapping: "Signals lock into crisp structure → React & Design Systems" },
+  { id: "backend", num: "04", label: "Backend APIs", accent: "#3ee09c", side: "left", state: "ORBITAL DATA RINGS", mapping: "Concentric service buses & packets → APIs & Persistence" },
+  { id: "ai", num: "05", label: "AI & ML", accent: "#a76bff", side: "right", state: "IGNITED NEURAL CORE", mapping: "Central intelligence radiating outward → Applied AI & Eval" },
+  { id: "works", num: "06", label: "Tested & Shipped", accent: "#e8b85a", side: "left", state: "CALIBRATED GOLD MONOLITH", mapping: "Sweep-verified & sealed → QA, Usability & Production" },
+  { id: "trajectory", num: "07", label: "Trajectory", accent: "#d992b4", side: "right", state: "THE BUILDER'S SEAL", mapping: "Six years of craft + MS AI & ML (3.97 GPA)" },
+  { id: "contact", num: "08", label: "Next Build", accent: "#e8b85a", side: "center", state: "READY FOR WHAT'S NEXT", mapping: "Let's shape the next product from research to shipped AI" },
 ];
 
 const shippedWorks = [
@@ -194,6 +194,16 @@ export function V6Portfolio() {
       <div className="v6FixedStage" aria-hidden="true">
         <SculpturalArtifactCanvas progressRef={progressRef} />
         <div className="v6StageAura" />
+
+        {/* Live Lifecycle Caption anchored directly beneath the 3D Sculpture */}
+        <div className="v6ArtifactCaption" data-side={activeChapter.side}>
+          <div className="v6ArtifactCaptionInner" key={activeChapter.id}>
+            <span className="v6ArtifactState">
+              <i /> {activeChapter.state}
+            </span>
+            <p>{activeChapter.mapping}</p>
+          </div>
+        </div>
       </div>
 
       {/* FIXED LEFT CHAPTER PROGRESS SPINE */}
@@ -261,19 +271,20 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 02 — UX RESEARCH (Artifact glides left, copy on right) */}
+        {/* CHAPTER 02 — UX RESEARCH (Sculpture dissolves into raw signal cloud + affinity threads) */}
         <section id="research" className="v6Chapter v6AlignRight">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
               <span className="v6Kicker">01 / UX RESEARCH &amp; DISCOVERY</span>
               <h2 className="v6ChapterTitle">
-                Before a line of code, <em>the human question.</em>
+                First, dissolve into <em>raw human signal.</em>
               </h2>
               <p className="v6Lead">
-                Six years leading mixed-methods research taught me that the best
-                engineering starts with field observation. I translate
-                contextual inquiry, clinical rubrics (Calgary-Cambridge, NURSE,
-                SHARE), and behavioral funnels into clear product architecture.
+                Watch the prism scatter into thousands of loose amber particles
+                linked by affinity threads. That’s how every build begins: field
+                observation, contextual inquiry, clinical rubrics
+                (Calgary-Cambridge, NURSE), and behavioral analytics before a
+                single component is drawn.
               </p>
               <div className="v6SkillStrip">
                 <span>Contextual Inquiry</span>
@@ -294,19 +305,19 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 03 — FRONTEND UI (Artifact glides right, copy on left) */}
+        {/* CHAPTER 03 — FRONTEND UI (Scattered signals lock into crisp geometric lattice) */}
         <section id="frontend" className="v6Chapter v6AlignLeft">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
               <span className="v6Kicker">02 / FRONTEND UI &amp; DESIGN SYSTEMS</span>
               <h2 className="v6ChapterTitle">
-                Wireframes crystallize into <em>calm interfaces.</em>
+                Scattered insight snaps into <em>crisp structure.</em>
               </h2>
               <p className="v6Lead">
-                Watch the dashed sketch harden into solid tokens. I build
-                atomic design systems in Figma and ship responsive React and
-                Next.js interfaces where complex data and human-in-the-loop
-                controls feel effortless.
+                On the right, loose research points lock into a razor-sharp
+                ice-cobalt wireframe and faceted surface. I turn ambiguous
+                findings into atomic Figma systems and responsive React &amp;
+                Next.js interfaces where people stay effortlessly in command.
               </p>
               <div className="v6SkillStrip">
                 <span>React</span>
@@ -329,19 +340,19 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 04 — BACKEND & APIS (Artifact explodes left, copy on right) */}
+        {/* CHAPTER 04 — BACKEND & APIS (Orbital emerald rings & traveling data beads) */}
         <section id="backend" className="v6Chapter v6AlignRight">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
               <span className="v6Kicker">03 / BACKEND, APIS &amp; PERSISTENCE</span>
               <h2 className="v6ChapterTitle">
-                Peel back the surface to <em>explicit services.</em>
+                Orbiting rings wire <em>the service engine.</em>
               </h2>
               <p className="v6Lead">
-                The UI lifts off its foundation to reveal clean service
-                boundaries — Node.js proxies, Flask and FastAPI inference
-                endpoints, PostgreSQL schemas, and containerized Docker Compose
-                stacks built for reliable deployment.
+                The surface opens into three counter-rotating emerald rings with
+                live data packets in orbit — representing explicit API
+                contracts, Node.js proxies, Flask &amp; FastAPI endpoints,
+                PostgreSQL schemas, and containerized Docker Compose stacks.
               </p>
               <div className="v6SkillStrip">
                 <span>Python</span>
@@ -364,19 +375,19 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 05 — APPLIED AI & ML (Artifact ignites right, copy on left) */}
+        {/* CHAPTER 05 — APPLIED AI & ML (Violet neural core ignites from inside) */}
         <section id="ai" className="v6Chapter v6AlignLeft">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
               <span className="v6Kicker">04 / APPLIED AI &amp; EXPLAINABILITY</span>
               <h2 className="v6ChapterTitle">
-                Models people can <em>question and audit.</em>
+                The neural core ignites <em>from within.</em>
               </h2>
               <p className="v6Lead">
-                Pairing an MS in Computer Science (AI &amp; Machine Learning,
-                3.97 GPA) with clinical NLP work at ABIM, I fine-tune models and
-                attach human-legible explanation layers so no prediction is a
-                black box.
+                Look inside the cage on the right: a pulsing violet core sends
+                synaptic filaments outward to illuminate every facet. Pairing an
+                MS in AI &amp; Machine Learning (3.97 GPA) with clinical NLP at
+                ABIM, I attach human-auditable reasoning to every prediction.
               </p>
               <div className="v6SkillStrip">
                 <span>RoBERTa + LoRA</span>
@@ -399,17 +410,19 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 06 — TESTED & SHIPPED WORKS (Artifact seals left, interactive index on right) */}
+        {/* CHAPTER 06 — TESTED & SHIPPED (Calibration sweep seals prism into brushed gold) */}
         <section id="works" className="v6Chapter v6AlignRight">
           <div className="v6Wrap">
             <div className="v6ChapterCard v6CardWide">
-              <span className="v6Kicker">05 / TESTED, VERIFIED &amp; SHIPPED</span>
+              <span className="v6Kicker">05 / TESTING, EVALUATION &amp; SHIPPED</span>
               <h2 className="v6ChapterTitle">
-                Sealed into <em>six real builds.</em>
+                Calibrated, verified, <em>cast in gold.</em>
               </h2>
               <p className="v6Lead">
-                Every layer collapses back into a tested, shipped artifact.
-                Select any project below to inspect its full architecture sheet.
+                A golden verification ring sweeps the sculpture from top to
+                bottom, sealing every facet into a finished artifact — usability
+                tested (n=6), rubric-audited (IRR), A/B validated, and shipped.
+                Select any build below to inspect its full architecture.
               </p>
 
               <div className="v6WorksList">
