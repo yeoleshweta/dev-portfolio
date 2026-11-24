@@ -11,13 +11,13 @@ import { systems, archive } from "@/content/engineering";
 import "@/styles/gallery.css";
 
 const CHAPTERS = [
-  { id: "arrival", num: "01", label: "Intro", accent: "#e8b85a", side: "right", state: "LATENT FORM", mapping: "Raw idea waiting to be shaped across 5 phases" },
-  { id: "research", num: "02", label: "UX Research", accent: "#e8a848", side: "left", state: "DISPERSED SIGNAL CLOUD", mapping: "4,200 raw observations + affinity threads → Discovery" },
-  { id: "frontend", num: "03", label: "Frontend UI", accent: "#6fb6ff", side: "right", state: "GEOMETRIC LATTICE", mapping: "Signals lock into crisp structure → React & Design Systems" },
-  { id: "backend", num: "04", label: "Backend APIs", accent: "#3ee09c", side: "left", state: "ORBITAL DATA RINGS", mapping: "Concentric service buses & packets → APIs & Persistence" },
-  { id: "ai", num: "05", label: "AI & ML", accent: "#a76bff", side: "right", state: "IGNITED NEURAL CORE", mapping: "Central intelligence radiating outward → Applied AI & Eval" },
-  { id: "works", num: "06", label: "Tested & Shipped", accent: "#e8b85a", side: "left", state: "CALIBRATED GOLD MONOLITH", mapping: "Sweep-verified & sealed → QA, Usability & Production" },
-  { id: "trajectory", num: "07", label: "Trajectory", accent: "#d992b4", side: "right", state: "THE BUILDER'S SEAL", mapping: "Six years of craft + MS AI & ML (3.97 GPA)" },
+  { id: "arrival", num: "01", label: "Intro", accent: "#e8b85a", side: "right", state: "01 · LATENT SEED SPHERE", mapping: "One raw idea — scroll to watch it morph through 5 builds" },
+  { id: "research", num: "02", label: "UX Research", accent: "#e8a848", side: "left", state: "02 · SIX AFFINITY CLUSTERS", mapping: "Splits into 6 discovery clusters & bridges → UX Research" },
+  { id: "frontend", num: "03", label: "Frontend UI", accent: "#6fb6ff", side: "right", state: "03 · MODULAR 3D GRID CUBE", mapping: "Snaps into a crisp 3×3 structural grid → React & Figma UI" },
+  { id: "backend", num: "04", label: "Backend APIs", accent: "#3ee09c", side: "left", state: "04 · FLOWING TORUS PIPELINE", mapping: "Unwinds into a continuous data loop → APIs & PostgreSQL" },
+  { id: "ai", num: "05", label: "AI & ML", accent: "#a76bff", side: "right", state: "05 · DUAL-HEMISPHERE NEURAL BRAIN", mapping: "Folds into a firing neural network → Applied AI & Eval" },
+  { id: "works", num: "06", label: "Tested & Shipped", accent: "#e8b85a", side: "left", state: "06 · BRILLIANT-CUT DIAMOND", mapping: "Compressed, faceted & verified → QA, Usability & Shipped" },
+  { id: "trajectory", num: "07", label: "Trajectory", accent: "#d992b4", side: "right", state: "THE FINISHED CUT", mapping: "Six years of craft + MS AI & ML (3.97 GPA)" },
   { id: "contact", num: "08", label: "Next Build", accent: "#e8b85a", side: "center", state: "READY FOR WHAT'S NEXT", mapping: "Let's shape the next product from research to shipped AI" },
 ];
 
@@ -280,11 +280,10 @@ export function V6Portfolio() {
                 First, dissolve into <em>raw human signal.</em>
               </h2>
               <p className="v6Lead">
-                Watch the prism scatter into thousands of loose amber particles
-                linked by affinity threads. That’s how every build begins: field
-                observation, contextual inquiry, clinical rubrics
-                (Calgary-Cambridge, NURSE), and behavioral analytics before a
-                single component is drawn.
+                Watch the seed split apart into six orbiting affinity clusters
+                bridged by amber threads. Every build begins here: contextual
+                inquiry, clinical rubrics (Calgary-Cambridge, NURSE), and
+                behavioral analytics before a single component is drawn.
               </p>
               <div className="v6SkillStrip">
                 <span>Contextual Inquiry</span>
@@ -305,19 +304,19 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 03 — FRONTEND UI (Scattered signals lock into crisp geometric lattice) */}
+        {/* CHAPTER 03 — FRONTEND UI (Clusters snap into crisp 3D modular grid cube) */}
         <section id="frontend" className="v6Chapter v6AlignLeft">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
               <span className="v6Kicker">02 / FRONTEND UI &amp; DESIGN SYSTEMS</span>
               <h2 className="v6ChapterTitle">
-                Scattered insight snaps into <em>crisp structure.</em>
+                Clusters snap into <em>a modular grid.</em>
               </h2>
               <p className="v6Lead">
-                On the right, loose research points lock into a razor-sharp
-                ice-cobalt wireframe and faceted surface. I turn ambiguous
-                findings into atomic Figma systems and responsive React &amp;
-                Next.js interfaces where people stay effortlessly in command.
+                On the right, those six loose clouds lock into a razor-sharp
+                ice-cobalt 3D grid cube. I turn ambiguous research into atomic
+                Figma design systems and responsive React &amp; Next.js
+                interfaces where people stay effortlessly in command.
               </p>
               <div className="v6SkillStrip">
                 <span>React</span>
@@ -340,19 +339,19 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 04 — BACKEND & APIS (Orbital emerald rings & traveling data beads) */}
+        {/* CHAPTER 04 — BACKEND & APIS (Cube unwinds into a flowing torus-knot pipeline) */}
         <section id="backend" className="v6Chapter v6AlignRight">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
               <span className="v6Kicker">03 / BACKEND, APIS &amp; PERSISTENCE</span>
               <h2 className="v6ChapterTitle">
-                Orbiting rings wire <em>the service engine.</em>
+                The grid unwinds into <em>a live pipeline.</em>
               </h2>
               <p className="v6Lead">
-                The surface opens into three counter-rotating emerald rings with
-                live data packets in orbit — representing explicit API
-                contracts, Node.js proxies, Flask &amp; FastAPI endpoints,
-                PostgreSQL schemas, and containerized Docker Compose stacks.
+                The rigid cube twists into a continuous emerald torus-knot data
+                loop — representing explicit API contracts, Node.js proxies,
+                Flask &amp; FastAPI endpoints, PostgreSQL schemas, and
+                containerized Docker Compose stacks.
               </p>
               <div className="v6SkillStrip">
                 <span>Python</span>
@@ -375,19 +374,19 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 05 — APPLIED AI & ML (Violet neural core ignites from inside) */}
+        {/* CHAPTER 05 — APPLIED AI & ML (Pipeline folds into dual-hemisphere neural brain) */}
         <section id="ai" className="v6Chapter v6AlignLeft">
           <div className="v6Wrap">
             <div className="v6ChapterCard">
               <span className="v6Kicker">04 / APPLIED AI &amp; EXPLAINABILITY</span>
               <h2 className="v6ChapterTitle">
-                The neural core ignites <em>from within.</em>
+                The flow folds into <em>a neural brain.</em>
               </h2>
               <p className="v6Lead">
-                Look inside the cage on the right: a pulsing violet core sends
-                synaptic filaments outward to illuminate every facet. Pairing an
-                MS in AI &amp; Machine Learning (3.97 GPA) with clinical NLP at
-                ABIM, I attach human-auditable reasoning to every prediction.
+                On the right, the stream sculpts itself into a firing
+                dual-hemisphere violet neural cortex. Pairing an MS in AI &amp;
+                Machine Learning (3.97 GPA) with clinical NLP at ABIM, I attach
+                human-auditable reasoning to every prediction.
               </p>
               <div className="v6SkillStrip">
                 <span>RoBERTa + LoRA</span>
@@ -410,19 +409,19 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 06 — TESTED & SHIPPED (Calibration sweep seals prism into brushed gold) */}
+        {/* CHAPTER 06 — TESTED & SHIPPED (Brain crystallizes into brilliant-cut gold diamond) */}
         <section id="works" className="v6Chapter v6AlignRight">
           <div className="v6Wrap">
             <div className="v6ChapterCard v6CardWide">
               <span className="v6Kicker">05 / TESTING, EVALUATION &amp; SHIPPED</span>
               <h2 className="v6ChapterTitle">
-                Calibrated, verified, <em>cast in gold.</em>
+                Cut, tested, <em>crystallized.</em>
               </h2>
               <p className="v6Lead">
-                A golden verification ring sweeps the sculpture from top to
-                bottom, sealing every facet into a finished artifact — usability
-                tested (n=6), rubric-audited (IRR), A/B validated, and shipped.
-                Select any build below to inspect its full architecture.
+                Finally, all 24,000 grains compress into a razor-sharp,
+                brilliant-cut champagne-gold diamond — usability tested (n=6),
+                rubric-audited (IRR), A/B validated, and shipped. Select any
+                build below to inspect its full architecture.
               </p>
 
               <div className="v6WorksList">

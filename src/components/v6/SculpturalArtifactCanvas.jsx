@@ -1,54 +1,76 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-// Continuous lifecycle keyframes across page scroll 0..1:
-// [p, xWorld, yWorld, scale, wireOp, solidOp, cloudSpread, researchLines, ringExplode, coreGlow, scanSweep, goldFinish, stageOp]
-const KEYFRAMES = [
-  [0.00,  1.65,  0.10, 0.98, 0.42, 0.36, 0.14, 0.08, 0.06, 0.22, 0.00, 0.18, 1.00], // 01 Intro — Raw latent prism (right)
-  [0.14, -1.65,  0.12, 1.02, 0.06, 0.03, 1.00, 1.00, 0.04, 0.14, 0.00, 0.00, 1.00], // 02 UX Research — Raw signal cloud + affinity threads (left)
-  [0.29,  1.65,  0.10, 1.04, 0.98, 0.46, 0.04, 0.00, 0.12, 0.22, 0.00, 0.12, 1.00], // 03 Frontend UI — Crisp geometric lattice + frosted surface (right)
-  [0.44, -1.60,  0.10, 0.96, 0.58, 0.22, 0.12, 0.00, 1.00, 0.36, 0.00, 0.08, 1.00], // 04 Backend APIs — Exploded concentric data rings + beads (left)
-  [0.58,  1.60,  0.10, 1.04, 0.68, 0.32, 0.28, 0.45, 0.68, 1.00, 0.00, 0.14, 1.00], // 05 AI & ML — Ignited neural core + synaptic rays (right)
-  [0.72, -1.65,  0.10, 1.06, 0.28, 0.96, 0.00, 0.00, 0.04, 0.42, 1.00, 1.00, 1.00], // 06 Testing & Shipped — Calibration sweep + brushed gold monolith (left)
-  [0.85,  1.75,  0.08, 0.84, 0.24, 0.88, 0.04, 0.00, 0.12, 0.32, 0.20, 0.92, 0.78], // 07 Trajectory — Companion finished seal (right)
-  [0.93,  0.00,  0.10, 0.86, 0.18, 0.46, 0.08, 0.00, 0.08, 0.18, 0.00, 0.72, 0.18], // Off-screen gallery breathing room
-  [1.00,  0.00,  0.04, 1.12, 0.32, 0.92, 0.03, 0.00, 0.10, 0.42, 0.35, 1.00, 0.52], // 08 Colophon — Centered finished artifact
+// Scroll progress stops for the 6 distinct 3D morphed silhouettes:
+// 0: Seed Sphere (Intro)
+// 1: 6 Scattered Affinity Clusters (UX Research)
+// 2: Modular 3D Architectural Grid Cube (Frontend UI)
+// 3: Interlocking Flowing Data Pipeline / Torus Knot (Backend APIs)
+// 4: Dual-Hemisphere Firing Neural Brain (Applied AI & ML)
+// 5: Faceted Brilliant-Cut Diamond (Testing & Shipped)
+const SHAPE_STOPS = [0.0, 0.14, 0.29, 0.44, 0.58, 0.72];
+
+// Screen X position & scale & opacity across 0..1 scroll
+// [p, xWorld, yWorld, scale, opacity]
+const POS_KEYS = [
+  [0.00,  1.65,  0.08, 1.00, 1.00], // 01 Intro (right)
+  [0.14, -1.65,  0.08, 1.04, 1.00], // 02 UX Research (left)
+  [0.29,  1.65,  0.08, 1.02, 1.00], // 03 Frontend UI (right)
+  [0.44, -1.60,  0.08, 1.00, 1.00], // 04 Backend APIs (left)
+  [0.58,  1.60,  0.08, 1.04, 1.00], // 05 AI & ML (right)
+  [0.72, -1.65,  0.08, 1.06, 1.00], // 06 Testing & Shipped (left)
+  [0.85,  1.72,  0.08, 0.86, 0.82], // 07 Trajectory (right)
+  [0.93,  0.00,  0.10, 0.86, 0.20], // Off-screen gallery breathing room
+  [1.00,  0.00,  0.02, 1.12, 0.62], // 08 Colophon (centered diamond)
 ];
 
-const PHASE_COLORS = [
-  [0.91, 0.72, 0.35], // 01 Intro — Warm Gold
-  [0.91, 0.66, 0.28], // 02 UX Research — Blueprint Amber
-  [0.44, 0.71, 1.00], // 03 Frontend UI — Ice Cobalt
-  [0.24, 0.88, 0.61], // 04 Backend APIs — Terminal Mint
-  [0.65, 0.42, 1.00], // 05 AI & ML — Neural Violet
-  [0.93, 0.74, 0.38], // 06 Testing & Shipped — Champagne Gold
-  [0.85, 0.57, 0.71], // 07 Trajectory — Dusk Rose
-  [0.93, 0.74, 0.38], // 08 Colophon — Champagne Gold
+const PHASE_PALETTE = [
+  [0.93, 0.75, 0.40], // 0: Warm Champagne Gold (Intro)
+  [0.95, 0.65, 0.24], // 1: Discovery Amber (UX Research)
+  [0.42, 0.74, 1.00], // 2: Ice Cobalt (Frontend UI)
+  [0.20, 0.90, 0.62], // 3: Terminal Mint (Backend APIs)
+  [0.68, 0.42, 1.00], // 4: Neural Violet (AI & ML)
+  [0.96, 0.79, 0.44], // 5: Brilliant Champagne Gold (Tested & Shipped)
 ];
 
-function sampleKF(p) {
+function samplePos(p) {
   const c = Math.max(0, Math.min(1, p));
-  for (let i = 0; i < KEYFRAMES.length - 1; i++) {
-    const a = KEYFRAMES[i];
-    const b = KEYFRAMES[i + 1];
+  for (let i = 0; i < POS_KEYS.length - 1; i++) {
+    const a = POS_KEYS[i];
+    const b = POS_KEYS[i + 1];
     if (c >= a[0] && c <= b[0]) {
       const raw = (c - a[0]) / Math.max(0.0001, b[0] - a[0]);
       const t = raw * raw * (3 - 2 * raw);
-      const out = [];
-      for (let k = 1; k < a.length; k++) out.push(a[k] + (b[k] - a[k]) * t);
-      return out;
+      return [
+        a[1] + (b[1] - a[1]) * t,
+        a[2] + (b[2] - a[2]) * t,
+        a[3] + (b[3] - a[3]) * t,
+        a[4] + (b[4] - a[4]) * t,
+      ];
     }
   }
-  return KEYFRAMES[KEYFRAMES.length - 1].slice(1);
+  return POS_KEYS[POS_KEYS.length - 1].slice(1);
+}
+
+// Compute continuous morph index 0..5 from scroll progress 0..1
+function scrollToMorph(p) {
+  if (p <= SHAPE_STOPS[0]) return 0;
+  if (p >= SHAPE_STOPS[SHAPE_STOPS.length - 1]) return SHAPE_STOPS.length - 1;
+  for (let i = 0; i < SHAPE_STOPS.length - 1; i++) {
+    if (p >= SHAPE_STOPS[i] && p <= SHAPE_STOPS[i + 1]) {
+      const raw = (p - SHAPE_STOPS[i]) / (SHAPE_STOPS[i + 1] - SHAPE_STOPS[i]);
+      // Hold slightly on each shape then glide crisply to the next
+      const eased = raw * raw * (3 - 2 * raw);
+      return i + eased;
+    }
+  }
+  return 5;
 }
 
 /**
- * SculpturalArtifactCanvas — One persistent, iconic 3D WebGL sculpture visualizing
- * the entire product lifecycle:
- *   01 Latent Prism -> 02 UX Research (Signal Cloud + Affinity Threads) ->
- *   03 Frontend UI (Crisp Geometric Lattice) -> 04 Backend APIs (Exploded Data Rings) ->
- *   05 AI & ML (Ignited Neural Core + Synaptic Filaments) ->
- *   06 Testing & Shipped (Calibration Sweep Ring + Brushed Gold Monolith).
+ * SculpturalArtifactCanvas — True GPU Vertex-Morphing 3D Particle Sculpture.
+ * 24,000 shaded micro-grains physically swarm and re-sculpt into 6 completely
+ * distinct 3D silhouettes as the user scrolls through every phase of Shweta's lifecycle.
  */
 export function SculpturalArtifactCanvas({ progressRef }) {
   const hostRef = useRef(null);
@@ -71,10 +93,10 @@ export function SculpturalArtifactCanvas({ progressRef }) {
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-      camera.position.set(0, 0, 6.6);
+      camera.position.set(0, 0, 6.4);
 
       const renderer = new THREE.WebGLRenderer({
-        antialias: true,
+        antialias: false,
         alpha: false,
         powerPreference: "high-performance",
       });
@@ -82,266 +104,335 @@ export function SculpturalArtifactCanvas({ progressRef }) {
       renderer.setPixelRatio(dpr);
       renderer.setSize(width, height);
       renderer.setClearColor(0x0b0c10, 1);
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.18;
       container.appendChild(renderer.domElement);
 
-      const disposables = [];
+      const COUNT = isMobile ? 12000 : 24000;
 
-      // Studio lighting rig
-      const ambient = new THREE.AmbientLight(0xd8dce8, 0.45);
-      scene.add(ambient);
+      // Allocate 6 distinct 3D shape buffers
+      const s0 = new Float32Array(COUNT * 3); // 0: Seed Sphere
+      const s1 = new Float32Array(COUNT * 3); // 1: 6 Affinity Clusters (UX Research)
+      const s2 = new Float32Array(COUNT * 3); // 2: Modular 3D Grid Cube (Frontend UI)
+      const s3 = new Float32Array(COUNT * 3); // 3: Flowing Data Torus Knot (Backend APIs)
+      const s4 = new Float32Array(COUNT * 3); // 4: Dual-Hemisphere Neural Brain (AI & ML)
+      const s5 = new Float32Array(COUNT * 3); // 5: Faceted Brilliant-Cut Diamond (Shipped)
+      const seeds = new Float32Array(COUNT * 3); // [phase, size, tone]
 
-      const keyLight = new THREE.DirectionalLight(0xfff4df, 2.3);
-      keyLight.position.set(-4, 5, 6);
-      scene.add(keyLight);
+      // 6 cluster centers for UX Research (distributed in 3D space)
+      const clusters = [
+        [-1.15,  0.85,  0.35],
+        [ 1.10,  0.75, -0.40],
+        [-0.95, -0.82, -0.35],
+        [ 1.05, -0.78,  0.42],
+        [ 0.05,  1.22, -0.15],
+        [-0.08, -1.18,  0.22],
+      ];
 
-      const accentLight = new THREE.PointLight(0xe8b85a, 16, 18, 1.5);
-      accentLight.position.set(3.2, 2.2, 3.6);
-      scene.add(accentLight);
+      // 12 edges of a 3D architectural cube for crisp wireframe emphasis
+      const cubeEdges = [
+        [-1,-1,-1,  1,-1,-1], [ 1,-1,-1,  1, 1,-1], [ 1, 1,-1, -1, 1,-1], [-1, 1,-1, -1,-1,-1],
+        [-1,-1, 1,  1,-1, 1], [ 1,-1, 1,  1, 1, 1], [ 1, 1, 1, -1, 1, 1], [-1, 1, 1, -1,-1, 1],
+        [-1,-1,-1, -1,-1, 1], [ 1,-1,-1,  1,-1, 1], [ 1, 1,-1,  1, 1, 1], [-1, 1,-1, -1, 1, 1],
+      ];
 
-      const rimLight = new THREE.PointLight(0x6fb6ff, 10, 16, 1.6);
-      rimLight.position.set(-3.5, -2.6, -2.5);
-      scene.add(rimLight);
-
-      // Ambient Background Dust
-      const DUST_COUNT = isMobile ? 1400 : 3000;
-      const dustPos = new Float32Array(DUST_COUNT * 3);
-      for (let i = 0; i < DUST_COUNT; i++) {
-        dustPos[i * 3] = (Math.random() - 0.5) * 16;
-        dustPos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-        dustPos[i * 3 + 2] = (Math.random() - 0.5) * 8 - 2.0;
-      }
-      const dustGeo = new THREE.BufferGeometry();
-      dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
-      const dustMat = new THREE.PointsMaterial({
-        color: 0xe8b85a,
-        size: 0.026,
-        transparent: true,
-        opacity: 0.32,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-      });
-      const dustField = new THREE.Points(dustGeo, dustMat);
-      scene.add(dustField);
-      disposables.push(dustGeo, dustMat);
-
-      // ================================================================
-      // THE ONE PERSISTENT LIFECYCLE SCULPTURE
-      // ================================================================
-      const artifact = new THREE.Group();
-      scene.add(artifact);
-
-      // 1. Primary Faceted Polyhedron Shell (obsidian -> frosted UI -> brushed gold)
-      const shellGeo = new THREE.IcosahedronGeometry(1.16, 1);
-      const shellMat = new THREE.MeshStandardMaterial({
-        color: 0x1a1c26,
-        emissive: 0x221a0f,
-        emissiveIntensity: 0.25,
-        metalness: 0.78,
-        roughness: 0.26,
-        flatShading: true,
-        transparent: true,
-        opacity: 0.45,
-      });
-      const shellMesh = new THREE.Mesh(shellGeo, shellMat);
-      artifact.add(shellMesh);
-      disposables.push(shellGeo, shellMat);
-
-      // 2. Crisp Architectural Wireframe Cage (Phase 03 Frontend UI)
-      const wireGeo = new THREE.IcosahedronGeometry(1.23, 1);
-      const wireEdges = new THREE.EdgesGeometry(wireGeo);
-      const wireMat = new THREE.LineBasicMaterial({
-        color: 0x6fb6ff,
-        transparent: true,
-        opacity: 0.45,
-      });
-      const wireMesh = new THREE.LineSegments(wireEdges, wireMat);
-      artifact.add(wireMesh);
-      disposables.push(wireGeo, wireEdges, wireMat);
-
-      // 3. Discovery Signal Cloud (Phase 02 UX Research)
-      const CLOUD_COUNT = isMobile ? 1800 : 4200;
-      const cloudBase = new Float32Array(CLOUD_COUNT * 3);
-      const cloudRand = new Float32Array(CLOUD_COUNT * 3);
-      for (let i = 0; i < CLOUD_COUNT; i++) {
+      for (let i = 0; i < COUNT; i++) {
+        const i3 = i * 3;
         const u = Math.random();
         const v = Math.random();
         const theta = u * Math.PI * 2;
         const phi = Math.acos(2 * v - 1);
-        const r = 1.02 + Math.random() * 0.28;
-        cloudBase[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-        cloudBase[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-        cloudBase[i * 3 + 2] = r * Math.cos(phi);
 
-        const sr = 1.55 + Math.random() * 1.45;
-        cloudRand[i * 3] = sr * Math.sin(phi) * Math.cos(theta + (Math.random() - 0.5) * 0.8);
-        cloudRand[i * 3 + 1] = sr * Math.sin(phi) * Math.sin(theta + (Math.random() - 0.5) * 0.8);
-        cloudRand[i * 3 + 2] = sr * Math.cos(phi + (Math.random() - 0.5) * 0.6);
+        seeds[i3] = Math.random() * 6.28318;
+        seeds[i3 + 1] = 0.75 + Math.random() * 1.45;
+        seeds[i3 + 2] = Math.random();
+
+        // -------------------------------------------------------------
+        // SHAPE 0: LATENT SEED SPHERE + EQUATORIAL HALO
+        // -------------------------------------------------------------
+        if (i < COUNT * 0.82) {
+          const r = 1.12 + (Math.random() - 0.5) * 0.14;
+          s0[i3] = r * Math.sin(phi) * Math.cos(theta);
+          s0[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+          s0[i3 + 2] = r * Math.cos(phi);
+        } else {
+          const ang = Math.random() * Math.PI * 2;
+          const rr = 1.62 + (Math.random() - 0.5) * 0.08;
+          s0[i3] = Math.cos(ang) * rr;
+          s0[i3 + 1] = (Math.random() - 0.5) * 0.06;
+          s0[i3 + 2] = Math.sin(ang) * rr;
+        }
+
+        // -------------------------------------------------------------
+        // SHAPE 1: UX RESEARCH — 6 SCATTERED AFFINITY CLUSTERS + BRIDGES
+        // -------------------------------------------------------------
+        if (i < COUNT * 0.85) {
+          const c = clusters[i % clusters.length];
+          const cr = Math.pow(Math.random(), 0.6) * 0.44;
+          s1[i3] = c[0] + cr * Math.sin(phi) * Math.cos(theta);
+          s1[i3 + 1] = c[1] + cr * Math.sin(phi) * Math.sin(theta);
+          s1[i3 + 2] = c[2] + cr * Math.cos(phi);
+        } else {
+          // Fine affinity thread bridges connecting pairs of clusters
+          const cA = clusters[i % clusters.length];
+          const cB = clusters[(i + 1 + (i % 2)) % clusters.length];
+          const t = Math.random();
+          s1[i3] = cA[0] + (cB[0] - cA[0]) * t + (Math.random() - 0.5) * 0.05;
+          s1[i3 + 1] = cA[1] + (cB[1] - cA[1]) * t + (Math.random() - 0.5) * 0.05;
+          s1[i3 + 2] = cA[2] + (cB[2] - cA[2]) * t + (Math.random() - 0.5) * 0.05;
+        }
+
+        // -------------------------------------------------------------
+        // SHAPE 2: FRONTEND UI — CRISP MODULAR 3D ARCHITECTURAL GRID CUBE
+        // -------------------------------------------------------------
+        const half = 1.08;
+        if (i < COUNT * 0.36) {
+          // Razor-sharp outer cube edges
+          const e = cubeEdges[i % cubeEdges.length];
+          const t = Math.random();
+          s2[i3] = (e[0] + (e[3] - e[0]) * t) * half + (Math.random() - 0.5) * 0.025;
+          s2[i3 + 1] = (e[1] + (e[4] - e[1]) * t) * half + (Math.random() - 0.5) * 0.025;
+          s2[i3 + 2] = (e[2] + (e[5] - e[2]) * t) * half + (Math.random() - 0.5) * 0.025;
+        } else {
+          // Structured 3x3 modular grid lines on all 6 faces of the cube
+          const face = i % 6;
+          const gridStep = (Math.floor(Math.random() * 5) - 2) * 0.5; // -1, -0.5, 0, 0.5, 1
+          const span = (Math.random() * 2 - 1);
+          const flip = Math.random() > 0.5;
+          const a = flip ? gridStep : span;
+          const b = flip ? span : gridStep;
+          if (face === 0) { s2[i3] = half; s2[i3+1] = a * half; s2[i3+2] = b * half; }
+          else if (face === 1) { s2[i3] = -half; s2[i3+1] = a * half; s2[i3+2] = b * half; }
+          else if (face === 2) { s2[i3] = a * half; s2[i3+1] = half; s2[i3+2] = b * half; }
+          else if (face === 3) { s2[i3] = a * half; s2[i3+1] = -half; s2[i3+2] = b * half; }
+          else if (face === 4) { s2[i3] = a * half; s2[i3+1] = b * half; s2[i3+2] = half; }
+          else { s2[i3] = a * half; s2[i3+1] = b * half; s2[i3+2] = -half; }
+        }
+
+        // -------------------------------------------------------------
+        // SHAPE 3: BACKEND APIS — INTERLOCKING TORUS KNOT DATA PIPELINE (p=2, q=3)
+        // -------------------------------------------------------------
+        const kt = (i / COUNT) * Math.PI * 2 * 3.0 + Math.random() * 0.1;
+        const pK = 2;
+        const qK = 3;
+        const rK = 0.92 + 0.36 * Math.cos(qK * kt);
+        const cx = rK * Math.cos(pK * kt);
+        const cy = rK * Math.sin(pK * kt);
+        const cz = 0.42 * Math.sin(qK * kt);
+        const tubeR = 0.18 + Math.random() * 0.12;
+        const tubeA = Math.random() * Math.PI * 2;
+        s3[i3] = cx + Math.cos(tubeA) * tubeR;
+        s3[i3 + 1] = cy + Math.sin(tubeA) * tubeR;
+        s3[i3 + 2] = cz + Math.sin(tubeA + kt) * tubeR;
+
+        // -------------------------------------------------------------
+        // SHAPE 4: AI & ML — DUAL-HEMISPHERE NEURAL BRAIN WITH FOLDED GYRI
+        // -------------------------------------------------------------
+        const hemi = i % 2 === 0 ? 1 : -1;
+        // Slightly elongated brain lobe ellipsoid with sinusoidal cortical folds
+        const bTheta = Math.random() * Math.PI * 2;
+        const bPhi = Math.acos(2 * Math.random() - 1);
+        let bx = Math.sin(bPhi) * Math.cos(bTheta);
+        let by = Math.sin(bPhi) * Math.sin(bTheta);
+        let bz = Math.cos(bPhi);
+        // Flatten inner medial fissure between left & right hemispheres
+        bx = Math.abs(bx) * 0.74 * hemi + hemi * 0.12;
+        by *= 0.95;
+        bz *= 1.24;
+        // Organic cortical folds (gyri ridges)
+        const fold =
+          1.0 +
+          0.11 * Math.sin(bx * 10.0 + bz * 8.0) * Math.cos(by * 9.0) +
+          0.07 * Math.cos(bz * 13.0 - by * 7.0);
+        const br = (0.95 + Math.pow(Math.random(), 2.0) * 0.25) * fold;
+        s4[i3] = bx * br * 1.15;
+        s4[i3 + 1] = by * br * 1.05;
+        s4[i3 + 2] = bz * br * 1.1;
+
+        // -------------------------------------------------------------
+        // SHAPE 5: TESTED & SHIPPED — FACETED BRILLIANT-CUT DIAMOND GEM
+        // -------------------------------------------------------------
+        // Octahedral / brilliant-cut diamond (flat crown table, crisp girdle, pointed pavilion)
+        const dAng = Math.random() * Math.PI * 2;
+        // Quantize slightly to 8-fold facet symmetry for razor-sharp diamond facets
+        const facetAng = Math.round(dAng / (Math.PI / 4)) * (Math.PI / 4);
+        const blendAng = dAng + (facetAng - dAng) * 0.22;
+        const zone = Math.random();
+        let dy, dr;
+        if (zone < 0.16) {
+          // Flat crown table on top
+          dy = 0.72;
+          dr = Math.sqrt(Math.random()) * 0.74;
+        } else if (zone < 0.45) {
+          // Upper crown bevel (table -> girdle)
+          const f = Math.random();
+          dy = 0.72 - f * 0.48;
+          dr = 0.74 + f * 0.56;
+        } else {
+          // Lower pavilion cone (girdle -> culet point)
+          const f = Math.pow(Math.random(), 0.72);
+          dy = 0.24 - f * 1.62;
+          dr = 1.30 * (1.0 - f);
+        }
+        // Crisp 8-sided polygonal cross-section
+        const polyCos = Math.cos(((blendAng % (Math.PI / 4)) - Math.PI / 8));
+        const polyR = dr / Math.max(0.85, polyCos);
+        s5[i3] = Math.cos(blendAng) * polyR;
+        s5[i3 + 1] = dy + 0.12;
+        s5[i3 + 2] = Math.sin(blendAng) * polyR;
       }
-      const cloudGeo = new THREE.BufferGeometry();
-      cloudGeo.setAttribute("position", new THREE.BufferAttribute(cloudBase, 3));
-      cloudGeo.setAttribute("aScatter", new THREE.BufferAttribute(cloudRand, 3));
 
-      const cloudUniforms = {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.BufferAttribute(s0, 3));
+      geo.setAttribute("aPos1", new THREE.BufferAttribute(s1, 3));
+      geo.setAttribute("aPos2", new THREE.BufferAttribute(s2, 3));
+      geo.setAttribute("aPos3", new THREE.BufferAttribute(s3, 3));
+      geo.setAttribute("aPos4", new THREE.BufferAttribute(s4, 3));
+      geo.setAttribute("aPos5", new THREE.BufferAttribute(s5, 3));
+      geo.setAttribute("aSeed", new THREE.BufferAttribute(seeds, 3));
+
+      const uniforms = {
         uTime: { value: 0 },
-        uSpread: { value: 0.14 },
+        uMorph: { value: 0 }, // continuous 0..5
         uPixelRatio: { value: dpr },
-        uColor: { value: new THREE.Color(0xe8a848) },
-        uOpacity: { value: 0.85 },
+        uColorA: { value: new THREE.Color(0.93, 0.75, 0.40) },
+        uColorB: { value: new THREE.Color(0.95, 0.65, 0.24) },
+        uColorMix: { value: 0 },
+        uOpacity: { value: 1 },
       };
 
-      const cloudMat = new THREE.ShaderMaterial({
-        uniforms: cloudUniforms,
+      const vertexShader = /* glsl */ `
+        attribute vec3 aPos1;
+        attribute vec3 aPos2;
+        attribute vec3 aPos3;
+        attribute vec3 aPos4;
+        attribute vec3 aPos5;
+        attribute vec3 aSeed;
+
+        uniform float uTime;
+        uniform float uMorph;
+        uniform float uPixelRatio;
+
+        varying float vShade;
+        varying float vSpark;
+        varying float vTone;
+
+        void main() {
+          // Select the two adjacent 3D shapes based on continuous uMorph (0..5)
+          float seg = floor(clamp(uMorph, 0.0, 4.9999));
+          float frac = clamp(uMorph - seg, 0.0, 1.0);
+          float t = frac * frac * (3.0 - 2.0 * frac);
+
+          vec3 pA = position;
+          vec3 pB = aPos1;
+          if (seg < 0.5) {
+            pA = position; pB = aPos1;
+          } else if (seg < 1.5) {
+            pA = aPos1; pB = aPos2;
+          } else if (seg < 2.5) {
+            pA = aPos2; pB = aPos3;
+          } else if (seg < 3.5) {
+            pA = aPos3; pB = aPos4;
+          } else {
+            pA = aPos4; pB = aPos5;
+          }
+
+          vec3 pos = mix(pA, pB, t);
+
+          // Dramatic 3D vortex swirl mid-transition so every morph feels alive!
+          float swirlAmt = sin(frac * 3.14159265);
+          float angle = swirlAmt * (1.25 + aSeed.z * 0.9);
+          float ca = cos(angle);
+          float sa = sin(angle);
+          pos.xz = mat2(ca, -sa, sa, ca) * pos.xz;
+          pos += normalize(pos + vec3(0.001)) * swirlAmt * (0.28 + 0.35 * sin(aSeed.x + uTime * 2.0));
+
+          // Subtle living micro-breathing & data/synapse pulse
+          float pulse = sin(uTime * 2.4 + aSeed.x * 2.0 + pos.y * 3.0) * 0.5 + 0.5;
+          pos += vec3(
+            sin(uTime * 0.9 + aSeed.x) * 0.02,
+            cos(uTime * 0.8 + aSeed.x) * 0.02,
+            sin(uTime * 0.7 + aSeed.x) * 0.02
+          );
+
+          // Upper-left studio directional shading for real 3D sculptural depth
+          vec3 n = normalize(pos + vec3(0.0001));
+          vec3 lightDir = normalize(vec3(-0.55, 0.72, 0.52));
+          vShade = clamp(dot(n, lightDir) * 0.5 + 0.55, 0.18, 1.0);
+          vSpark = pow(pulse, 4.0);
+          vTone = aSeed.z;
+
+          vec4 mv = modelViewMatrix * vec4(pos, 1.0);
+          gl_Position = projectionMatrix * mv;
+
+          float ptSize = (aSeed.y * 7.8 * uPixelRatio) / max(1.5, -mv.z);
+          gl_PointSize = clamp(ptSize + vSpark * 1.4, 1.15, 5.2);
+        }
+      `;
+
+      const fragmentShader = /* glsl */ `
+        uniform vec3 uColorA;
+        uniform vec3 uColorB;
+        uniform float uColorMix;
+        uniform float uOpacity;
+
+        varying float vShade;
+        varying float vSpark;
+        varying float vTone;
+
+        void main() {
+          vec2 uv = gl_PointCoord - 0.5;
+          float d = length(uv);
+          if (d > 0.5) discard;
+
+          float bead = smoothstep(0.5, 0.1, d);
+          vec3 base = mix(uColorA, uColorB, uColorMix);
+          vec3 ivory = vec3(0.98, 0.96, 0.92);
+          vec3 deep = base * 0.24;
+
+          vec3 col = mix(deep, base, vShade);
+          col = mix(col, ivory, clamp(vSpark * 0.45 + vTone * 0.16, 0.0, 0.65));
+
+          gl_FragColor = vec4(col, bead * (0.62 + 0.34 * vShade) * uOpacity);
+        }
+      `;
+
+      const mat = new THREE.ShaderMaterial({
+        vertexShader,
+        fragmentShader,
+        uniforms,
         transparent: true,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
-        vertexShader: /* glsl */ `
-          attribute vec3 aScatter;
-          uniform float uTime;
-          uniform float uSpread;
-          uniform float uPixelRatio;
-          varying float vGlow;
-
-          void main() {
-            vec3 p = mix(position, aScatter, uSpread);
-            float t = uTime * 0.85;
-            p.x += sin(t + position.y * 2.4) * (0.04 + uSpread * 0.14);
-            p.y += cos(t * 0.9 + position.z * 2.4) * (0.04 + uSpread * 0.14);
-            p.z += sin(t * 0.7 + position.x * 2.4) * (0.04 + uSpread * 0.12);
-
-            vGlow = 0.5 + 0.5 * sin(position.x * 4.0 + t * 1.4);
-            vec4 mv = modelViewMatrix * vec4(p, 1.0);
-            gl_Position = projectionMatrix * mv;
-            gl_PointSize = clamp(((2.0 + uSpread * 2.6) * 4.8 * uPixelRatio) / max(1.6, -mv.z), 1.1, 5.2);
-          }
-        `,
-        fragmentShader: /* glsl */ `
-          uniform vec3 uColor;
-          uniform float uOpacity;
-          varying float vGlow;
-          void main() {
-            float d = length(gl_PointCoord - 0.5);
-            if (d > 0.5) discard;
-            float soft = smoothstep(0.5, 0.08, d);
-            vec3 col = mix(uColor, vec3(0.98, 0.96, 0.92), vGlow * 0.38);
-            gl_FragColor = vec4(col, soft * uOpacity);
-          }
-        `,
       });
-      const cloudPoints = new THREE.Points(cloudGeo, cloudMat);
-      artifact.add(cloudPoints);
-      disposables.push(cloudGeo, cloudMat);
 
-      // 4. Affinity Constellation Threads / Synaptic Filaments (Phase 02 UX Research & Phase 05 AI)
-      const nodeCount = 26;
-      const nodes = [];
-      for (let i = 0; i < nodeCount; i++) {
-        const theta = (i / nodeCount) * Math.PI * 2 * 3.7;
-        const phi = Math.acos(1 - (2 * (i + 0.5)) / nodeCount);
-        const r = 1.65 + (i % 3) * 0.25;
-        nodes.push(
-          new THREE.Vector3(
-            r * Math.sin(phi) * Math.cos(theta),
-            r * Math.sin(phi) * Math.sin(theta),
-            r * Math.cos(phi)
-          )
-        );
+      const sculpture = new THREE.Points(geo, mat);
+      scene.add(sculpture);
+
+      // Subtle background micro-starfield for depth
+      const BG_COUNT = isMobile ? 600 : 1400;
+      const bgPos = new Float32Array(BG_COUNT * 3);
+      for (let i = 0; i < BG_COUNT; i++) {
+        bgPos[i * 3] = (Math.random() - 0.5) * 16;
+        bgPos[i * 3 + 1] = (Math.random() - 0.5) * 10;
+        bgPos[i * 3 + 2] = (Math.random() - 0.5) * 6 - 3;
       }
-      const lineVerts = [];
-      for (let i = 0; i < nodeCount; i++) {
-        for (let j = i + 1; j < nodeCount; j++) {
-          if (nodes[i].distanceTo(nodes[j]) < 1.65) {
-            lineVerts.push(nodes[i].x, nodes[i].y, nodes[i].z);
-            lineVerts.push(nodes[j].x, nodes[j].y, nodes[j].z);
-          }
-        }
-      }
-      const threadGeo = new THREE.BufferGeometry();
-      threadGeo.setAttribute(
-        "position",
-        new THREE.Float32BufferAttribute(lineVerts, 3)
-      );
-      const threadMat = new THREE.LineBasicMaterial({
-        color: 0xe8a848,
+      const bgGeo = new THREE.BufferGeometry();
+      bgGeo.setAttribute("position", new THREE.BufferAttribute(bgPos, 3));
+      const bgMat = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.02,
         transparent: true,
-        opacity: 0.0,
+        opacity: 0.22,
+        depthWrite: false,
       });
-      const threadLines = new THREE.LineSegments(threadGeo, threadMat);
-      artifact.add(threadLines);
-      disposables.push(threadGeo, threadMat);
-
-      // 5. Concentric Orbital API Rings + Data Beads (Phase 04 Backend APIs)
-      const ringsGroup = new THREE.Group();
-      artifact.add(ringsGroup);
-      const rings = [];
-      const ringSpecs = [
-        { r: 1.50, tube: 0.015, tiltX: 0.65, tiltY: 0.2, speed: 0.50 },
-        { r: 1.74, tube: 0.012, tiltX: -0.75, tiltY: 0.9, speed: -0.38 },
-        { r: 1.98, tube: 0.010, tiltX: 1.15, tiltY: -0.5, speed: 0.30 },
-      ];
-      ringSpecs.forEach((spec) => {
-        const rg = new THREE.TorusGeometry(spec.r, spec.tube, 12, 96);
-        const rm = new THREE.MeshBasicMaterial({
-          color: 0x3ee09c,
-          transparent: true,
-          opacity: 0.12,
-        });
-        const mesh = new THREE.Mesh(rg, rm);
-        mesh.rotation.set(spec.tiltX, spec.tiltY, 0);
-
-        const beadGeo = new THREE.SphereGeometry(0.058, 16, 16);
-        const beadMat = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          transparent: true,
-          opacity: 0.15,
-        });
-        const bead = new THREE.Mesh(beadGeo, beadMat);
-        bead.position.set(spec.r, 0, 0);
-        mesh.add(bead);
-
-        ringsGroup.add(mesh);
-        rings.push({ mesh, rm, beadMat, speed: spec.speed });
-        disposables.push(rg, rm, beadGeo, beadMat);
-      });
-
-      // 6. Inner Neural Core (Phase 05 AI & ML)
-      const coreGeo = new THREE.OctahedronGeometry(0.62, 2);
-      const coreMat = new THREE.MeshStandardMaterial({
-        color: 0xa76bff,
-        emissive: 0x7b35ff,
-        emissiveIntensity: 0.5,
-        metalness: 0.4,
-        roughness: 0.2,
-        transparent: true,
-        opacity: 0.85,
-      });
-      const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-      artifact.add(coreMesh);
-      disposables.push(coreGeo, coreMat);
-
-      // 7. Calibration Verification Sweep Ring (Phase 06 Testing & Shipped)
-      const scanGeo = new THREE.TorusGeometry(1.42, 0.018, 12, 96);
-      scanGeo.rotateX(Math.PI / 2);
-      const scanMat = new THREE.MeshBasicMaterial({
-        color: 0xf7d688,
-        transparent: true,
-        opacity: 0.0,
-        blending: THREE.AdditiveBlending,
-      });
-      const scanRing = new THREE.Mesh(scanGeo, scanMat);
-      artifact.add(scanRing);
-      disposables.push(scanGeo, scanMat);
+      const bgField = new THREE.Points(bgGeo, bgMat);
+      scene.add(bgField);
 
       let mx = 0;
       let my = 0;
       let curX = 1.65;
-      let curY = 0.1;
+      let curY = 0.08;
       let curScale = 1;
-      const targetColor = new THREE.Color();
-      const curColor = new THREE.Color(0xe8b85a);
-      const obsidianCol = new THREE.Color(0x181a24);
-      const goldCol = new THREE.Color(0xd1a44d);
+      let curMorph = 0;
 
       const onPointer = (e) => {
         mx = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -365,92 +456,36 @@ export function SculpturalArtifactCanvas({ progressRef }) {
         raf = requestAnimationFrame(animate);
         if (document.hidden) return;
 
-        const dt = Math.min(clock.getDelta(), 0.05);
         const t = reduced ? 0 : clock.getElapsedTime();
         const p = progressRef?.current ?? 0;
 
-        const [
-          kfX, kfY, kfScale, wireOp, solidOp,
-          cloudSpread, researchLines, ringExplode, coreGlow, scanSweep, goldFinish, stageOp,
-        ] = sampleKF(p);
+        const targetMorph = scrollToMorph(p);
+        curMorph += (targetMorph - curMorph) * (reduced ? 1 : 0.09);
 
+        const [kfX, kfY, kfScale, kfOp] = samplePos(p);
         const isNarrow = window.innerWidth < 1024;
-        const targetX = isNarrow ? 0 : kfX;
-        const targetScale = isNarrow ? kfScale * 0.76 : kfScale;
-
-        curX += (targetX - curX) * 0.09;
+        curX += ((isNarrow ? 0 : kfX) - curX) * 0.09;
         curY += (kfY - curY) * 0.09;
-        curScale += (targetScale - curScale) * 0.09;
+        curScale += ((isNarrow ? kfScale * 0.78 : kfScale) - curScale) * 0.09;
 
-        artifact.position.set(curX, curY + Math.sin(t * 0.9) * 0.06, 0);
-        artifact.scale.setScalar(curScale);
-        artifact.rotation.y = t * 0.22 + p * Math.PI * 2.6 + mx * 0.35;
-        artifact.rotation.x = Math.sin(t * 0.4) * 0.14 + my * 0.28;
+        sculpture.position.set(curX, curY + Math.sin(t * 0.85) * 0.05, 0);
+        sculpture.scale.setScalar(curScale);
+        sculpture.rotation.y = t * 0.24 + p * Math.PI * 1.8 + mx * 0.35;
+        sculpture.rotation.x = Math.sin(t * 0.35) * 0.12 + my * 0.28;
 
-        const colorIdx = p * (PHASE_COLORS.length - 1);
-        const c0 = PHASE_COLORS[Math.floor(colorIdx)];
-        const c1 = PHASE_COLORS[Math.min(PHASE_COLORS.length - 1, Math.ceil(colorIdx))];
-        const cf = colorIdx - Math.floor(colorIdx);
-        targetColor.setRGB(
-          c0[0] + (c1[0] - c0[0]) * cf,
-          c0[1] + (c1[1] - c0[1]) * cf,
-          c0[2] + (c1[2] - c0[2]) * cf
-        );
-        curColor.lerp(targetColor, 0.08);
+        uniforms.uTime.value = t;
+        uniforms.uMorph.value = curMorph;
+        uniforms.uOpacity.value = kfOp * (isNarrow ? 0.42 : 0.96);
 
-        // 1. Shell
-        shellMat.color.copy(obsidianCol).lerp(goldCol, goldFinish * 0.88);
-        shellMat.emissive.copy(curColor);
-        shellMat.emissiveIntensity = 0.08 + coreGlow * 0.28 + goldFinish * 0.14;
-        shellMat.metalness = 0.65 + goldFinish * 0.3;
-        shellMat.roughness = 0.36 - goldFinish * 0.22;
-        shellMat.opacity = solidOp * stageOp;
+        const seg = Math.min(4, Math.floor(curMorph));
+        const frac = curMorph - seg;
+        const cA = PHASE_PALETTE[seg];
+        const cB = PHASE_PALETTE[seg + 1];
+        uniforms.uColorA.value.setRGB(cA[0], cA[1], cA[2]);
+        uniforms.uColorB.value.setRGB(cB[0], cB[1], cB[2]);
+        uniforms.uColorMix.value = frac;
 
-        // 2. Wireframe Lattice
-        wireMat.color.copy(curColor);
-        wireMat.opacity = wireOp * stageOp;
-        wireMesh.scale.setScalar(1.0 + ringExplode * 0.14);
-
-        // 3. Discovery Signal Cloud
-        cloudUniforms.uTime.value = t;
-        cloudUniforms.uSpread.value += (cloudSpread - cloudUniforms.uSpread.value) * 0.09;
-        cloudUniforms.uColor.value.copy(curColor);
-        cloudUniforms.uOpacity.value = (0.3 + cloudSpread * 0.7) * stageOp;
-
-        // 4. Affinity Threads / Synaptic Filaments
-        threadMat.color.copy(curColor);
-        threadMat.opacity = researchLines * 0.48 * stageOp;
-        threadLines.scale.setScalar(0.86 + researchLines * 0.22);
-
-        // 5. Exploded API Rings
-        ringsGroup.scale.setScalar(0.82 + ringExplode * 0.42);
-        rings.forEach((r) => {
-          r.mesh.rotation.z += dt * r.speed * (0.6 + ringExplode * 1.5);
-          r.rm.color.copy(curColor);
-          r.rm.opacity = (0.06 + ringExplode * 0.76) * stageOp;
-          r.beadMat.opacity = (0.08 + ringExplode * 0.92) * stageOp;
-        });
-
-        // 6. Neural Core
-        const corePulse = 0.52 + coreGlow * 0.36 + Math.sin(t * 2.8) * 0.045 * coreGlow;
-        coreMesh.scale.setScalar(corePulse);
-        coreMesh.rotation.y = -t * 0.55;
-        coreMat.color.copy(curColor);
-        coreMat.emissive.copy(curColor);
-        coreMat.emissiveIntensity = 0.25 + coreGlow * 2.5;
-        coreMat.opacity = (0.22 + coreGlow * 0.78) * stageOp;
-
-        // 7. Calibration Verification Sweep Ring (oscillates smoothly top <-> bottom in Phase 06)
-        const sweepY = Math.sin(t * 1.9) * 1.25;
-        scanRing.position.y = sweepY;
-        const ringRadiusFactor = Math.sqrt(Math.max(0.18, 1.0 - (sweepY * sweepY) / 2.2));
-        scanRing.scale.set(ringRadiusFactor, 1, ringRadiusFactor);
-        scanMat.opacity = scanSweep * 0.85 * stageOp;
-
-        accentLight.color.copy(curColor);
-        accentLight.intensity = (10 + coreGlow * 14 + goldFinish * 12) * stageOp;
-        dustMat.color.copy(curColor);
-        dustField.rotation.y = t * 0.025 + p * 0.4;
+        bgField.rotation.y = t * 0.015;
 
         renderer.render(scene, camera);
       };
@@ -461,7 +496,10 @@ export function SculpturalArtifactCanvas({ progressRef }) {
         cancelAnimationFrame(raf);
         window.removeEventListener("pointermove", onPointer);
         window.removeEventListener("resize", onResize);
-        disposables.forEach((d) => d.dispose?.());
+        geo.dispose();
+        mat.dispose();
+        bgGeo.dispose();
+        bgMat.dispose();
         renderer.dispose();
         renderer.domElement.remove();
       };
