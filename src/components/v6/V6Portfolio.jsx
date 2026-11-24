@@ -390,15 +390,16 @@ export function V6Portfolio() {
                 SHWETA SHARMA · FULLSTACK ENGINEER &amp; APPLIED ML
               </span>
               <h1 className="v6HeroTitle">
-                One builder.
+                Design-led engineer.
                 <br />
-                <em>Every layer.</em>
+                <em>Full-stack to AI.</em>
               </h1>
               <p className="v6Lead">
-                Scroll to watch a single product assemble itself across my
-                entire skillset — from raw UX research and atomic React
-                interfaces to Flask/FastAPI services, fine-tuned AI models, and
-                real-world testing.
+                I’m Shweta Sharma — six years leading UX research and product
+                design across 250+ products, paired with an MS in AI &amp;
+                Machine Learning (3.97 GPA). I take ambiguous problems from user
+                discovery through production interfaces, resilient APIs, and
+                explainable ML.
               </p>
               <div className="v6CtaRow">
                 <HiringBrief triggerClassName="v6BtnPrimary" biasHref="#works" />
@@ -420,7 +421,7 @@ export function V6Portfolio() {
                 </a>
               </div>
               <p className="v6ScrollHint">
-                SCROLL TO BUILD THE ARTIFACT ↓
+                EXPLORE HOW I BUILD ↓
               </p>
             </div>
           </div>
@@ -432,14 +433,14 @@ export function V6Portfolio() {
             <div className="v6ChapterCard">
               <span className="v6Kicker">01 / UX RESEARCH &amp; DISCOVERY</span>
               <h2 className="v6ChapterTitle">
-                First, dissolve into <em>raw human signal.</em>
+                Start with <em>real human friction.</em>
               </h2>
               <p className="v6Lead">
-                Watch the swirling grain mass pull together into six orbiting
-                affinity clusters bridged by amber threads. Every build begins
-                here: contextual inquiry, clinical rubrics (Calgary-Cambridge,
-                NURSE), and behavioral analytics before a single component is
-                drawn.
+                Before a single component or endpoint is written, I uncover what
+                people actually struggle with. I lead contextual inquiry,
+                moderated usability studies, clinical rubric design
+                (Calgary-Cambridge, NURSE), and behavioral analytics so teams
+                build the right thing first.
               </p>
               <div className="v6SkillStrip">
                 <span>Contextual Inquiry</span>
@@ -466,13 +467,13 @@ export function V6Portfolio() {
             <div className="v6ChapterCard">
               <span className="v6Kicker">02 / FRONTEND UI &amp; DESIGN SYSTEMS</span>
               <h2 className="v6ChapterTitle">
-                Clusters snap into <em>a modular grid.</em>
+                Interfaces that keep <em>people in command.</em>
               </h2>
               <p className="v6Lead">
-                On the right, those six loose clouds lock into a razor-sharp
-                ice-cobalt 3D grid cube. I turn ambiguous research into atomic
-                Figma design systems and responsive React &amp; Next.js
-                interfaces where people stay effortlessly in command.
+                I translate complex workflows into atomic Figma design systems
+                and responsive React &amp; Next.js interfaces. Whether shaping a
+                30-screen multi-role operations workspace or a live webcam sign
+                editor, I build calm, accessible products people trust.
               </p>
               <div className="v6SkillStrip">
                 <span>React</span>
@@ -501,13 +502,13 @@ export function V6Portfolio() {
             <div className="v6ChapterCard">
               <span className="v6Kicker">03 / BACKEND, APIS &amp; PERSISTENCE</span>
               <h2 className="v6ChapterTitle">
-                The grid unwinds into <em>a live pipeline.</em>
+                Clean contracts <em>across the stack.</em>
               </h2>
               <p className="v6Lead">
-                The rigid cube twists into a continuous emerald torus-knot data
-                loop — representing explicit API contracts, Node.js proxies,
-                Flask &amp; FastAPI endpoints, PostgreSQL schemas, and
-                containerized Docker Compose stacks.
+                I own the services behind the interface — architecting explicit
+                REST contracts, Node.js API proxies, FastAPI &amp; Flask
+                inference endpoints, PostgreSQL schemas, and containerized
+                Docker Compose stacks built for production reliability.
               </p>
               <div className="v6SkillStrip">
                 <span>Python</span>
@@ -536,13 +537,13 @@ export function V6Portfolio() {
             <div className="v6ChapterCard">
               <span className="v6Kicker">04 / APPLIED AI &amp; EXPLAINABILITY</span>
               <h2 className="v6ChapterTitle">
-                The flow folds into <em>a neural brain.</em>
+                Models people can <em>question and trust.</em>
               </h2>
               <p className="v6Lead">
-                On the right, the stream sculpts itself into a firing
-                dual-hemisphere violet neural cortex. Pairing an MS in AI &amp;
-                Machine Learning (3.97 GPA) with clinical NLP at ABIM, I attach
-                human-auditable reasoning to every prediction.
+                Pairing an MS in AI &amp; Machine Learning (3.97 GPA) with
+                clinical NLP work at ABIM, I fine-tune domain classifiers and
+                real-time vision pipelines — and attach human-auditable GPT-4o
+                reasoning beside every prediction.
               </p>
               <div className="v6SkillStrip">
                 <span>RoBERTa + LoRA</span>
@@ -571,14 +572,13 @@ export function V6Portfolio() {
             <div className="v6ChapterCard">
               <span className="v6Kicker">05 / TESTING, EVALUATION &amp; SHIPPED</span>
               <h2 className="v6ChapterTitle">
-                Cut, tested, <em>crystallized.</em>
+                Validated before <em>a line ships.</em>
               </h2>
               <p className="v6Lead">
-                On the left, all 38,000 grains compress into a razor-sharp,
-                brilliant-cut champagne-gold diamond. Nothing ships unverified:
-                I validate every interface with moderated usability studies,
-                clinical inter-rater reliability (IRR) rubrics, and live A/B
-                experimentation.
+                Nothing goes live on guesswork. I pair engineering delivery with
+                moderated usability studies, clinical inter-rater reliability
+                (IRR) rubric audits, and live A/B experimentation so every
+                release proves its impact in the real world.
               </p>
               <div className="v6SkillStrip">
                 <span>Usability Testing (n=6)</span>
@@ -747,7 +747,7 @@ export function V6Portfolio() {
             <div className="v6GlassVessel">
               <div className="v6CraftHead">
                 <div>
-                  <span className="v6Kicker">06 / CRAFT &amp; TOOLKIT</span>
+                  <span className="v6Kicker">07 / CRAFT &amp; TOOLKIT</span>
                   <h2 className="v6ChapterTitle" style={{ marginBottom: 0 }}>
                     The tools behind <em>the work.</em>
                   </h2>
@@ -817,7 +817,7 @@ export function V6Portfolio() {
             <div className="v6Wrap">
               <div className="v6BandHead" style={{ marginBottom: "28px" }}>
                 <div>
-                  <span className="v6Kicker">07 / THE TRAJECTORY</span>
+                  <span className="v6Kicker">08 / THE TRAJECTORY</span>
                   <h2 className="v6ChapterTitle" style={{ marginBottom: "10px" }}>
                     Different roles. <em>One curiosity.</em>
                   </h2>
@@ -918,7 +918,7 @@ export function V6Portfolio() {
                 </figcaption>
               </figure>
               <div className="v6HumanText">
-                <span className="v6Kicker">08 / BEYOND THE SCREEN</span>
+                <span className="v6Kicker">09 / BEYOND THE SCREEN</span>
                 <h2 className="v6ChapterTitle">
                   A little more <em>human context.</em>
                 </h2>
@@ -941,7 +941,7 @@ export function V6Portfolio() {
           <AetherglintCanvas />
           <div className="v6ColophonVeil" aria-hidden="true" />
           <div className="v6Wrap v6ColophonInner">
-            <span className="v6Kicker">09 / READY FOR THE NEXT BUILD</span>
+            <span className="v6Kicker">10 / READY FOR THE NEXT BUILD</span>
             <h2 className="v6ColophonTitle">
               Thoughtful people.
               <br />
