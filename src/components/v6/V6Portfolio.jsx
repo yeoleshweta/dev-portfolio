@@ -442,7 +442,7 @@ export function V6Portfolio() {
                 Cut, tested, <em>crystallized.</em>
               </h2>
               <p className="v6Lead">
-                Finally, all 24,000 grains compress into a razor-sharp,
+                Finally, all 38,000 grains compress into a razor-sharp,
                 brilliant-cut champagne-gold diamond — usability tested (n=6),
                 rubric-audited (IRR), A/B validated, and shipped. Select any
                 build below to inspect its full architecture.
