@@ -6,6 +6,7 @@ import { V6Header } from "@/components/v6/V6Header";
 import { SculpturalArtifactCanvas } from "@/components/v6/SculpturalArtifactCanvas";
 import { HiringBrief } from "@/components/portfolio/HiringBrief";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
+import { ExperimentalGalleryLab } from "@/components/v6/ExperimentalGalleryLab";
 import { profile, projects, experience } from "@/content/profile";
 import { systems, archive } from "@/content/engineering";
 import "@/styles/gallery.css";
@@ -536,6 +537,8 @@ export function V6Portfolio() {
           <div className="v6Darkroom">
             <PersonalGallery />
           </div>
+
+          <ExperimentalGalleryLab />
         </section>
 
         {/* CHAPTER 08 — COLOPHON (Artifact returns softly centered behind closing call) */}
