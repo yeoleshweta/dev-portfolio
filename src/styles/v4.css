@@ -220,12 +220,14 @@ a:focus-visible, button:focus-visible {
   background: var(--v4-bg);
   padding: 120px 0 36px;
 }
-.v4AccretionHost {
+.v4AccretionHost,
+.v4CanvasHost {
   position: absolute;
   inset: 0;
   z-index: 0;
 }
-.v4AccretionHost canvas {
+.v4AccretionHost canvas,
+.v4CanvasHost canvas {
   width: 100% !important;
   height: 100% !important;
   display: block;
@@ -238,6 +240,68 @@ a:focus-visible, button:focus-visible {
   background:
     linear-gradient(90deg, rgb(10 10 12 / 0.86) 0%, rgb(10 10 12 / 0.45) 48%, rgb(10 10 12 / 0.08) 100%),
     linear-gradient(180deg, rgb(10 10 12 / 0.4) 0%, transparent 18%, transparent 76%, rgb(10 10 12 / 0.96) 100%);
+}
+.v4MaskGauze {
+  background:
+    linear-gradient(90deg, rgb(7 6 10 / 0.82) 0%, rgb(7 6 10 / 0.34) 50%, rgb(7 6 10 / 0.08) 100%),
+    linear-gradient(180deg, rgb(7 6 10 / 0.45) 0%, transparent 18%, transparent 78%, rgb(7 6 10 / 0.94) 100%);
+}
+.v4MaskAether {
+  background:
+    linear-gradient(90deg, rgb(14 10 24 / 0.72) 0%, rgb(14 10 24 / 0.28) 54%, rgb(14 10 24 / 0.06) 100%),
+    linear-gradient(180deg, rgb(12 8 22 / 0.42) 0%, transparent 22%, transparent 80%, rgb(10 10 12 / 0.96) 100%);
+}
+.v4HeroBadgeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  pointer-events: auto;
+}
+.v4OptionTag {
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  padding: 6px 12px;
+  border-radius: 99px;
+  border: 1px solid rgb(255 96 168 / 0.4);
+  background: rgb(255 77 166 / 0.12);
+  color: #ff8cc6;
+}
+.v4TagViolet {
+  border-color: rgb(214 166 255 / 0.4);
+  background: rgb(168 106 232 / 0.14);
+  color: #e4b8ff;
+}
+.v4JumpHero {
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--v4-muted);
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--v4-line-strong);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.v4JumpHero:hover {
+  color: var(--v4-ink);
+  border-color: var(--v4-ink);
+}
+.v4KickerPink { color: #ff7ab8 !important; }
+.v4KickerPink i { background: #ff4da6 !important; box-shadow: 0 0 12px #ff4da6 !important; }
+.v4EmPink { color: #ff7ab8 !important; }
+.v4ArrowPink:hover {
+  background: #ff4da6 !important;
+  color: #07060a !important;
+  box-shadow: 0 14px 34px -12px rgb(255 77 166 / 0.55) !important;
+}
+.v4KickerLilac { color: #e2a8f8 !important; }
+.v4KickerLilac i { background: #e88ec6 !important; box-shadow: 0 0 12px #e88ec6 !important; }
+.v4EmLilac { color: #f2a6d8 !important; }
+.v4ArrowLilac:hover {
+  background: #e89cd0 !important;
+  color: #140d24 !important;
+  box-shadow: 0 14px 34px -12px rgb(232 156 208 / 0.55) !important;
 }
 .v4HeroContent {
   position: relative;

@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AetherloomCanvas } from "@/components/v4/AetherloomCanvas";
+import { GauzeBlazeCanvas } from "@/components/v4/GauzeBlazeCanvas";
+import { AetherglintCanvas } from "@/components/v4/AetherglintCanvas";
 import { AsciiRadarCanvas } from "@/components/v4/AsciiRadarCanvas";
 import { V4Header } from "@/components/v4/V4Header";
 import { HiringBrief } from "@/components/portfolio/HiringBrief";
@@ -375,14 +376,21 @@ export function V4Portfolio() {
       <V4Header />
 
       <main id="main" className="v4Main">
-        {/* ACT I — AETHERLOOM FLUID SILK HERO + 3D TEXT UNFOLD */}
-        <section id="hero" className="v4Hero">
-          <AetherloomCanvas />
-          <div className="v4HeroMask" aria-hidden="true" />
+        {/* HERO OPTION A — GAUZE BLAZE (TWISTING DOTTED MESH RIBBON + EMBERS) */}
+        <section id="hero" className="v4Hero v4HeroGauze">
+          <GauzeBlazeCanvas />
+          <div className="v4HeroMask v4MaskGauze" aria-hidden="true" />
 
           <div className="v4Wrap v4HeroContent">
+            <div className="v4HeroBadgeRow">
+              <span className="v4OptionTag">HERO OPTION 01 · GAUZE BLAZE</span>
+              <a className="v4JumpHero" href="#hero-aetherglint">
+                Compare Hero 02 (Aetherglint) ↓
+              </a>
+            </div>
+
             <div className="v4HeroCenter">
-              <p className="v4HeroKicker">
+              <p className="v4HeroKicker v4KickerPink">
                 <i aria-hidden="true" />
                 PHILADELPHIA, PA · FULLSTACK ENGINEERING &amp; APPLIED ML
               </p>
@@ -393,7 +401,7 @@ export function V4Portfolio() {
                 </span>
                 <span className="v4UnfoldLine" style={{ "--d": "110ms" }}>
                   <span>
-                    meets <em>production code.</em>
+                    meets <em className="v4EmPink">production code.</em>
                   </span>
                 </span>
               </h1>
@@ -401,12 +409,78 @@ export function V4Portfolio() {
               <p className="v4HeroSub">
                 I’m Shweta Sharma — six years leading UX research and product
                 design across 250+ products, paired with an MS in AI &amp;
-                Machine Learning (3.97 GPA). I design the interface, build the
-                API, and evaluate the model end to end.
+                Machine Learning (3.97 GPA). Move or click across the ribbon to
+                ignite the mesh.
               </p>
 
               <div className="v4HeroCtas">
-                <HiringBrief triggerClassName="v4ArrowBtn" biasHref="#works" />
+                <HiringBrief triggerClassName="v4ArrowBtn v4ArrowPink" biasHref="#works" />
+                <a
+                  className="v4LinkPlain"
+                  href={profile.resume}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Résumé (PDF) ↗
+                </a>
+                <a
+                  className="v4LinkPlain"
+                  href={profile.github}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  GitHub ↗
+                </a>
+              </div>
+            </div>
+
+            <div className="v4TelemetryBar">
+              <span>RECENT · AMERICAN BOARD OF INTERNAL MEDICINE</span>
+              <span>SOLO-BUILT BIAS CHECKER AI</span>
+              <span>MS AI &amp; ML · DREXEL 3.97 GPA</span>
+            </div>
+          </div>
+        </section>
+
+        {/* HERO OPTION B — AETHERGLINT (WIND-BLOWN VIOLET DUSK MEADOW) */}
+        <section id="hero-aetherglint" className="v4Hero v4HeroAether v4RuleTop">
+          <AetherglintCanvas />
+          <div className="v4HeroMask v4MaskAether" aria-hidden="true" />
+
+          <div className="v4Wrap v4HeroContent">
+            <div className="v4HeroBadgeRow">
+              <span className="v4OptionTag v4TagViolet">HERO OPTION 02 · AETHERGLINT</span>
+              <a className="v4JumpHero" href="#hero">
+                Back to Hero 01 (Gauze Blaze) ↑
+              </a>
+            </div>
+
+            <div className="v4HeroCenter">
+              <p className="v4HeroKicker v4KickerLilac">
+                <i aria-hidden="true" />
+                PHILADELPHIA, PA · FULLSTACK ENGINEERING &amp; APPLIED ML
+              </p>
+
+              <h2 className="v4HeroTitle">
+                <span className="v4UnfoldLine" style={{ "--d": "0ms" }}>
+                  <span>Where human nuance</span>
+                </span>
+                <span className="v4UnfoldLine" style={{ "--d": "110ms" }}>
+                  <span>
+                    meets <em className="v4EmLilac">production code.</em>
+                  </span>
+                </span>
+              </h2>
+
+              <p className="v4HeroSub">
+                I’m Shweta Sharma — six years leading UX research and product
+                design across 250+ products, paired with an MS in AI &amp;
+                Machine Learning (3.97 GPA). Move your cursor across the dusk
+                hillside to part the grass.
+              </p>
+
+              <div className="v4HeroCtas">
+                <HiringBrief triggerClassName="v4ArrowBtn v4ArrowLilac" biasHref="#works" />
                 <a
                   className="v4LinkPlain"
                   href={profile.resume}
