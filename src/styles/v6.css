@@ -764,7 +764,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
 .v6Darkroom .galleryHeading h2 em { font-family: var(--v6-serif); font-style: italic; font-weight: 400; color: var(--v6-gold); }
 .v6Darkroom .galleryCard { color: #111110; box-shadow: 0 24px 60px -18px rgb(0 0 0 / 0.8), 0 0 0 1px rgb(244 243 239 / 0.22); }
 .v6Darkroom .galleryCaption small { color: #8c6320; }
-.v6Darkroom .galleryMode button[aria-pressed="true"] { background: var(--v6-gold); color: var(--v6-bg); box-shadow: none; }
+.v6Darkroom .galleryMode,
+.v6Darkroom .galleryCollectionCount,
+.v6Darkroom .galleryReset { display: none; }
+.v6Darkroom .galleryColophon { justify-content: center; }
 
 /* Colophon — Aetherglint Twilight Dusk Meadow Footer */
 .v6Colophon {

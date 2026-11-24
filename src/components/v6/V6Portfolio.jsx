@@ -359,16 +359,6 @@ export function V6Portfolio() {
       <div className="v6FixedStage" aria-hidden="true">
         <SculpturalArtifactCanvas progressRef={progressRef} theme={theme} />
         <div className="v6StageAura" />
-
-        {/* Live Lifecycle Caption anchored directly beneath the 3D Sculpture */}
-        <div className="v6ArtifactCaption" data-side={activeChapter.side}>
-          <div className="v6ArtifactCaptionInner" key={activeChapter.id}>
-            <span className="v6ArtifactState">
-              <i /> {activeChapter.state}
-            </span>
-            <p>{activeChapter.mapping}</p>
-          </div>
-        </div>
       </div>
 
       {/* FIXED LEFT CHAPTER PROGRESS SPINE */}
