@@ -55,6 +55,7 @@ export function V4Header() {
               <Link href="/v2">v2</Link>
               <Link href="/v3">v3</Link>
               <span aria-current="page">v4</span>
+              <Link href="/v5">v5</Link>
             </div>
             <a
               className="v4DockResume"
