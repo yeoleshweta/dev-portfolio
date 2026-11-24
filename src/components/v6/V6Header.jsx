@@ -4,11 +4,11 @@ import { useEffect, useId, useRef, useState } from "react";
 import { profile } from "@/content/profile";
 
 const links = [
-  ["01", "Build Story", "morph"],
-  ["02", "Works", "works"],
-  ["03", "Skills", "skills"],
-  ["04", "Trajectory", "trajectory"],
-  ["05", "Off Screen", "offscreen"],
+  ["01", "Research", "research"],
+  ["02", "Frontend", "frontend"],
+  ["03", "Backend", "backend"],
+  ["04", "AI & ML", "ai"],
+  ["05", "Shipped", "works"],
   ["06", "Contact", "contact"],
 ];
 
