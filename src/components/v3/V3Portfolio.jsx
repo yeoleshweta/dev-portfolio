@@ -6,9 +6,10 @@ import { GrainMassCanvas } from "@/components/v3/GrainMassCanvas";
 import { V3Header } from "@/components/v3/V3Header";
 import { HiringBrief } from "@/components/portfolio/HiringBrief";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
-import { profile, projects, experience } from "@/content/profile";
-import { systems, archive } from "@/content/engineering";
+import { ProjectViewModal } from "@/components/portfolio/ProjectViewModal";
+import { profile, experience } from "@/content/profile";
 import "@/styles/gallery.css";
+import { selectedProjects } from "@/content/selected-projects";
 
 const pillars = [
   {
@@ -40,118 +41,7 @@ const pillars = [
   },
 ];
 
-const workPlates = [
-  {
-    id: "bias-checker",
-    num: "01",
-    year: "2025–2026",
-    pigment: "violet",
-    title: "Bias Checker",
-    discipline: "Healthcare · Applied AI",
-    headline: "A prediction needs an explanation.",
-    summary:
-      "Solo-built healthcare bias-detection system connecting a fine-tuned RoBERTa + LoRA classifier, GPT-4o explanation layer, Flask API, and Next.js interface.",
-    stack: ["Next.js", "Flask", "RoBERTa + LoRA", "GPT-4o", "Hugging Face"],
-    repo: systems[0].repository,
-    nodes: systems[0].nodes,
-    decision: systems[0].decision,
-    blueprint: {
-      code: "PIPELINE / 01 → 04",
-      formula: "Vignette → RoBERTa+LoRA → GPT-4o → Review",
-      metrics: ["Solo full-stack build", "Docker on HF Spaces"],
-    },
-  },
-  {
-    id: "gesturepro",
-    num: "02",
-    year: "2025",
-    pigment: "blue",
-    title: "GesturePro",
-    discipline: "Computer Vision · Interaction",
-    headline: "Keep the signer in control.",
-    summary:
-      "Browser prototype reading 21 MediaPipe hand landmarks per frame into editable text, validated with six usability testing participants.",
-    stack: ["Next.js", "FastAPI", "MediaPipe", "TensorFlow"],
-    image: projects[0].image,
-    alt: projects[0].alt,
-    caseHref: `/work/${projects[0].slug}/`,
-    repo: projects[0].repository,
-    nodes: systems[1].nodes,
-    decision: systems[1].decision,
-  },
-  {
-    id: "urbanfit",
-    num: "03",
-    year: "2022",
-    pigment: "gold",
-    title: "Urbanfit Control Panel",
-    discipline: "Product Design · Systems",
-    headline: "One inventory, three perspectives.",
-    summary:
-      "Multi-role desktop workspace spanning 30 screens and 484 interactions for administrators, warehouse teams, and franchise shops.",
-    stack: ["Figma", "Interaction Design", "Design Systems"],
-    image: projects[1].image,
-    alt: projects[1].alt,
-    caseHref: `/work/${projects[1].slug}/`,
-    decision:
-      "Anchor three distinct operational roles to one shared navigation grammar and consistent table patterns.",
-  },
-  {
-    id: "pocketsaver",
-    num: "04",
-    year: "2025",
-    pigment: "blue",
-    title: "PocketSaver",
-    discipline: "Fullstack · Forecasting",
-    headline: "Follow the request end to end.",
-    summary:
-      "Finance application orchestrating a Next.js frontend, Node.js API proxy, PostgreSQL database, and an isolated Python forecasting service.",
-    stack: ["Next.js", "Node.js", "PostgreSQL", "Python", "Docker"],
-    repo: systems[2].repository,
-    nodes: systems[2].nodes,
-    decision: systems[2].decision,
-    blueprint: {
-      code: "TOPOLOGY / SERVICE BOUNDARIES",
-      formula: "Next.js → POST /api/forecast → Python /predict",
-      metrics: ["Docker Compose stack", "PostgreSQL persistence"],
-    },
-  },
-  {
-    id: "clinical-communication",
-    num: "05",
-    year: "2025",
-    pigment: "violet",
-    title: "Clinical Communication",
-    discipline: "ABIM · Supervised NLP",
-    headline: "Making clinical dialogue legible.",
-    summary:
-      "Annotated doctor-patient dialogue workflow mapping supervised NLP predictions to established Calgary-Cambridge and NURSE frameworks.",
-    stack: ["Python", "NLP", "Label Studio"],
-    image: projects[2].image,
-    alt: projects[2].alt,
-    caseHref: `/work/${projects[2].slug}/`,
-    decision:
-      "Connect every model output to named clinical communication frameworks so reviewers can audit predictions.",
-  },
-  {
-    id: "centralperk",
-    num: "06",
-    year: "In Progress",
-    pigment: "gold",
-    title: "CentralPerk",
-    discipline: "Multi-Agent Systems",
-    headline: "Transparent agent handoffs.",
-    summary: archive[0].description,
-    stack: ["LangGraph", "FastAPI", "React"],
-    decision:
-      "Surface completed versus deferred agent work explicitly at the interface layer.",
-    blueprint: {
-      code: "ACTIVE RESEARCH / MULTI-AGENT",
-      formula: "State Graph → Handoff → Visible Ledger",
-      metrics: ["LangGraph orchestration", "Human-visible state"],
-    },
-  },
-];
+const workPlates = selectedProjects;
 
 const skillCategories = [
   { id: "all", label: "All", num: "00", pigment: "gold" },
@@ -205,13 +95,11 @@ const roleMetrics = {
 };
 
 export function V3Portfolio() {
-  const [selectedWork, setSelectedWork] = useState(null);
+  const [selectedWorkIdx, setSelectedWorkIdx] = useState(null);
   const [activeWorkIdx, setActiveWorkIdx] = useState(0);
   const [activeCat, setActiveCat] = useState("all");
   const [hoveredSkill, setHoveredSkill] = useState(null);
   const [copied, setCopied] = useState(false);
-
-  const workDialogRef = useRef(null);
 
   useEffect(() => {
     const els = [...document.querySelectorAll("[data-v3-reveal]")];
@@ -235,20 +123,7 @@ export function V3Portfolio() {
     return () => obs.disconnect();
   }, []);
 
-  useEffect(() => {
-    const d = workDialogRef.current;
-    if (!d) return;
-    if (selectedWork && !d.open) {
-      document.body.style.overflow = "hidden";
-      d.showModal();
-    } else if (!selectedWork && d.open) {
-      document.body.style.overflow = "";
-      d.close();
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [selectedWork]);
+
 
   async function copyEmail() {
     try {
@@ -390,9 +265,8 @@ export function V3Portfolio() {
               </h2>
             </div>
             <p className="v3SideCopy">
-              Six shipped builds spanning healthcare AI evaluation, real-time
-              computer vision, multi-role enterprise interfaces, and full-stack
-              forecasting pipelines.
+              Six projects spanning healthcare AI, computer vision, a website
+              copilot, and apps for renters, skincare, and appointment access.
             </p>
           </div>
 
@@ -408,7 +282,7 @@ export function V3Portfolio() {
                   data-pigment={plate.pigment}
                   onMouseEnter={() => setActiveWorkIdx(idx)}
                   onFocus={() => setActiveWorkIdx(idx)}
-                  onClick={() => setSelectedWork(plate)}
+                  onClick={() => setSelectedWorkIdx(idx)}
                 >
                   <span className="v3WorkRowNum">{plate.num}</span>
                   <span className="v3WorkRowMain">
@@ -434,7 +308,7 @@ export function V3Portfolio() {
 
                 <div
                   className="v3WorkVisual"
-                  onClick={() => setSelectedWork(activeWork)}
+                  onClick={() => setSelectedWorkIdx(activeWorkIdx)}
                 >
                   {activeWork.image ? (
                     <Image
@@ -474,10 +348,11 @@ export function V3Portfolio() {
                     <button
                       type="button"
                       className="v3BtnPrimary"
-                      onClick={() => setSelectedWork(activeWork)}
+                      onClick={() => setSelectedWorkIdx(activeWorkIdx)}
                     >
                       Inspect Architecture ↗
                     </button>
+                    {activeWork.liveHref && (<a className="v3BtnPlain" href={activeWork.liveHref} target="_blank" rel="noreferrer">Visit live site ↗</a>)}
                     {activeWork.caseHref && (
                       <Link className="v3BtnGhost" href={activeWork.caseHref}>
                         Full Case Study ↗
@@ -500,85 +375,13 @@ export function V3Portfolio() {
           </div>
         </section>
 
-        {/* ARCHITECTURE MONOGRAPH DIALOG */}
-        <dialog
-          ref={workDialogRef}
-          className="v3Sheet"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setSelectedWork(null);
-          }}
-          onCancel={() => setSelectedWork(null)}
-        >
-          {selectedWork && (
-            <div className="v3SheetInner">
-              <div className="v3SheetHeader">
-                <span>
-                  PLATE {selectedWork.num} /{" "}
-                  {selectedWork.discipline.toUpperCase()}
-                </span>
-                <button type="button" onClick={() => setSelectedWork(null)}>
-                  Close ×
-                </button>
-              </div>
-
-              <div className="v3SheetBody">
-                <h2>{selectedWork.title}</h2>
-                <p className="v3SheetHeadline">{selectedWork.headline}</p>
-                <p className="v3SheetSummary">{selectedWork.summary}</p>
-
-                <div className="v3WorkStackRow" style={{ margin: "24px 0" }}>
-                  {selectedWork.stack.map((tech) => (
-                    <span key={tech}>{tech}</span>
-                  ))}
-                </div>
-
-                <blockquote className="v3SheetQuote">
-                  <small>ARCHITECTURAL DECISION</small>
-                  <p>“{selectedWork.decision}”</p>
-                </blockquote>
-
-                {selectedWork.nodes && (
-                  <div className="v3SheetNodes">
-                    <small className="v3SheetSublabel">SYSTEM PIPELINE</small>
-                    {selectedWork.nodes.map((node) => (
-                      <div className="v3SheetNodeRow" key={node.layer}>
-                        <span>{node.layer}</span>
-                        <div>
-                          <strong>
-                            {node.title} · <em>{node.technology}</em>
-                          </strong>
-                          <p>{node.detail}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="v3WorkStageActions" style={{ marginTop: "32px" }}>
-                  {selectedWork.caseHref && (
-                    <Link
-                      className="v3BtnPrimary"
-                      href={selectedWork.caseHref}
-                      onClick={() => setSelectedWork(null)}
-                    >
-                      Read Full Case Study ↗
-                    </Link>
-                  )}
-                  {selectedWork.repo && (
-                    <a
-                      className="v3BtnGhost"
-                      href={selectedWork.repo}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Explore Source on GitHub ↗
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </dialog>
+        {/* V1 PROJECT VIEW MODAL */}
+        <ProjectViewModal
+          projects={workPlates}
+          selectedIndex={selectedWorkIdx}
+          onSelectIndex={setSelectedWorkIdx}
+          onClose={() => setSelectedWorkIdx(null)}
+        />
 
         {/* ACT IV — LIVING TYPOGRAPHIC SKILLS INDEX (TRI-PIGMENT) */}
         <section id="skills" className="v3Section v3Wrap v3BorderTop">

@@ -833,7 +833,7 @@ a:focus-visible, button:focus-visible {
 .briefInner h2 em { font-family: var(--v3-serif); font-style: italic; font-weight: 400; color: var(--v3-gold); }
 .briefIntro { margin-top: 14px; font-size: 15px; line-height: 1.7; color: var(--v3-muted); max-width: 48ch; }
 .briefFacts {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  display: grid; grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr); gap: 18px;
   margin: 26px 0; padding: 20px 0;
   border-top: 1px solid var(--v3-line); border-bottom: 1px solid var(--v3-line);
 }

@@ -7,9 +7,10 @@ import { AsciiRadarCanvas } from "@/components/v4/AsciiRadarCanvas";
 import { V4Header } from "@/components/v4/V4Header";
 import { HiringBrief } from "@/components/portfolio/HiringBrief";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
-import { profile, projects, experience } from "@/content/profile";
-import { systems, archive } from "@/content/engineering";
+import { ProjectViewModal } from "@/components/portfolio/ProjectViewModal";
+import { profile, experience } from "@/content/profile";
 import "@/styles/gallery.css";
+import { selectedProjects } from "@/content/selected-projects";
 
 const abacusMetrics = [
   {
@@ -50,115 +51,7 @@ const abacusMetrics = [
   },
 ];
 
-const bentoWorks = [
-  {
-    id: "bias-checker",
-    num: "01",
-    span: "wide",
-    year: "2025–2026",
-    title: "Bias Checker",
-    discipline: "Healthcare · Applied AI",
-    headline: "A prediction needs an explanation.",
-    summary:
-      "Solo-built healthcare bias-detection tool pairing a fine-tuned RoBERTa + LoRA classifier with a GPT-4o explainability layer, Flask API, and Next.js frontend.",
-    stack: ["Next.js", "Flask", "RoBERTa + LoRA", "GPT-4o", "Docker"],
-    repo: systems[0].repository,
-    nodes: systems[0].nodes,
-    decision: systems[0].decision,
-    blueprint: {
-      tag: "SOLO FULL-STACK AI BUILD",
-      flow: "Clinical Vignette → RoBERTa+LoRA → GPT-4o → Clinician Review",
-    },
-  },
-  {
-    id: "gesturepro",
-    num: "02",
-    span: "tall",
-    year: "2025",
-    title: "GesturePro",
-    discipline: "Computer Vision · Interaction",
-    headline: "Keep the signer in control.",
-    summary:
-      "Real-time webcam sign recognition extracting 21 MediaPipe hand landmarks per frame into editable text, validated with six usability participants.",
-    stack: ["Next.js", "FastAPI", "MediaPipe", "TensorFlow"],
-    image: projects[0].image,
-    alt: projects[0].alt,
-    caseHref: `/work/${projects[0].slug}/`,
-    repo: projects[0].repository,
-    nodes: systems[1].nodes,
-    decision: systems[1].decision,
-  },
-  {
-    id: "urbanfit",
-    num: "03",
-    span: "normal",
-    year: "2022",
-    title: "Urbanfit Control Panel",
-    discipline: "Product Design · Systems",
-    headline: "One inventory, three perspectives.",
-    summary:
-      "Multi-role desktop workspace spanning 30 screens and 484 interactions for administrators, warehouse teams, and franchise shops.",
-    stack: ["Figma", "Design Systems", "Interaction Design"],
-    image: projects[1].image,
-    alt: projects[1].alt,
-    caseHref: `/work/${projects[1].slug}/`,
-    decision:
-      "Anchor three distinct operational roles to one shared navigation grammar and consistent table patterns.",
-  },
-  {
-    id: "pocketsaver",
-    num: "04",
-    span: "normal",
-    year: "2025",
-    title: "PocketSaver",
-    discipline: "Fullstack · Forecasting",
-    headline: "Follow the request end to end.",
-    summary:
-      "Finance platform orchestrating Next.js, a Node.js API proxy, PostgreSQL persistence, and an isolated Python forecasting service.",
-    stack: ["Next.js", "Node.js", "PostgreSQL", "Python", "Docker"],
-    repo: systems[2].repository,
-    nodes: systems[2].nodes,
-    decision: systems[2].decision,
-    blueprint: {
-      tag: "MULTI-SERVICE TOPOLOGY",
-      flow: "Next.js → Node /api/forecast → PostgreSQL + Python /predict",
-    },
-  },
-  {
-    id: "clinical-communication",
-    num: "05",
-    span: "tall",
-    year: "2025",
-    title: "Clinical Communication",
-    discipline: "ABIM · Supervised NLP",
-    headline: "Making clinical dialogue legible.",
-    summary:
-      "Supervised NLP annotation workflow mapping doctor-patient dialogue behaviors to Calgary-Cambridge and NURSE rubrics.",
-    stack: ["Python", "NLP", "Label Studio"],
-    image: projects[2].image,
-    alt: projects[2].alt,
-    caseHref: `/work/${projects[2].slug}/`,
-    decision:
-      "Connect every model output to named clinical communication frameworks so reviewers can audit predictions.",
-  },
-  {
-    id: "centralperk",
-    num: "06",
-    span: "wide",
-    year: "In Progress",
-    title: "CentralPerk",
-    discipline: "Multi-Agent Systems",
-    headline: "Transparent agent handoffs.",
-    summary: archive[0].description,
-    stack: ["LangGraph", "FastAPI", "React", "Tailwind CSS"],
-    decision:
-      "Surface completed versus deferred agent work explicitly at the interface layer.",
-    blueprint: {
-      tag: "ACTIVE MULTI-AGENT RESEARCH",
-      flow: "LangGraph State → Agent Handoff → Visible Human Ledger",
-    },
-  },
-];
+const bentoWorks = selectedProjects;
 
 const radarQuadrants = [
   {
@@ -315,11 +208,9 @@ function TiltBentoCard({ item, onSelect }) {
 
 export function V4Portfolio() {
   const [activeMetric, setActiveMetric] = useState(0);
-  const [selectedWork, setSelectedWork] = useState(null);
+  const [selectedWorkIdx, setSelectedWorkIdx] = useState(null);
   const [activeQuad, setActiveQuad] = useState(0);
   const [copied, setCopied] = useState(false);
-
-  const dialogRef = useRef(null);
 
   useEffect(() => {
     const els = [...document.querySelectorAll("[data-v4-unfold]")];
@@ -343,20 +234,7 @@ export function V4Portfolio() {
     return () => obs.disconnect();
   }, []);
 
-  useEffect(() => {
-    const d = dialogRef.current;
-    if (!d) return;
-    if (selectedWork && !d.open) {
-      document.body.style.overflow = "hidden";
-      d.showModal();
-    } else if (!selectedWork && d.open) {
-      document.body.style.overflow = "";
-      d.close();
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [selectedWork]);
+
 
   async function copyEmail() {
     try {
@@ -496,89 +374,23 @@ export function V4Portfolio() {
           </div>
 
           <div className="v4BentoGrid" data-v4-unfold>
-            {bentoWorks.map((item) => (
+            {bentoWorks.map((item, idx) => (
               <TiltBentoCard
                 key={item.id}
                 item={item}
-                onSelect={setSelectedWork}
+                onSelect={() => setSelectedWorkIdx(idx)}
               />
             ))}
           </div>
         </section>
 
-        {/* ARCHITECTURE SHEET MODAL */}
-        <dialog
-          ref={dialogRef}
-          className="v4Sheet"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setSelectedWork(null);
-          }}
-          onCancel={() => setSelectedWork(null)}
-        >
-          {selectedWork && (
-            <div className="v4SheetInner">
-              <div className="v4SheetTop">
-                <span>
-                  PLATE {selectedWork.num} / {selectedWork.discipline.toUpperCase()}
-                </span>
-                <button type="button" onClick={() => setSelectedWork(null)}>
-                  Close ×
-                </button>
-              </div>
-              <div className="v4SheetBody">
-                <h2>{selectedWork.title}</h2>
-                <p className="v4SheetHeadline">{selectedWork.headline}</p>
-                <p className="v4SheetSummary">{selectedWork.summary}</p>
-                <div className="v4TagStrip">
-                  {selectedWork.stack.map((t) => (
-                    <span key={t}>{t}</span>
-                  ))}
-                </div>
-                <blockquote className="v4SheetQuote">
-                  <small>ARCHITECTURAL DECISION</small>
-                  <p>“{selectedWork.decision}”</p>
-                </blockquote>
-                {selectedWork.nodes && (
-                  <div className="v4SheetNodes">
-                    <small className="v4SheetLabel">SYSTEM PIPELINE</small>
-                    {selectedWork.nodes.map((node) => (
-                      <div className="v4NodeRow" key={node.layer}>
-                        <span>{node.layer}</span>
-                        <div>
-                          <strong>
-                            {node.title} · <em>{node.technology}</em>
-                          </strong>
-                          <p>{node.detail}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <div className="v4SheetActions">
-                  {selectedWork.caseHref && (
-                    <Link
-                      className="v4ArrowBtn"
-                      href={selectedWork.caseHref}
-                      onClick={() => setSelectedWork(null)}
-                    >
-                      Read Full Case Study ↗
-                    </Link>
-                  )}
-                  {selectedWork.repo && (
-                    <a
-                      className="v4LinkPlain"
-                      href={selectedWork.repo}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Explore Source on GitHub ↗
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </dialog>
+        {/* V1 PROJECT VIEW MODAL */}
+        <ProjectViewModal
+          projects={bentoWorks}
+          selectedIndex={selectedWorkIdx}
+          onSelectIndex={setSelectedWorkIdx}
+          onClose={() => setSelectedWorkIdx(null)}
+        />
 
         {/* ACT IV — ASCII SIGNAL RADAR & CAPABILITY LAB */}
         <section id="radar" className="v4Section v4Wrap v4RuleTop">

@@ -2,11 +2,11 @@ import "@/styles/v6.css";
 
 export const metadata = {
   title: {
-    default: "Shweta Sharma — From Research to Shipped AI (v6)",
+    default: "Shweta Sharma — Fullstack Engineer & Applied ML",
     template: "%s — Shweta Sharma",
   },
   description:
-    "v6 scroll-choreographed portfolio of Shweta Sharma: watch a product transform live from UX research to frontend UI, backend APIs, applied AI, and evaluation.",
+    "Scroll-choreographed portfolio of Shweta Sharma: watch a product transform live from UX research to frontend UI, backend APIs, applied AI, and evaluation.",
 };
 
 export default function V6Layout({ children }) {

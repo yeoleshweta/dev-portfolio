@@ -758,7 +758,7 @@ a:focus-visible, button:focus-visible {
 .briefInner h2 { margin-top: 24px; font-size: clamp(30px, 4vw, 44px); line-height: 1.04; letter-spacing: -0.04em; font-weight: 500; }
 .briefInner h2 em { font-family: var(--v4-serif); font-style: italic; font-weight: 400; color: var(--v4-amber); }
 .briefIntro { margin-top: 14px; font-size: 15px; line-height: 1.7; color: var(--v4-muted); max-width: 48ch; }
-.briefFacts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 26px 0; padding: 20px 0; border-top: 1px solid var(--v4-line); border-bottom: 1px solid var(--v4-line); }
+.briefFacts { display: grid; grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr); gap: 18px; margin: 26px 0; padding: 20px 0; border-top: 1px solid var(--v4-line); border-bottom: 1px solid var(--v4-line); }
 .briefFacts dt { font-family: var(--v4-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--v4-amber); margin-bottom: 6px; }
 .briefFacts dd { margin: 0; font-size: 13px; line-height: 1.55; color: var(--v4-ink); }
 .briefProof .tinyLabel { display: block; font-family: var(--v4-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--v4-dim); margin-bottom: 10px; }

@@ -208,24 +208,124 @@ export function SculpturalArtifactCanvas({ progressRef, theme = "dark" }) {
         s3[i3 + 1] = cy + Math.sin(tubeA) * tubeR;
         s3[i3 + 2] = cz + Math.sin(tubeA + kt) * tubeR;
 
-        // Shape 4: Dual-Hemisphere Neural Brain
-        const hemi = i % 2 === 0 ? 1 : -1;
-        const bTheta = Math.random() * Math.PI * 2;
-        const bPhi = Math.acos(2 * Math.random() - 1);
-        let bx = Math.sin(bPhi) * Math.cos(bTheta);
-        let by = Math.sin(bPhi) * Math.sin(bTheta);
-        let bz = Math.cos(bPhi);
-        bx = Math.abs(bx) * 0.74 * hemi + hemi * 0.12;
-        by *= 0.94;
-        bz *= 1.22;
-        const fold =
-          1.0 +
-          0.11 * Math.sin(bx * 10.0 + bz * 8.0) * Math.cos(by * 9.0) +
-          0.07 * Math.cos(bz * 13.0 - by * 7.0);
-        const br = (0.92 + Math.pow(Math.random(), 2.0) * 0.24) * fold;
-        s4[i3] = bx * br * 1.12;
-        s4[i3 + 1] = by * br * 1.02;
-        s4[i3 + 2] = bz * br * 1.08;
+        // Shape 4: Sculpted 3D Human Brain — Winding Cortical Gyri Ribbons, Striated Cerebellum & Brainstem
+        const brainZone = i / COUNT;
+        const mapCortex = (lon, lat, hemi) => {
+          const cLat = Math.cos(lat);
+          const sx = Math.max(0, cLat * Math.sin(lon)); // 0 (midline/poles) .. 1 (lateral)
+          const sy = Math.sin(lat);                     // -1 (inferior) .. +1 (superior)
+          const sz = cLat * Math.cos(lon);              // +1 (frontal) .. -1 (occipital)
+
+          // Anatomical lobe shaping
+          const frontalNarrow = sz > 0 ? 1.0 - 0.20 * Math.pow(sz, 1.8) : 1.0 - 0.14 * Math.pow(-sz, 2.0);
+          const crownArch = sy > 0 ? 0.12 * Math.exp(-Math.pow(sz + 0.08, 2) * 2.0) * sy : 0.0;
+          // Carve a clean concave undercut at the posterior-inferior base so cerebellum tucks neatly beneath
+          const occUndercut = sz < -0.10 && sy < 0.15 ? Math.pow(-sz - 0.10, 1.15) * (0.15 - sy) * 0.52 : 0.0;
+          // Gentle orbital lift at the front underside
+          const orbitalLift = sz > 0.25 && sy < -0.10 ? (sz - 0.25) * (-0.10 - sy) * 0.42 : 0.0;
+          // Temporal lobe bulge (lower-lateral mid-section)
+          const tempBulge =
+            Math.exp(-Math.pow((sz - 0.06) / 0.42, 2)) *
+            Math.exp(-Math.pow((sy + 0.38) / 0.30, 2)) *
+            Math.max(0, sx - 0.28);
+
+          const fissureGap = 0.065 + 0.025 * Math.max(0, sy);
+          const x = hemi * (fissureGap + (Math.pow(sx, 0.86) * 0.68 * frontalNarrow + tempBulge * 0.18));
+          let y = sy * 0.76 + crownArch + occUndercut + orbitalLift - tempBulge * 0.14 + 0.22;
+          if (y < -0.26 && sz > -0.15) y = -0.26 + (y + 0.26) * 0.52;
+          const z = sz * 1.18 + tempBulge * 0.06;
+          return [x, y, z];
+        };
+
+        if (brainZone < 0.78) {
+          // 16 distinct meandering 3D gyri ribbons per hemisphere (tight glowing tubes with dark sulci gaps)
+          const hemi = i % 2 === 0 ? 1 : -1;
+          const gyrusIdx = Math.floor(i / 2) % 16;
+          const u = Math.random(); // 0..1 along the gyrus curve
+          let lon, lat;
+
+          if (gyrusIdx < 10) {
+            // Long anterior-to-posterior meandering cortical gyri across frontal, parietal & occipital lobes
+            const band = gyrusIdx / 9; // 0 (crown) .. 1 (lower lateral)
+            lat = 1.24 - band * 1.48;
+            lon = 0.14 + u * (Math.PI - 0.28);
+            const freq = 3.2 + (gyrusIdx % 3) * 0.85;
+            const phase = gyrusIdx * 1.65 + (hemi > 0 ? 0 : 0.65);
+            lat += Math.sin(u * Math.PI * freq + phase) * 0.13 + Math.cos(u * Math.PI * (freq * 1.7) - phase) * 0.045;
+            lon += Math.cos(u * Math.PI * freq + phase) * 0.07;
+            // Carve a crisp Sylvian fissure gap between temporal lobe and upper lobes
+            const sylvianY = -0.16 + (lon - 1.15) * 0.34;
+            if (lon > 0.75 && lon < 2.15 && Math.abs(lat - sylvianY) < 0.11) {
+              lat += lat >= sylvianY ? 0.11 : -0.11;
+            }
+          } else if (gyrusIdx < 13) {
+            // Winding central / pre-central / post-central vertical-ish gyri arcs
+            const arcIdx = gyrusIdx - 10; // 0, 1, 2
+            const baseLon = 1.05 + arcIdx * 0.42;
+            lat = -0.12 + u * 1.42;
+            const phase = arcIdx * 2.1 + (hemi > 0 ? 0 : 0.5);
+            lon = baseLon + Math.sin(u * Math.PI * 3.4 + phase) * 0.16;
+          } else {
+            // 3 distinct temporal lobe gyri curving cleanly along the lower-lateral lobe
+            const tIdx = gyrusIdx - 13; // 0, 1, 2
+            lon = 0.78 + u * 1.42;
+            const baseLat = -0.26 - tIdx * 0.20;
+            lat = baseLat + (lon - 1.45) * 0.16 + Math.sin(u * Math.PI * 3.0 + tIdx * 1.9) * 0.065;
+          }
+
+          lat = Math.max(-1.42, Math.min(1.44, lat));
+          lon = Math.max(0.08, Math.min(Math.PI - 0.08, lon));
+          const [gx, gy, gz] = mapCortex(lon, lat, hemi);
+
+          // Tight tube cross-section so each gyrus reads as a crisp glowing ribbon with dark sulci beside it
+          const tAng = Math.random() * Math.PI * 2;
+          const tRad = Math.pow(Math.random(), 0.65) * 0.044;
+          const len = Math.hypot(gx, gy - 0.15, gz) || 1;
+          const nx = gx / len, ny = (gy - 0.15) / len, nz = gz / len;
+          // Tangent orthogonal basis
+          const ux = -nz, uy = 0, uz = nx;
+          const uLen = Math.hypot(ux, uy, uz) || 1;
+          const tx = ux / uLen, tz = uz / uLen;
+          const bx = -ny * tz, by = nx * tz - nz * tx, bz = ny * tx;
+
+          const cA = Math.cos(tAng) * tRad;
+          const sA = Math.sin(tAng) * tRad;
+          s4[i3] = gx + (tx * cA + bx * sA) + nx * (tRad * 0.35);
+          s4[i3 + 1] = gy + (by * sA) + ny * (tRad * 0.35);
+          s4[i3 + 2] = gz + (tz * cA + bz * sA) + nz * (tRad * 0.35);
+        } else if (brainZone < 0.92) {
+          // Cerebellum: 7 crisp, horizontally striated folia arcs tucked cleanly underneath the occipital undercut
+          const hemi = i % 2 === 0 ? 1 : -1;
+          const foliaIdx = Math.floor(i / 2) % 7;
+          const fLat = -0.92 + (foliaIdx / 6) * 1.76; // stacked horizontal bands
+          const fLon = 0.18 + Math.random() * (Math.PI - 0.36);
+          const cLat = Math.cos(fLat);
+          const sx = Math.max(0, cLat * Math.sin(fLon));
+          const sy = Math.sin(fLat);
+          const sz = cLat * Math.cos(fLon);
+          const jitter = 0.017;
+          s4[i3] = hemi * (0.04 + sx * 0.38) + (Math.random() - 0.5) * jitter;
+          s4[i3 + 1] = -0.49 + sy * 0.21 + (Math.random() - 0.5) * jitter * 0.65;
+          s4[i3 + 2] = -0.68 + sz * 0.30 + (Math.random() - 0.5) * jitter;
+        } else if (brainZone < 0.98) {
+          // Brainstem: vertical nerve-tract strands with anterior pons bulge tapering into the medulla
+          const strandIdx = i % 12;
+          const h = Math.random(); // 0 = midbrain top .. 1 = medulla base
+          const baseAng = (strandIdx / 12) * Math.PI * 2 + h * 0.22;
+          const pons = Math.exp(-Math.pow((h - 0.28) / 0.20, 2)) * 0.075;
+          const rad = 0.145 * (1.0 - h * 0.44) + pons;
+          const j = 0.018;
+          s4[i3] = Math.cos(baseAng) * rad + (Math.random() - 0.5) * j;
+          s4[i3 + 1] = -0.28 - h * 0.76;
+          s4[i3 + 2] = -0.14 - h * 0.16 + Math.sin(baseAng) * rad + pons * 0.55 + (Math.random() - 0.5) * j;
+        } else {
+          // Subtle inner corpus callosum arch bridging the hemispheres
+          const u = Math.random() * 2 - 1;
+          const zArc = Math.random() * 2 - 1;
+          s4[i3] = u * 0.20;
+          s4[i3 + 1] = 0.12 + 0.14 * Math.cos(zArc * 1.4) + (Math.random() - 0.5) * 0.02;
+          s4[i3 + 2] = zArc * 0.38 + 0.04;
+        }
 
         // Shape 5: Faceted Brilliant-Cut Diamond
         const dAng = Math.random() * Math.PI * 2;

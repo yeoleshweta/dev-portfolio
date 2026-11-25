@@ -6,9 +6,10 @@ import { AetherglintCanvas } from "@/components/v4/AetherglintCanvas";
 import { V5Header } from "@/components/v5/V5Header";
 import { HiringBrief } from "@/components/portfolio/HiringBrief";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
-import { profile, projects, experience } from "@/content/profile";
-import { systems, archive } from "@/content/engineering";
+import { ProjectViewModal } from "@/components/portfolio/ProjectViewModal";
+import { profile, experience } from "@/content/profile";
 import "@/styles/gallery.css";
+import { selectedProjects } from "@/content/selected-projects";
 
 const fieldNotes = [
   {
@@ -37,112 +38,7 @@ const fieldNotes = [
   },
 ];
 
-const herbariumBuilds = [
-  {
-    id: "bias-checker",
-    num: "01",
-    year: "2025–2026",
-    title: "Bias Checker",
-    field: "Healthcare · Applied AI",
-    headline: "A prediction needs an explanation.",
-    summary:
-      "Solo-built healthcare bias-detection system connecting a fine-tuned RoBERTa + LoRA classifier, GPT-4o explanation layer, Flask API, and Next.js interface deployed via Docker on Hugging Face Spaces.",
-    stack: ["Next.js", "Flask", "RoBERTa + LoRA", "GPT-4o", "Docker"],
-    repo: systems[0].repository,
-    nodes: systems[0].nodes,
-    decision: systems[0].decision,
-    blueprint: {
-      kicker: "PIPELINE SPECIMEN · 01 → 04",
-      diagram: "Clinical Vignette → RoBERTa + LoRA → GPT-4o Explainability → Review",
-      foot: "Solo full-stack build · Hugging Face Spaces",
-    },
-  },
-  {
-    id: "gesturepro",
-    num: "02",
-    year: "2025",
-    title: "GesturePro",
-    field: "Computer Vision · Interaction",
-    headline: "Keep the signer in control.",
-    summary:
-      "Browser prototype reading 21 MediaPipe hand landmarks per frame into editable text, keeping human correction central and validated across six usability participants.",
-    stack: ["Next.js", "FastAPI", "MediaPipe", "TensorFlow"],
-    image: projects[0].image,
-    alt: projects[0].alt,
-    caseHref: `/work/${projects[0].slug}/`,
-    repo: projects[0].repository,
-    nodes: systems[1].nodes,
-    decision: systems[1].decision,
-  },
-  {
-    id: "urbanfit",
-    num: "03",
-    year: "2022",
-    title: "Urbanfit Control Panel",
-    field: "Product Design · Systems",
-    headline: "One inventory, three perspectives.",
-    summary:
-      "Multi-role desktop workspace spanning 30 screens and 484 connected interactions for administrators, warehouse teams, and franchise shops.",
-    stack: ["Figma", "Design Systems", "Interaction Design"],
-    image: projects[1].image,
-    alt: projects[1].alt,
-    caseHref: `/work/${projects[1].slug}/`,
-    decision:
-      "Anchor three distinct operational roles to one shared navigation grammar and consistent table patterns.",
-  },
-  {
-    id: "pocketsaver",
-    num: "04",
-    year: "2025",
-    title: "PocketSaver",
-    field: "Fullstack · Forecasting",
-    headline: "Follow the request end to end.",
-    summary:
-      "Finance platform orchestrating a Next.js frontend, Node.js API proxy, PostgreSQL database, and an isolated Python forecasting service in Docker Compose.",
-    stack: ["Next.js", "Node.js", "PostgreSQL", "Python", "Docker"],
-    repo: systems[2].repository,
-    nodes: systems[2].nodes,
-    decision: systems[2].decision,
-    blueprint: {
-      kicker: "TOPOLOGY SPECIMEN · MULTI-SERVICE",
-      diagram: "Next.js Client → Node /api/forecast → PostgreSQL + Python /predict",
-      foot: "Docker Compose stack · Explicit service boundaries",
-    },
-  },
-  {
-    id: "clinical-communication",
-    num: "05",
-    year: "2025",
-    title: "Clinical Communication",
-    field: "ABIM · Supervised NLP",
-    headline: "Making clinical dialogue legible.",
-    summary:
-      "Annotated doctor-patient dialogue workflow mapping supervised NLP predictions to established Calgary-Cambridge and NURSE communication frameworks.",
-    stack: ["Python", "NLP", "Label Studio"],
-    image: projects[2].image,
-    alt: projects[2].alt,
-    caseHref: `/work/${projects[2].slug}/`,
-    decision:
-      "Connect every model output to named clinical communication frameworks so reviewers can audit predictions.",
-  },
-  {
-    id: "centralperk",
-    num: "06",
-    year: "In Progress",
-    title: "CentralPerk",
-    field: "Multi-Agent Systems",
-    headline: "Transparent agent handoffs.",
-    summary: archive[0].description,
-    stack: ["LangGraph", "FastAPI", "React", "Tailwind CSS"],
-    decision:
-      "Surface completed versus deferred agent work explicitly at the interface layer.",
-    blueprint: {
-      kicker: "ACTIVE RESEARCH · MULTI-AGENT",
-      diagram: "LangGraph Orchestrator → Agent Handoff → Visible Human Ledger",
-      foot: "In active development · Deliberate non-capture UX",
-    },
-  },
-];
+const herbariumBuilds = selectedProjects;
 
 const craftFilters = [
   { id: "all", label: "All Craft" },
@@ -186,12 +82,10 @@ const pathHighlights = {
 
 export function V5Portfolio() {
   const [activeBuildIdx, setActiveBuildIdx] = useState(0);
-  const [modalBuild, setModalBuild] = useState(null);
+  const [modalBuildIdx, setModalBuildIdx] = useState(null);
   const [craftCat, setCraftCat] = useState("all");
   const [hoveredToken, setHoveredToken] = useState(null);
   const [copied, setCopied] = useState(false);
-
-  const sheetRef = useRef(null);
 
   useEffect(() => {
     const els = [...document.querySelectorAll("[data-v5-reveal]")];
@@ -215,20 +109,7 @@ export function V5Portfolio() {
     return () => obs.disconnect();
   }, []);
 
-  useEffect(() => {
-    const d = sheetRef.current;
-    if (!d) return;
-    if (modalBuild && !d.open) {
-      document.body.style.overflow = "hidden";
-      d.showModal();
-    } else if (!modalBuild && d.open) {
-      document.body.style.overflow = "";
-      d.close();
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [modalBuild]);
+
 
   async function copyEmail() {
     try {
@@ -364,7 +245,7 @@ export function V5Portfolio() {
             <div className="v5SpotlightCard" key={currentBuild.id}>
               <div
                 className="v5SpotlightMedia"
-                onClick={() => setModalBuild(currentBuild)}
+                onClick={() => setModalBuildIdx(activeBuildIdx)}
               >
                 {currentBuild.image ? (
                   <Image
@@ -405,10 +286,11 @@ export function V5Portfolio() {
                   <button
                     type="button"
                     className="v5BtnPetal"
-                    onClick={() => setModalBuild(currentBuild)}
+                    onClick={() => setModalBuildIdx(activeBuildIdx)}
                   >
                     Inspect Architecture ↗
                   </button>
+                  {currentBuild.liveHref && (<a className="v5BtnPlain" href={currentBuild.liveHref} target="_blank" rel="noreferrer">Visit live site ↗</a>)}
                   {currentBuild.caseHref && (
                     <Link className="v5BtnMist" href={currentBuild.caseHref}>
                       Case Study ↗
@@ -447,79 +329,13 @@ export function V5Portfolio() {
           </div>
         </section>
 
-        {/* ARCHITECTURE SHEET DIALOG */}
-        <dialog
-          ref={sheetRef}
-          className="v5Sheet"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setModalBuild(null);
-          }}
-          onCancel={() => setModalBuild(null)}
-        >
-          {modalBuild && (
-            <div className="v5SheetInner">
-              <div className="v5SheetTop">
-                <span>
-                  PLATE {modalBuild.num} · {modalBuild.field.toUpperCase()}
-                </span>
-                <button type="button" onClick={() => setModalBuild(null)}>
-                  Close ×
-                </button>
-              </div>
-              <div className="v5SheetBody">
-                <h2>{modalBuild.title}</h2>
-                <p className="v5SheetDeck">{modalBuild.headline}</p>
-                <p className="v5SheetSummary">{modalBuild.summary}</p>
-                <div className="v5PillStack" style={{ margin: "22px 0" }}>
-                  {modalBuild.stack.map((t) => (
-                    <span key={t}>{t}</span>
-                  ))}
-                </div>
-                <blockquote className="v5SheetQuote">
-                  <small>ARCHITECTURAL DECISION</small>
-                  <p>“{modalBuild.decision}”</p>
-                </blockquote>
-                {modalBuild.nodes && (
-                  <div className="v5SheetNodes">
-                    <small className="v5SheetSub">SYSTEM PIPELINE</small>
-                    {modalBuild.nodes.map((node) => (
-                      <div className="v5NodeRow" key={node.layer}>
-                        <span>{node.layer}</span>
-                        <div>
-                          <strong>
-                            {node.title} · <em>{node.technology}</em>
-                          </strong>
-                          <p>{node.detail}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <div className="v5SpotlightActions" style={{ marginTop: "30px" }}>
-                  {modalBuild.caseHref && (
-                    <Link
-                      className="v5BtnPetal"
-                      href={modalBuild.caseHref}
-                      onClick={() => setModalBuild(null)}
-                    >
-                      Read Full Case Study ↗
-                    </Link>
-                  )}
-                  {modalBuild.repo && (
-                    <a
-                      className="v5BtnMist"
-                      href={modalBuild.repo}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Explore Source on GitHub ↗
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </dialog>
+        {/* V1 PROJECT VIEW MODAL */}
+        <ProjectViewModal
+          projects={herbariumBuilds}
+          selectedIndex={modalBuildIdx}
+          onSelectIndex={setModalBuildIdx}
+          onClose={() => setModalBuildIdx(null)}
+        />
 
         {/* ACT IV — LIVING CRAFT CONSTELLATION */}
         <section id="craft" className="v5Section v5Wrap v5MistDivider">

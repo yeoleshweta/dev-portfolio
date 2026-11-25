@@ -480,9 +480,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
 
 .v6ChapterCard {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   width: min(44vw, 520px);
-  padding: 36px 38px;
+  padding: 32px 34px;
   border-radius: 22px;
   border: 1px solid rgb(255 255 255 / 0.15);
   border-top-color: rgb(255 255 255 / 0.32);
@@ -508,6 +508,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: radial-gradient(
     520px circle at 10% -6%,
     rgb(255 255 255 / 0.14),
@@ -635,6 +636,209 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
   color: var(--v6-dim);
 }
 
+/* Unboxed Editorial Monograph Chapters floating directly on the canvas */
+.v6EditorialColumn {
+  position: relative;
+  width: min(46vw, 560px);
+  padding: 6px 0;
+}
+.v6ChapterGhostNum {
+  position: absolute;
+  top: -54px;
+  right: -12px;
+  font-family: var(--v6-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(120px, 13vw, 188px);
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  color: var(--phase-accent);
+  opacity: 0.075;
+  pointer-events: none;
+  user-select: none;
+}
+.v6AlignLeft .v6ChapterGhostNum {
+  right: auto;
+  left: -18px;
+}
+.v6KickerRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.v6KickerRow .v6Kicker {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+.v6KickerDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--phase-accent);
+  box-shadow: 0 0 12px var(--phase-accent);
+  flex-shrink: 0;
+}
+.v6KickerRule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--phase-accent) 45%, transparent), transparent);
+}
+.v6EditorialTitle {
+  font-size: clamp(38px, 4.3vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  margin-bottom: 18px;
+}
+.v6EditorialMetrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 26px 0 24px;
+  padding: 18px 0;
+  border-top: 1px solid var(--v6-line);
+  border-bottom: 1px solid var(--v6-line);
+}
+.v6EditorialStat {
+  padding-right: 20px;
+}
+.v6EditorialStat + .v6EditorialStat {
+  padding-right: 0;
+  padding-left: 24px;
+  border-left: 1px solid var(--v6-line);
+}
+.v6EditorialStat strong {
+  display: block;
+  font-family: var(--v6-serif);
+  font-style: italic;
+  font-size: clamp(28px, 2.8vw, 38px);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--phase-accent);
+  margin-bottom: 6px;
+}
+.v6EditorialStat span {
+  display: block;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--v6-muted);
+}
+.v6ChapterSubHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-family: var(--v6-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--v6-dim);
+}
+.v6MiniLink {
+  flex-shrink: 0;
+  font-family: var(--v6-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--phase-accent);
+  padding-bottom: 1px;
+  border-bottom: 1px solid color-mix(in srgb, var(--phase-accent) 45%, transparent);
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+.v6MiniLink:hover { opacity: 0.85; border-bottom-color: var(--phase-accent); }
+.v6SkillStream {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 0;
+  margin-bottom: 24px;
+}
+.v6SkillStreamItem {
+  display: inline-flex;
+  align-items: baseline;
+}
+.v6TipWord {
+  position: relative;
+  font-family: var(--v6-serif);
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.45;
+  color: rgb(244 243 239 / 0.88);
+  padding-bottom: 2px;
+  border-bottom: 1px dotted rgb(244 243 239 / 0.24);
+  cursor: default;
+  transition: color 0.22s ease, border-color 0.22s ease;
+}
+.v6TipWord:hover,
+.v6TipWord:focus-visible {
+  z-index: 30;
+  color: var(--phase-accent);
+  border-bottom-color: var(--phase-accent);
+  outline: none;
+}
+.v6SkillSlash {
+  margin: 0 11px;
+  font-family: var(--v6-mono);
+  font-size: 11px;
+  color: color-mix(in srgb, var(--phase-accent) 42%, var(--v6-dim));
+  user-select: none;
+}
+.v6Tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  width: 244px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--phase-accent) 44%, rgb(255 255 255 / 0.18));
+  border-top-color: color-mix(in srgb, var(--phase-accent) 68%, white);
+  background: linear-gradient(155deg, rgb(22 25 36 / 0.96), rgb(11 13 19 / 0.98));
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  box-shadow: 0 18px 44px -10px rgb(0 0 0 / 0.82), inset 0 1px 0 rgb(255 255 255 / 0.22);
+  font-family: var(--v6-sans);
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.52;
+  letter-spacing: 0;
+  color: var(--v6-muted);
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 6px) scale(0.96);
+  transition: opacity 0.22s var(--ease), transform 0.22s var(--ease), visibility 0.22s;
+  z-index: 40;
+}
+.v6Tooltip b {
+  display: block;
+  font-family: var(--v6-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--phase-accent);
+  margin-bottom: 4px;
+}
+.v6Tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  background: rgb(13 15 22 / 0.98);
+  border-right: 1px solid color-mix(in srgb, var(--phase-accent) 42%, rgb(255 255 255 / 0.16));
+  border-bottom: 1px solid color-mix(in srgb, var(--phase-accent) 42%, rgb(255 255 255 / 0.16));
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.v6TipWord:hover .v6Tooltip,
+.v6TipWord:focus-visible .v6Tooltip,
+.v6ProofIndexItem:hover .v6Tooltip,
+.v6ProofIndexItem:focus-visible .v6Tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0) scale(1);
+}
 .v6SkillStrip {
   display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0;
 }
@@ -661,6 +865,67 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--phase-accent) 48%, rgb(255 255 255 / 0.25));
   background: linear-gradient(135deg, rgb(255 255 255 / 0.14), color-mix(in srgb, var(--phase-accent) 12%, transparent));
+}
+.v6ChapterProofLabel {
+  display: block;
+  font-family: var(--v6-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--v6-dim);
+  margin-bottom: 10px;
+}
+.v6ProofIndexGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+.v6ProofIndexItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px 0 4px;
+  border-top: 1px solid var(--v6-line-strong);
+  text-align: left;
+  transition: border-color 0.25s ease;
+}
+.v6ProofIndexItem:hover,
+.v6ProofIndexItem:focus-visible {
+  z-index: 30;
+  border-top-color: var(--phase-accent);
+  outline: none;
+}
+.v6ProofIndexItem strong {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--v6-ink);
+  letter-spacing: -0.01em;
+  transition: color 0.25s ease;
+}
+.v6ProofIndexItem:hover strong {
+  color: var(--phase-accent);
+}
+.v6ProofIndexItem strong i {
+  font-style: normal;
+  font-family: var(--v6-mono);
+  font-size: 12px;
+  color: var(--phase-accent);
+  transition: transform 0.25s var(--ease);
+}
+.v6ProofIndexItem:hover strong i {
+  transform: translate(2px, -2px);
+}
+.v6ProofIndexItem span {
+  display: block;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--v6-muted);
+  margin-top: 4px;
 }
 .v6ProofBox {
   padding: 16px 18px;
@@ -853,7 +1118,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
 .briefInner h2 { margin-top: 24px; font-size: clamp(30px, 4vw, 44px); line-height: 1.04; letter-spacing: -0.04em; font-weight: 500; }
 .briefInner h2 em { font-family: var(--v6-serif); font-style: italic; font-weight: 400; color: var(--v6-gold); }
 .briefIntro { margin-top: 14px; font-size: 15px; line-height: 1.7; color: var(--v6-muted); max-width: 48ch; }
-.briefFacts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 26px 0; padding: 20px 0; border-top: 1px solid var(--v6-line); border-bottom: 1px solid var(--v6-line); }
+.briefFacts { display: grid; grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr); gap: 18px; margin: 26px 0; padding: 20px 0; border-top: 1px solid var(--v6-line); border-bottom: 1px solid var(--v6-line); }
 .briefFacts dt { font-family: var(--v6-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--v6-gold); margin-bottom: 6px; }
 .briefFacts dd { margin: 0; font-size: 13px; line-height: 1.55; }
 .briefProof .tinyLabel { display: block; font-family: var(--v6-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--v6-dim); margin-bottom: 10px; }
@@ -919,7 +1184,13 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
 }
 
 /* 05 / FEATURED BUILD SPOTLIGHT (FROSTED GLASS) */
+/* Overlapping panels reserve the tallest project's space before selection. */
+.v6SpotlightStack {
+  display: grid;
+}
 .v6GlassSpotlight {
+  grid-area: 1 / 1;
+  min-width: 0;
   position: relative;
   overflow: hidden;
   display: grid;
@@ -942,11 +1213,15 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
   border-radius: 16px;
   overflow: hidden;
   min-height: 340px;
+  aspect-ratio: 1;
+  align-self: stretch;
   cursor: pointer;
   border: 1px solid rgb(255 255 255 / 0.14);
   background: rgb(11 12 18 / 0.55);
 }
 .v6SpotlightVisual img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -954,6 +1229,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
 }
 .v6SpotlightVisual:hover img { transform: scale(1.03); }
 .v6BlueprintSpecimen {
+  position: absolute;
+  inset: 0;
   height: 100%;
   min-height: 340px;
   padding: 28px;
@@ -1351,7 +1628,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--v6-gold); outli
   .v6Spine { display: none; }
   .v6ArtifactRig { width: min(88vw, 480px); transform: translate3d(0, 0, 0) scale(0.92) !important; opacity: 0.22; }
   .v6AlignLeft .v6Wrap, .v6AlignRight .v6Wrap { justify-content: center; }
-  .v6ChapterCard, .v6ChapterHero .v6ChapterCard, .v6CardWide { width: min(100%, 560px); }
+  .v6ChapterCard, .v6ChapterHero .v6ChapterCard, .v6CardWide, .v6EditorialColumn { width: min(100%, 560px); }
   .v6GlassSpotlight { grid-template-columns: 1fr; }
   .v6BandHeadRight { align-items: flex-start; }
   .v6CraftReadout { grid-template-columns: 1fr; gap: 10px; }
@@ -1436,6 +1713,18 @@ html[data-v6-theme="light"] .v6Body {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
+[data-v6-theme="light"] .v6ChapterGhostNum {
+  opacity: 0.08;
+}
+[data-v6-theme="light"] .v6TipWord {
+  color: rgb(22 20 26 / 0.86);
+  border-bottom-color: rgb(22 20 26 / 0.24);
+}
+[data-v6-theme="light"] .v6TipWord:hover,
+[data-v6-theme="light"] .v6TipWord:focus-visible {
+  color: var(--phase-accent);
+  border-bottom-color: var(--phase-accent);
+}
 [data-v6-theme="light"] .v6SkillStrip span,
 [data-v6-theme="light"] .v6GlassPillBtn,
 [data-v6-theme="light"] .v6RailBtn,
@@ -1452,6 +1741,18 @@ html[data-v6-theme="light"] .v6Body {
 [data-v6-theme="light"] .v6CraftFilterBtn[aria-selected="true"] {
   border-color: color-mix(in srgb, var(--phase-accent) 55%, rgb(22 20 26 / 0.15));
   background: linear-gradient(135deg, rgb(255 255 255 / 0.92), color-mix(in srgb, var(--phase-accent) 14%, rgb(255 255 255 / 0.65)));
+}
+[data-v6-theme="light"] .v6Tooltip {
+  border-color: color-mix(in srgb, var(--phase-accent) 42%, rgb(22 20 26 / 0.14));
+  border-top-color: rgb(255 255 255 / 0.96);
+  background: linear-gradient(155deg, rgb(255 255 255 / 0.96), rgb(245 242 235 / 0.97));
+  box-shadow: 0 16px 38px -12px rgb(22 20 26 / 0.22), inset 0 1px 0 rgb(255 255 255 / 0.95);
+  color: #524e5a;
+}
+[data-v6-theme="light"] .v6Tooltip::after {
+  background: rgb(246 243 236 / 0.97);
+  border-right-color: color-mix(in srgb, var(--phase-accent) 40%, rgb(22 20 26 / 0.14));
+  border-bottom-color: color-mix(in srgb, var(--phase-accent) 40%, rgb(22 20 26 / 0.14));
 }
 [data-v6-theme="light"] .v6SpotlightVisual {
   border-color: rgb(22 20 26 / 0.12);

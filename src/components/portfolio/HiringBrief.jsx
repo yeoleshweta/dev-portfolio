@@ -61,12 +61,16 @@ export function HiringBrief({ triggerClassName = "briefTrigger", biasHref = "#bi
           <dl className="briefFacts">
             <div>
               <dt>Based in</dt>
-              <dd>Philadelphia, PA · Open to relocate</dd>
+              <dd>
+                Philadelphia, PA
+                <br />
+                Open to relocate
+              </dd>
             </div>
             <div>
               <dt>Education</dt>
               <dd>
-                MS Computer Science, AI & ML
+                <span style={{ whiteSpace: "nowrap" }}>MS Computer Science, AI &amp; ML</span>
                 <br />
                 Drexel University · 3.97 / 4.0 GPA
               </dd>
@@ -95,10 +99,9 @@ export function HiringBrief({ triggerClassName = "briefTrigger", biasHref = "#bi
               </span>
               <i aria-hidden="true">↗</i>
             </a>
-            <a href="/work/urbanfit/">
+            <a href="https://klyro-pro.vercel.app/" target="_blank" rel="noreferrer">
               <span>
-                <strong>Urbanfit</strong>30 screens. A shared interaction
-                system.
+                <strong>Klyro</strong>Source-grounded AI copilot for websites.
               </span>
               <i aria-hidden="true">↗</i>
             </a>

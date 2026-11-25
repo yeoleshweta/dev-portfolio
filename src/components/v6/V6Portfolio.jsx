@@ -7,9 +7,10 @@ import { SculpturalArtifactCanvas } from "@/components/v6/SculpturalArtifactCanv
 import { AetherglintCanvas } from "@/components/v4/AetherglintCanvas";
 import { HiringBrief } from "@/components/portfolio/HiringBrief";
 import { PersonalGallery } from "@/components/portfolio/PersonalGallery";
-import { profile, projects, experience } from "@/content/profile";
-import { systems, archive } from "@/content/engineering";
+import { ProjectViewModal } from "@/components/portfolio/ProjectViewModal";
+import { profile, experience } from "@/content/profile";
 import "@/styles/gallery.css";
+import { selectedProjects } from "@/content/selected-projects";
 
 const CHAPTERS = [
   { id: "arrival", num: "01", label: "Intro", accent: "#e8b85a", accentLight: "#a66c14", side: "right", state: "01 · RAW GRAIN MASS", mapping: "Unshaped mineral cloud — scroll to sculpt it through 5 builds" },
@@ -18,118 +19,13 @@ const CHAPTERS = [
   { id: "backend", num: "04", label: "Backend APIs", accent: "#3ee09c", accentLight: "#0d8456", side: "left", state: "04 · FLOWING TORUS PIPELINE", mapping: "Unwinds into a continuous data loop → APIs & PostgreSQL" },
   { id: "ai", num: "05", label: "AI & ML", accent: "#a76bff", accentLight: "#6a32c9", side: "right", state: "05 · DUAL-HEMISPHERE NEURAL BRAIN", mapping: "Folds into a firing neural network → Applied AI & Eval" },
   { id: "testing", num: "06", label: "Tested & Shipped", accent: "#e8b85a", accentLight: "#a66c14", side: "left", state: "06 · BRILLIANT-CUT DIAMOND", mapping: "Compressed, faceted & verified → QA, Usability & Shipped" },
-  { id: "works", num: "07", label: "Selected Builds", accent: "#e8b85a", accentLight: "#a66c14", side: "center", state: "SHIPPED BUILDS", mapping: "Inspect every shipped system & architecture" },
+  { id: "works", num: "07", label: "Selected Builds", accent: "#e8b85a", accentLight: "#a66c14", side: "center", state: "SELECTED PROJECTS", mapping: "Explore the projects and their architecture" },
   { id: "craft", num: "08", label: "Craft & Toolkit", accent: "#e8b85a", accentLight: "#a66c14", side: "center", state: "CRAFT & TOOLKIT", mapping: "Every framework & method behind the shipped work" },
   { id: "trajectory", num: "09", label: "Trajectory", accent: "#d992b4", accentLight: "#a33f6e", side: "center", state: "THE FINISHED CUT", mapping: "Six years of craft + MS AI & ML (3.97 GPA)" },
   { id: "contact", num: "10", label: "Next Build", accent: "#f093c4", accentLight: "#f093c4", side: "center", state: "READY FOR WHAT'S NEXT", mapping: "Let's shape the next product from research to shipped AI" },
 ];
 
-const shippedWorks = [
-  {
-    id: "bias-checker",
-    num: "01",
-    year: "2025–2026",
-    title: "Bias Checker",
-    field: "Healthcare · Applied AI",
-    headline: "A prediction needs an explanation.",
-    summary:
-      "Solo-built healthcare bias-detection system connecting a fine-tuned RoBERTa + LoRA classifier, GPT-4o explanation layer, Flask API, and Next.js interface deployed via Docker on Hugging Face Spaces.",
-    stack: ["Next.js", "Flask", "RoBERTa + LoRA", "GPT-4o", "Docker"],
-    repo: systems[0].repository,
-    nodes: systems[0].nodes,
-    decision: systems[0].decision,
-    blueprint: {
-      kicker: "PIPELINE SPECIMEN · 01 → 04",
-      diagram: "Clinical Vignette → RoBERTa + LoRA → GPT-4o Explainability → Review",
-      foot: "Solo full-stack build · Hugging Face Spaces",
-    },
-  },
-  {
-    id: "gesturepro",
-    num: "02",
-    year: "2025",
-    title: "GesturePro",
-    field: "Computer Vision · Interaction",
-    headline: "Keep the signer in control.",
-    summary:
-      "Browser prototype reading 21 MediaPipe hand landmarks per frame into editable text, validated with six usability testing participants.",
-    stack: ["Next.js", "FastAPI", "MediaPipe", "TensorFlow"],
-    image: projects[0].image,
-    alt: projects[0].alt,
-    caseHref: `/work/${projects[0].slug}/`,
-    repo: projects[0].repository,
-    nodes: systems[1].nodes,
-    decision: systems[1].decision,
-  },
-  {
-    id: "urbanfit",
-    num: "03",
-    year: "2022",
-    title: "Urbanfit Control Panel",
-    field: "Product Design · Systems",
-    headline: "One inventory, three perspectives.",
-    summary:
-      "Multi-role desktop workspace spanning 30 screens and 484 connected interactions for administrators, warehouse teams, and franchise shops.",
-    stack: ["Figma", "Design Systems", "Interaction Design"],
-    image: projects[1].image,
-    alt: projects[1].alt,
-    caseHref: `/work/${projects[1].slug}/`,
-    decision:
-      "Anchor three distinct operational roles to one shared navigation grammar and consistent table patterns.",
-  },
-  {
-    id: "pocketsaver",
-    num: "04",
-    year: "2025",
-    title: "PocketSaver",
-    field: "Fullstack · Forecasting",
-    headline: "Follow the request end to end.",
-    summary:
-      "Finance application orchestrating Next.js, a Node.js API proxy, PostgreSQL persistence, and an isolated Python forecasting service in Docker Compose.",
-    stack: ["Next.js", "Node.js", "PostgreSQL", "Python", "Docker"],
-    repo: systems[2].repository,
-    nodes: systems[2].nodes,
-    decision: systems[2].decision,
-    blueprint: {
-      kicker: "TOPOLOGY SPECIMEN · MULTI-SERVICE",
-      diagram: "Next.js Client → Node /api/forecast → PostgreSQL + Python /predict",
-      foot: "Docker Compose stack · Explicit service boundaries",
-    },
-  },
-  {
-    id: "clinical-communication",
-    num: "05",
-    year: "2025",
-    title: "Clinical Communication",
-    field: "ABIM · Supervised NLP",
-    headline: "Making clinical dialogue legible.",
-    summary:
-      "Supervised NLP annotation workflow mapping doctor-patient dialogue behaviors to Calgary-Cambridge and NURSE rubrics.",
-    stack: ["Python", "NLP", "Label Studio"],
-    image: projects[2].image,
-    alt: projects[2].alt,
-    caseHref: `/work/${projects[2].slug}/`,
-    decision:
-      "Connect every model output to named clinical communication frameworks so reviewers can audit predictions.",
-  },
-  {
-    id: "centralperk",
-    num: "06",
-    year: "In Progress",
-    title: "CentralPerk",
-    field: "Multi-Agent Systems",
-    headline: "Transparent agent handoffs.",
-    summary: archive[0].description,
-    stack: ["LangGraph", "FastAPI", "React", "Tailwind CSS"],
-    decision:
-      "Surface completed versus deferred agent work explicitly at the interface layer.",
-    blueprint: {
-      kicker: "ACTIVE RESEARCH · MULTI-AGENT",
-      diagram: "LangGraph Orchestrator → Agent Handoff → Visible Human Ledger",
-      foot: "In active development · Deliberate non-capture UX",
-    },
-  },
-];
+const shippedWorks = selectedProjects;
 
 const craftFilters = [
   { id: "all", label: "All Craft" },
@@ -163,6 +59,135 @@ const craftTokens = [
   { name: "Behavioral Analytics", cat: "research", italic: false, proof: "Hotjar, FullStory, Google Analytics, Amplitude, SQL, Tableau, and Power BI." },
 ];
 
+const DISCIPLINE_CHAPTERS = [
+  {
+    id: "research",
+    align: "right",
+    kicker: "01 / UX RESEARCH & DISCOVERY",
+    titleLead: "Start with ",
+    titleEm: "real human friction.",
+    lead: "I uncover what people actually struggle with through contextual inquiry, usability studies, clinical rubrics, and behavioral analytics before writing code.",
+    craftCat: "research",
+    metrics: [
+      { value: "−60%", label: "Survey setup time (250+ John Deere products)" },
+      { value: "+11%", label: "Retail conversion lift (7 UK brands, Capita)" },
+    ],
+    skills: [
+      { name: "Contextual Inquiry", tip: "Established John Deere’s India UX research practice across 6+ product teams." },
+      { name: "Usability Testing", tip: "Moderated studies across John Deere, Urbanfit (+35% engagement), and GesturePro (n=6)." },
+      { name: "Information Architecture", tip: "Designed a self-serve survey platform serving 250+ internal products without dev bottlenecks." },
+      { name: "A/B Testing", tip: "Behavioral segmentation & experimentation on Qubit’s ML platform at Capita." },
+      { name: "IRR Protocols", tip: "Translated Calgary-Cambridge, NURSE & SHARE rubrics into validated clinical NLP datasets at ABIM." },
+      { name: "Hotjar · SQL", tip: "Combined behavioral funnels with 120+ feedback channels to cut Urbanfit bounce rate by 28%." },
+    ],
+    links: [
+      { title: "Clinical Communication", subtitle: "Rubric taxonomy & NLP", tip: "ABIM · Annotated doctor-patient dialogue mapped to Calgary-Cambridge & NURSE rubrics.", caseHref: "/work/clinical-communication/" },
+      { title: "InOut", subtitle: "Guided room walkthroughs", tip: "Timestamped move-in/move-out walkthroughs with before-and-after visual evidence.", projectId: "inout" },
+    ],
+  },
+  {
+    id: "frontend",
+    align: "left",
+    kicker: "02 / FRONTEND UI & DESIGN SYSTEMS",
+    titleLead: "Interfaces that keep ",
+    titleEm: "people in command.",
+    lead: "I turn complex workflows into atomic Figma design systems and responsive React & Next.js apps where users always stay in control.",
+    craftCat: "design",
+    metrics: [
+      { value: "30 / 484", label: "Screens & interactions (Urbanfit)" },
+      { value: "+35%", label: "Engagement lift & −28% bounce" },
+    ],
+    skills: [
+      { name: "React", tip: "Production interfaces across CentralPerk, interactive dashboards, and design-system handoffs." },
+      { name: "Next.js", tip: "App Router frontends for Bias Checker (ABIM), GesturePro live editor, and PocketSaver." },
+      { name: "Figma & Atomic Design", tip: "Built Urbanfit’s 30-screen multi-role design system from scratch (admin, warehouse, franchise)." },
+      { name: "Tailwind CSS", tip: "Token-consistent, responsive UI systems shipped across React and Next.js builds." },
+      { name: "JavaScript", tip: "Real-time client state, webcam landmark loops, and smooth interaction choreography." },
+      { name: "WCAG 2.1", tip: "Accessible contrast, keyboard navigation, and human-in-the-loop correction patterns." },
+    ],
+    links: [
+      { title: "Urbanfit Control Panel", subtitle: "Multi-role design system", tip: "30 screens & 484 connected prototype interactions uniting admin, warehouse & franchise roles.", caseHref: "/work/urbanfit/" },
+      { title: "GesturePro", subtitle: "Live webcam sign editor", tip: "Browser webcam-to-text interface where signers edit predicted messages in real time.", projectId: "gesturepro" },
+    ],
+  },
+  {
+    id: "backend",
+    align: "right",
+    kicker: "03 / BACKEND, APIS & PERSISTENCE",
+    titleLead: "Clean contracts ",
+    titleEm: "across the stack.",
+    lead: "I own the services behind the UI — REST & ML inference APIs, Node.js proxies, PostgreSQL schemas, and containerized Docker stacks.",
+    craftCat: "engineering",
+    metrics: [
+      { value: "4-tier", label: "Web → API → DB → ML services" },
+      { value: "100%", label: "Containerized Docker & HF Spaces" },
+    ],
+    skills: [
+      { name: "Python", tip: "Core runtime for clinical NLP pipelines, Flask/FastAPI inference APIs, and forecast services." },
+      { name: "FastAPI", tip: "Real-time hand-landmark classification backend in GesturePro and CentralPerk agent API." },
+      { name: "Flask", tip: "Served fine-tuned RoBERTa classification and GPT-4o explanation endpoints in Bias Checker." },
+      { name: "Node.js", tip: "API proxy & routing layer connecting Next.js, PostgreSQL, and Python forecasting in PocketSaver." },
+      { name: "PostgreSQL", tip: "Relational persistence schemas orchestrated with multi-service Docker Compose." },
+      { name: "Docker Compose", tip: "Reproducible multi-container local stacks and Hugging Face Spaces cloud deployments." },
+    ],
+    links: [
+      { title: "Open-slot matcher", subtitle: "Concurrency-safe queues", tip: "Waitlist ranking, event queues & burst-load tested single-claim appointment booking.", projectId: "open-slot-matcher" },
+      { title: "Bias Checker", subtitle: "Flask API + Docker deploy", tip: "Solo-built Flask inference & explanation API deployed via Docker on Hugging Face Spaces.", projectId: "bias-checker" },
+    ],
+  },
+  {
+    id: "ai",
+    align: "left",
+    kicker: "04 / APPLIED AI & EXPLAINABILITY",
+    titleLead: "Models people can ",
+    titleEm: "question and trust.",
+    lead: "Pairing an MS in AI & ML with clinical NLP at ABIM, I fine-tune classifiers and vision pipelines with human-auditable GPT-4o reasoning.",
+    craftCat: "ai",
+    metrics: [
+      { value: "3.97", label: "MS AI & ML GPA · Drexel" },
+      { value: "21 pts", label: "Hand landmarks / frame" },
+    ],
+    skills: [
+      { name: "RoBERTa + LoRA", tip: "Fine-tuned clinical bias classifier built solo at ABIM and deployed end to end." },
+      { name: "GPT-4o", tip: "Few-shot explainability layer giving clinicians inspectable reasoning beside each label." },
+      { name: "TensorFlow", tip: "Trained the hand-sign gesture classification model powering GesturePro." },
+      { name: "MediaPipe (21pt)", tip: "Extracted 21 hand landmarks per webcam frame for browser-to-text recognition." },
+      { name: "LangGraph", tip: "Stateful multi-agent orchestration with transparent completed vs. deferred handoffs." },
+      { name: "Label Studio", tip: "Curated clinical dialogue reference datasets aligned to medical communication rubrics." },
+    ],
+    links: [
+      { title: "Bias Checker", subtitle: "RoBERTa + GPT-4o explain", tip: "Separates classification from few-shot explanation so clinicians can audit every flag.", projectId: "bias-checker" },
+      { title: "Klyro", subtitle: "Source-grounded RAG copilot", tip: "Embeddable AI website copilot with knowledge retrieval, private test chat & attribution.", projectId: "klyro" },
+    ],
+  },
+  {
+    id: "testing",
+    align: "right",
+    kicker: "05 / TESTING, EVALUATION & SHIPPED",
+    titleLead: "Validated before ",
+    titleEm: "a line ships.",
+    lead: "Every release is backed by moderated usability studies, clinical IRR rubric audits, concurrency testing, and live A/B experiments.",
+    craftCat: "research",
+    metrics: [
+      { value: "n = 6", label: "Usability study (GesturePro)" },
+      { value: "3 rubrics", label: "Clinical IRR audit frameworks" },
+    ],
+    skills: [
+      { name: "Usability Testing", tip: "Validated GesturePro’s live text-correction flow with six participants before handoff." },
+      { name: "IRR Rubric Audits", tip: "Measured clinical label consistency and edge-case accuracy across ABIM evaluation sets." },
+      { name: "A/B Testing", tip: "Live personalization experiments driving +11% retail conversion across 7 UK brands." },
+      { name: "Concurrency Testing", tip: "Burst-load synthetic schedule testing in Open-slot matcher so only one patient claims a slot." },
+      { name: "Safety Guardrails", tip: "Paired AI label recognition with deterministic ingredient & routine rules in Shelfie." },
+      { name: "Docker Release", tip: "Reproducible containerized deployments verified end to end before handoff." },
+    ],
+    links: [
+      { title: "GesturePro", subtitle: "Validated capstone build", tip: "Usability-tested webcam-to-text capstone prototype with full case study.", projectId: "gesturepro" },
+      { title: "Shelfie", subtitle: "Rule-checked AI routines", tip: "Skincare organizer pairing label recognition with explicit ingredient rules & reminders.", projectId: "shelfie" },
+    ],
+    footerCta: { label: "Explore all 6 selected projects ↓", href: "#works" },
+  },
+];
+
 const roleImpact = {
   "American Board of Internal Medicine": "Solo-built Bias Checker AI",
   "Drexel University": "Graduate AI & ML",
@@ -173,7 +198,6 @@ const roleImpact = {
 
 export function V6Portfolio() {
   const progressRef = useRef(0);
-  const sheetRef = useRef(null);
   const filmstripRef = useRef(null);
   const trajWrapRef = useRef(null);
   const trajRailRef = useRef(null);
@@ -183,7 +207,7 @@ export function V6Portfolio() {
   const [chapterIdx, setChapterIdx] = useState(0);
   const [activeBuildIdx, setActiveBuildIdx] = useState(0);
   const [activeTrajIdx, setActiveTrajIdx] = useState(0);
-  const [selectedWork, setSelectedWork] = useState(null);
+  const [selectedWorkIdx, setSelectedWorkIdx] = useState(null);
   const [craftCat, setCraftCat] = useState("all");
   const [hoveredToken, setHoveredToken] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -295,20 +319,7 @@ export function V6Portfolio() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  useEffect(() => {
-    const d = sheetRef.current;
-    if (!d) return;
-    if (selectedWork && !d.open) {
-      document.body.style.overflow = "hidden";
-      d.showModal();
-    } else if (!selectedWork && d.open) {
-      document.body.style.overflow = "";
-      d.close();
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [selectedWork]);
+
 
   async function copyEmail() {
     try {
@@ -335,6 +346,20 @@ export function V6Portfolio() {
     } else if (trajRailRef.current?.parentElement) {
       trajRailRef.current.parentElement.scrollBy({ left: delta * 360, behavior: "smooth" });
     }
+  }
+
+  function openProjectById(projectId) {
+    const idx = shippedWorks.findIndex((p) => p.id === projectId);
+    if (idx !== -1) {
+      setActiveBuildIdx(idx);
+      setSelectedWorkIdx(idx);
+    }
+  }
+
+  function jumpToToolkit(cat) {
+    setCraftCat(cat);
+    setHoveredToken(null);
+    document.getElementById("craft")?.scrollIntoView({ behavior: "smooth" });
   }
 
   const activeChapter = CHAPTERS[chapterIdx];
@@ -427,182 +452,124 @@ export function V6Portfolio() {
           </div>
         </section>
 
-        {/* CHAPTER 02 — UX RESEARCH */}
-        <section id="research" className="v6Chapter v6AlignRight">
-          <div className="v6Wrap">
-            <div className="v6ChapterCard">
-              <span className="v6Kicker">01 / UX RESEARCH &amp; DISCOVERY</span>
-              <h2 className="v6ChapterTitle">
-                Start with <em>real human friction.</em>
-              </h2>
-              <p className="v6Lead">
-                Before a single component or endpoint is written, I uncover what
-                people actually struggle with. I lead contextual inquiry,
-                moderated usability studies, clinical rubric design
-                (Calgary-Cambridge, NURSE), and behavioral analytics so teams
-                build the right thing first.
-              </p>
-              <div className="v6SkillStrip">
-                <span>Contextual Inquiry</span>
-                <span>Usability Testing</span>
-                <span>Information Architecture</span>
-                <span>A/B Testing</span>
-                <span>IRR Protocols</span>
-                <span>Hotjar · Amplitude · SQL</span>
-              </div>
-              <div className="v6ProofBox">
-                <strong>−60% setup time · +11% conversion</strong>
-                <span>
-                  Established John Deere’s India UX research practice across
-                  250+ products, and drove retail personalization at Capita.
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* CHAPTERS 02–06 — UNBOXED EDITORIAL MONOGRAPH CHAPTERS FLOATING BESIDE THE 3D SCULPTURE */}
+        {DISCIPLINE_CHAPTERS.map((chapter, chIdx) => {
+          const chapterNum = String(chIdx + 1).padStart(2, "0");
+          return (
+            <section
+              key={chapter.id}
+              id={chapter.id}
+              className={`v6Chapter v6ChapterEditorial ${chapter.align === "right" ? "v6AlignRight" : "v6AlignLeft"}`}
+            >
+              <div className="v6Wrap">
+                <div className="v6EditorialColumn">
+                  <span className="v6ChapterGhostNum" aria-hidden="true">
+                    {chapterNum}
+                  </span>
 
-        {/* CHAPTER 03 — FRONTEND UI */}
-        <section id="frontend" className="v6Chapter v6AlignLeft">
-          <div className="v6Wrap">
-            <div className="v6ChapterCard">
-              <span className="v6Kicker">02 / FRONTEND UI &amp; DESIGN SYSTEMS</span>
-              <h2 className="v6ChapterTitle">
-                Interfaces that keep <em>people in command.</em>
-              </h2>
-              <p className="v6Lead">
-                I translate complex workflows into atomic Figma design systems
-                and responsive React &amp; Next.js interfaces. Whether shaping a
-                30-screen multi-role operations workspace or a live webcam sign
-                editor, I build calm, accessible products people trust.
-              </p>
-              <div className="v6SkillStrip">
-                <span>React</span>
-                <span>Next.js</span>
-                <span>JavaScript</span>
-                <span>Tailwind CSS</span>
-                <span>Figma</span>
-                <span>Atomic Design</span>
-                <span>WCAG 2.1</span>
-              </div>
-              <div className="v6ProofBox">
-                <strong>30 screens · 484 interactions · +35% engagement</strong>
-                <span>
-                  Built Urbanfit’s atomic design system from scratch and
-                  engineered live editable interfaces for GesturePro and Bias
-                  Checker.
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
+                  <div className="v6KickerRow">
+                    <i className="v6KickerDot" aria-hidden="true" />
+                    <span className="v6Kicker">{chapter.kicker}</span>
+                    <span className="v6KickerRule" aria-hidden="true" />
+                  </div>
 
-        {/* CHAPTER 04 — BACKEND & APIS */}
-        <section id="backend" className="v6Chapter v6AlignRight">
-          <div className="v6Wrap">
-            <div className="v6ChapterCard">
-              <span className="v6Kicker">03 / BACKEND, APIS &amp; PERSISTENCE</span>
-              <h2 className="v6ChapterTitle">
-                Clean contracts <em>across the stack.</em>
-              </h2>
-              <p className="v6Lead">
-                I own the services behind the interface — architecting explicit
-                REST contracts, Node.js API proxies, FastAPI &amp; Flask
-                inference endpoints, PostgreSQL schemas, and containerized
-                Docker Compose stacks built for production reliability.
-              </p>
-              <div className="v6SkillStrip">
-                <span>Python</span>
-                <span>FastAPI</span>
-                <span>Flask</span>
-                <span>Node.js</span>
-                <span>PostgreSQL</span>
-                <span>Docker Compose</span>
-                <span>Git</span>
-              </div>
-              <div className="v6ProofBox">
-                <strong>End-to-end service ownership</strong>
-                <span>
-                  PocketSaver (Next.js → Node /api/forecast → PostgreSQL +
-                  Python /predict) and Bias Checker Flask API on Hugging Face
-                  Spaces.
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
+                  <h2 className="v6ChapterTitle v6EditorialTitle">
+                    {chapter.titleLead}
+                    <em>{chapter.titleEm}</em>
+                  </h2>
+                  <p className="v6Lead">{chapter.lead}</p>
 
-        {/* CHAPTER 05 — APPLIED AI & ML */}
-        <section id="ai" className="v6Chapter v6AlignLeft">
-          <div className="v6Wrap">
-            <div className="v6ChapterCard">
-              <span className="v6Kicker">04 / APPLIED AI &amp; EXPLAINABILITY</span>
-              <h2 className="v6ChapterTitle">
-                Models people can <em>question and trust.</em>
-              </h2>
-              <p className="v6Lead">
-                Pairing an MS in AI &amp; Machine Learning (3.97 GPA) with
-                clinical NLP work at ABIM, I fine-tune domain classifiers and
-                real-time vision pipelines — and attach human-auditable GPT-4o
-                reasoning beside every prediction.
-              </p>
-              <div className="v6SkillStrip">
-                <span>RoBERTa + LoRA</span>
-                <span>GPT-4o</span>
-                <span>TensorFlow</span>
-                <span>MediaPipe (21pt)</span>
-                <span>LangGraph</span>
-                <span>Label Studio</span>
-                <span>LLM Evaluation</span>
-              </div>
-              <div className="v6ProofBox">
-                <strong>Solo-built Bias Checker AI · 21 landmarks/frame</strong>
-                <span>
-                  Fine-tuned clinical bias detection at ABIM, real-time webcam
-                  sign recognition in GesturePro, and multi-agent handoffs in
-                  CentralPerk.
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
+                  <div className="v6EditorialMetrics">
+                    {chapter.metrics.map((metric) => (
+                      <div className="v6EditorialStat" key={metric.value}>
+                        <strong>{metric.value}</strong>
+                        <span>{metric.label}</span>
+                      </div>
+                    ))}
+                  </div>
 
-        {/* CHAPTER 06 — TESTING, EVALUATION & SHIPPED (DEDICATED FULL-GROWN DIAMOND REVEAL) */}
-        <section id="testing" className="v6Chapter v6AlignRight">
-          <div className="v6Wrap">
-            <div className="v6ChapterCard">
-              <span className="v6Kicker">05 / TESTING, EVALUATION &amp; SHIPPED</span>
-              <h2 className="v6ChapterTitle">
-                Validated before <em>a line ships.</em>
-              </h2>
-              <p className="v6Lead">
-                Nothing goes live on guesswork. I pair engineering delivery with
-                moderated usability studies, clinical inter-rater reliability
-                (IRR) rubric audits, and live A/B experimentation so every
-                release proves its impact in the real world.
-              </p>
-              <div className="v6SkillStrip">
-                <span>Usability Testing (n=6)</span>
-                <span>IRR Rubric Audits</span>
-                <span>A/B Experimentation</span>
-                <span>Calgary-Cambridge</span>
-                <span>NURSE · SHARE</span>
-                <span>Dockerized Release</span>
+                  <div className="v6ChapterSubHead">
+                    <span>SKILLS · HOVER FOR PROOF</span>
+                    <button
+                      type="button"
+                      className="v6MiniLink"
+                      onClick={() => jumpToToolkit(chapter.craftCat)}
+                    >
+                      Toolkit →
+                    </button>
+                  </div>
+
+                  <div className="v6SkillStream">
+                    {chapter.skills.map((skill, idx) => (
+                      <span className="v6SkillStreamItem" key={skill.name}>
+                        <span className="v6TipWord" tabIndex={0}>
+                          {skill.name}
+                          <span className="v6Tooltip" role="tooltip">
+                            <b>{skill.name}</b>
+                            {skill.tip}
+                          </span>
+                        </span>
+                        {idx < chapter.skills.length - 1 && (
+                          <span className="v6SkillSlash" aria-hidden="true">
+                            /
+                          </span>
+                        )}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="v6ChapterProofs">
+                    <span className="v6ChapterProofLabel">PROVEN IN</span>
+                    <div className="v6ProofIndexGrid">
+                      {chapter.links.map((item) =>
+                        item.projectId ? (
+                          <button
+                            key={item.title}
+                            type="button"
+                            className="v6ProofIndexItem"
+                            onClick={() => openProjectById(item.projectId)}
+                          >
+                            <strong>
+                              {item.title} <i aria-hidden="true">↗</i>
+                            </strong>
+                            <span>{item.subtitle}</span>
+                            <span className="v6Tooltip v6TooltipCard" role="tooltip">
+                              <b>{item.title}</b>
+                              {item.tip}
+                            </span>
+                          </button>
+                        ) : (
+                          <Link
+                            key={item.title}
+                            href={item.caseHref}
+                            className="v6ProofIndexItem"
+                          >
+                            <strong>
+                              {item.title} <i aria-hidden="true">↗</i>
+                            </strong>
+                            <span>{item.subtitle}</span>
+                            <span className="v6Tooltip v6TooltipCard" role="tooltip">
+                              <b>{item.title}</b>
+                              {item.tip}
+                            </span>
+                          </Link>
+                        )
+                      )}
+                    </div>
+                  </div>
+
+                  {chapter.footerCta && (
+                    <div className="v6CtaRow" style={{ marginTop: "24px" }}>
+                      <a className="v6BtnPlain" href={chapter.footerCta.href}>
+                        {chapter.footerCta.label}
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="v6ProofBox">
-                <strong>Audited in clinic · Proven in production</strong>
-                <span>
-                  Validated GesturePro with six participants, audited clinical
-                  NLP at ABIM, and shipped across 250+ John Deere products.
-                </span>
-              </div>
-              <div className="v6CtaRow" style={{ marginTop: "22px" }}>
-                <a className="v6BtnPlain" href="#works">
-                  Inspect the shipped builds ↓
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+            </section>
+          );
+        })}
 
         {/* CHAPTER 07 — SELECTED BUILDS SPOTLIGHT + HORIZONTAL 6-PLATE SELECTOR */}
         <section id="works" className="v6WideBand">
@@ -617,7 +584,7 @@ export function V6Portfolio() {
               <div className="v6BandHeadRight">
                 <p className="v6Lead">
                   Select any plate along the horizontal strip below to inspect
-                  the live system, or open its full architecture pipeline.
+                  the project details, approach, and current status.
                 </p>
                 <div className="v6RailControls">
                   <button
@@ -641,16 +608,24 @@ export function V6Portfolio() {
             </div>
 
             {/* Featured Frosted Glass Spotlight */}
-            <div className="v6GlassSpotlight" key={currentBuild.id}>
+            <div className="v6SpotlightStack">
+              {shippedWorks.map((currentBuild, index) => (
+            <div
+              className="v6GlassSpotlight"
+              key={currentBuild.id}
+              aria-hidden={index !== activeBuildIdx}
+              inert={index !== activeBuildIdx}
+              style={{ visibility: index === activeBuildIdx ? "visible" : "hidden" }}
+            >
               <div
                 className="v6SpotlightVisual"
-                onClick={() => setSelectedWork(currentBuild)}
+                onClick={() => setSelectedWorkIdx(index)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    setSelectedWork(currentBuild);
+                    setSelectedWorkIdx(index);
                   }
                 }}
               >
@@ -693,10 +668,11 @@ export function V6Portfolio() {
                   <button
                     type="button"
                     className="v6BtnPrimary"
-                    onClick={() => setSelectedWork(currentBuild)}
+                    onClick={() => setSelectedWorkIdx(index)}
                   >
                     Inspect Architecture ↗
                   </button>
+                  {currentBuild.liveHref && (<a className="v6BtnPlain" href={currentBuild.liveHref} target="_blank" rel="noreferrer">Visit live site ↗</a>)}
                   {currentBuild.caseHref && (
                     <Link className="v6GlassPillBtn" href={currentBuild.caseHref}>
                       Case Study ↗
@@ -716,12 +692,15 @@ export function V6Portfolio() {
               </div>
             </div>
 
+              ))}
+            </div>
+
             {/* Horizontally Scrollable 6-Plate Selector Strip */}
             <div
               ref={filmstripRef}
               className="v6HStrip"
               role="tablist"
-              aria-label="Choose a shipped build"
+              aria-label="Choose a project"
             >
               {shippedWorks.map((b, idx) => (
                 <button
@@ -984,79 +963,13 @@ export function V6Portfolio() {
         </section>
       </main>
 
-      {/* ARCHITECTURE MONOGRAPH DIALOG */}
-      <dialog
-        ref={sheetRef}
-        className="v6Sheet"
-        onClick={(e) => {
-          if (e.target === e.currentTarget) setSelectedWork(null);
-        }}
-        onCancel={() => setSelectedWork(null)}
-      >
-        {selectedWork && (
-          <div className="v6SheetInner">
-            <div className="v6SheetTop">
-              <span>
-                PLATE {selectedWork.num} / {selectedWork.field.toUpperCase()}
-              </span>
-              <button type="button" onClick={() => setSelectedWork(null)}>
-                Close ×
-              </button>
-            </div>
-            <div className="v6SheetBody">
-              <h2>{selectedWork.title}</h2>
-              <p className="v6SheetHeadline">{selectedWork.headline}</p>
-              <p className="v6SheetSummary">{selectedWork.summary}</p>
-              <div className="v6TagRow">
-                {selectedWork.stack.map((t) => (
-                  <span key={t}>{t}</span>
-                ))}
-              </div>
-              <blockquote className="v6SheetQuote">
-                <small>ARCHITECTURAL DECISION</small>
-                <p>“{selectedWork.decision}”</p>
-              </blockquote>
-              {selectedWork.nodes && (
-                <div className="v6SheetNodes">
-                  <small className="v6SheetSub">SYSTEM PIPELINE</small>
-                  {selectedWork.nodes.map((node) => (
-                    <div className="v6NodeRow" key={node.layer}>
-                      <span>{node.layer}</span>
-                      <div>
-                        <strong>
-                          {node.title} · <em>{node.technology}</em>
-                        </strong>
-                        <p>{node.detail}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="v6SheetActions">
-                {selectedWork.caseHref && (
-                  <Link
-                    className="v6BtnPrimary"
-                    href={selectedWork.caseHref}
-                    onClick={() => setSelectedWork(null)}
-                  >
-                    Read Full Case Study ↗
-                  </Link>
-                )}
-                {selectedWork.repo && (
-                  <a
-                    className="v6BtnPlain"
-                    href={selectedWork.repo}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Explore Source on GitHub ↗
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-      </dialog>
+      {/* V1 PROJECT VIEW MODAL */}
+      <ProjectViewModal
+        projects={shippedWorks}
+        selectedIndex={selectedWorkIdx}
+        onSelectIndex={setSelectedWorkIdx}
+        onClose={() => setSelectedWorkIdx(null)}
+      />
     </div>
   );
 }
